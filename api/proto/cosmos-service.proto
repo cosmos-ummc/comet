@@ -1,0 +1,895 @@
+syntax = "proto3";
+package pb;
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+import "google/protobuf/empty.proto";
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	info: {
+	    description: "CoSMoS Service handles requests from both Telegram chat bot and admin dashboard.";
+        title: "CoSMoS Service";
+        version: "1.0.0";
+        contact:{
+            url: "https://github.com/cosmos-ummc/comet";
+            email: "chinxiongwei@yahoo.com.my";
+        };
+    };
+    schemes: HTTPS;
+    consumes: "application/json";
+    produces: "application/json";
+};
+
+// CoSMoS Backend Service
+service CosmosService {
+    // Create Patient
+    rpc CreatePatient (CommonPatientRequest) returns (CommonPatientResponse) {
+        option (google.api.http) = {
+            post: "/v1/patients/{id}"
+            body: "*"
+        };
+    }
+    // Get Patient
+    rpc GetPatient (CommonGetRequest) returns (CommonPatientResponse) {
+        option (google.api.http) = {
+            get: "/v1/patients/{id}"
+        };
+    }
+    // Update Patient
+    rpc UpdatePatient (CommonPatientRequest) returns (CommonPatientResponse) {
+        option (google.api.http) = {
+            put: "/v1/patients/{id}"
+            body: "*"
+        };
+    }
+    // Update Patients
+    rpc UpdatePatients (CommonPatientsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/patients"
+            body: "*"
+        };
+    }
+    // Delete Patient
+    rpc DeletePatient (CommonDeleteRequest) returns (CommonPatientResponse) {
+        option (google.api.http) = {
+            delete: "/v1/patients/{id}"
+        };
+    }
+    // Delete Patients
+    rpc DeletePatients (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/patients"
+        };
+    }
+    // Get Patients
+    rpc GetPatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/patients"
+        };
+    }
+    // Get Undeclared Patients
+    rpc GetUndeclaredPatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/undeclaredpatients"
+        };
+    }
+    // Get Patients With Days Since Swab >= 14
+    rpc GetSwabPatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/swabpatients"
+        };
+    }
+    // Get Stable Patients
+    rpc GetStablePatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/stablepatients"
+        };
+    }
+    // Get Called Patients
+    rpc GetCallPatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/callpatients"
+        };
+    }
+    // Get Other Patients
+    rpc GetOtherPatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/otherpatients"
+        };
+    }
+    // Get No Yet Called Patients
+    rpc GetNoCallPatients (CommonGetsRequest) returns (CommonPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/nocallpatients"
+        };
+    }
+    // Create User
+    rpc CreateUser (CommonUserRequest) returns (CommonUserResponse) {
+        option (google.api.http) = {
+            post: "/v1/users/{id}"
+            body: "*"
+        };
+    }
+    // Get Users
+    rpc GetUsers (CommonGetsRequest) returns (CommonUsersResponse) {
+        option (google.api.http) = {
+            get: "/v1/users"
+        };
+    }
+    // Get User
+    rpc GetUser (CommonGetRequest) returns (CommonUserResponse) {
+        option (google.api.http) = {
+            get: "/v1/users/{id}"
+        };
+    }
+    // Update User
+    rpc UpdateUser (CommonUserRequest) returns (CommonUserResponse) {
+        option (google.api.http) = {
+            put: "/v1/users/{id}"
+            body: "*"
+        };
+    }
+    // Update Users
+    rpc UpdateUsers (CommonUsersRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/users"
+            body: "*"
+        };
+    }
+    // Delete User
+    rpc DeleteUser (CommonDeleteRequest) returns (CommonUserResponse) {
+        option (google.api.http) = {
+            delete: "/v1/users/{id}"
+        };
+    }
+    // Delete Users
+    rpc DeleteUsers (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/users"
+        };
+    }
+    // Create Declaration
+    rpc CreateDeclaration (CommonDeclarationRequest) returns (CommonDeclarationResponse) {
+        option (google.api.http) = {
+            post: "/v1/declarations/{id}"
+            body: "*"
+        };
+    }
+    // Get Declarations
+    rpc GetDeclarations (CommonGetsRequest) returns (CommonDeclarationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/declarations"
+        };
+    }
+    // Get Declaration
+    rpc GetDeclaration (CommonGetRequest) returns (CommonDeclarationResponse) {
+        option (google.api.http) = {
+            get: "/v1/declarations/{id}"
+        };
+    }
+    // Update Declaration
+    rpc UpdateDeclaration (CommonDeclarationRequest) returns (CommonDeclarationResponse) {
+        option (google.api.http) = {
+            put: "/v1/declarations/{id}"
+            body: "*"
+        };
+    }
+    // Update Declarations
+    rpc UpdateDeclarations (CommonDeclarationsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/declarations"
+            body: "*"
+        };
+    }
+    // Delete Declaration
+    rpc DeleteDeclaration (CommonDeleteRequest) returns (CommonDeclarationResponse) {
+        option (google.api.http) = {
+            delete: "/v1/declarations/{id}"
+        };
+    }
+    // Delete Declarations
+    rpc DeleteDeclarations (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/declarations"
+        };
+    }
+    // Create Swab
+    rpc CreateSwab (CommonSwabRequest) returns (CommonSwabResponse) {
+        option (google.api.http) = {
+            post: "/v1/swabs/{id}"
+            body: "*"
+        };
+    }
+    // Get Swabs
+    rpc GetSwabs (CommonGetsRequest) returns (CommonSwabsResponse) {
+        option (google.api.http) = {
+            get: "/v1/swabs"
+        };
+    }
+    // Get Swab
+    rpc GetSwab (CommonGetRequest) returns (CommonSwabResponse) {
+        option (google.api.http) = {
+            get: "/v1/swabs/{id}"
+        };
+    }
+    // Update Swab
+    rpc UpdateSwab (CommonSwabRequest) returns (CommonSwabResponse) {
+        option (google.api.http) = {
+            put: "/v1/swabs/{id}"
+            body: "*"
+        };
+    }
+    // Update Swabs
+    rpc UpdateSwabs (CommonSwabsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/swabs"
+            body: "*"
+        };
+    }
+    // Delete Swab
+    rpc DeleteSwab (CommonDeleteRequest) returns (CommonSwabResponse) {
+        option (google.api.http) = {
+            delete: "/v1/swabs/{id}"
+        };
+    }
+    // Delete Swabs
+    rpc DeleteSwabs (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/swabs"
+        };
+    }
+    // Get Report
+    rpc GetReport (GetReportRequest) returns (CommonReportResponse) {
+        option (google.api.http) = {
+            get: "/v1/reports/{date}"
+        };
+    }
+    // Get Reports
+    rpc GetReports (GetReportsRequest) returns (CommonReportsResponse) {
+        option (google.api.http) = {
+            get: "/v1/reports"
+        };
+    }
+    // Get Password Reset
+    rpc GetPasswordReset (GetPasswordResetRequest) returns (GetPasswordResetResponse) {
+        option (google.api.http) = {
+            get: "/v1/users/{id}/passwordreset"
+        };
+    }
+    // Update Password
+    rpc UpdatePassword (UpdatePasswordRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1/users/passwordreset/{token}"
+            body: "*"
+        };
+    }
+    // Login
+    rpc Login (LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/v1/login"
+            body: "*"
+        };
+    }
+    // Logout
+    rpc Logout (google.protobuf.Empty) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/v1/logout"
+        };
+    }
+    // Refresh
+    rpc Refresh (google.protobuf.Empty) returns (RefreshResponse) {
+        option (google.api.http) = {
+            post: "/v1/refresh"
+            body: "*"
+        };
+    }
+    // Get Activities
+    rpc GetActivities (CommonGetsRequest) returns (CommonActivitiesResponse) {
+        option (google.api.http) = {
+            get: "/v1/activities"
+        };
+    }
+    // Get Activity
+    rpc GetActivity (CommonGetRequest) returns (CommonActivityResponse) {
+        option (google.api.http) = {
+            get: "/v1/activities/{id}"
+        };
+    }
+    // Client Update Patient
+    rpc ClientUpdatePatient (ClientUpdatePatientRequest) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            put: "/v1/client/patients/{id}"
+            body: "*"
+        };
+    }
+    // Client Update Patient V2
+    rpc ClientUpdatePatientV2 (ClientUpdatePatientRequest) returns (ClientUpdatePatientV2Response) {
+        option (google.api.http) = {
+            put: "/v2/client/patients/{id}"
+            body: "*"
+        };
+    }
+    // Client Get Patients
+    rpc ClientGetPatients (ClientGetPatientsRequest) returns (ClientGetPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/patients"
+        };
+    }
+    // Client Get Patient V2
+    rpc ClientGetPatientV2 (ClientGetPatientV2Request) returns (ClientGetPatientV2Response) {
+        option (google.api.http) = {
+            get: "/v2/client/patients"
+        };
+    }
+    // Client Get Undeclared Patients
+    rpc ClientGetUndeclaredPatients (ClientGetUndeclaredPatientsRequest) returns (ClientGetUndeclaredPatientsResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/patients/undeclared"
+        };
+    }
+    // Client Create Declaration
+    rpc ClientCreateDeclaration (ClientCreateDeclarationRequest) returns (ClientCreateDeclarationResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/declarations"
+            body: "*"
+        };
+    }
+}
+
+// common gets request payload
+message CommonGetsRequest {
+    // item to sort
+    string item = 1;
+    // item to order
+    string order = 2;
+    // pagination from
+    int64 from = 3;
+    // pagination to
+    int64 to = 4;
+    // item to filter
+    string filterItem = 5;
+    // value to filter
+    string filterValue = 6;
+    // patient ids
+    repeated string ids = 7;
+}
+
+// common get request payload
+message CommonGetRequest {
+    // patient IC / passport
+    string id = 1;
+}
+
+// common delete request payload
+message CommonDeleteRequest {
+    // id
+    string id = 1;
+}
+
+// common batch delete request payload
+message CommonDeletesRequest {
+    // ids
+    repeated string ids = 1;
+}
+
+// common Ids response
+message CommonIdsResponse {
+    // ids
+    repeated string data = 1;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
+// get password reset request payload
+message GetPasswordResetRequest {
+    // user id
+    string id = 1;
+}
+
+// get password reset request payload
+message UpdatePasswordRequest {
+    // token
+    string token = 1;
+    // password
+    string password = 2;
+}
+
+message LoginResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+    string displayName = 3;
+    string role = 4;
+    string id = 5;
+}
+
+message RefreshResponse {
+    string accessToken = 1;
+    string refreshToken = 2;
+}
+
+// get password reset response payload
+message GetPasswordResetResponse {
+    // password reset message
+    string message = 1;
+}
+
+// patient payload
+message Patient {
+    // patient IC / passport number
+    string id = 1;
+    // patient telegram ID
+    string telegramId = 2;
+    // patient name
+    string name = 3;
+    // patient status (1 - Symptomatic, 2 - Asymptomatic，3 - Confirmed but not Admitted, 4 - Confirmed and Admitted, 5 - Completed, 6 - Recovered, 7 - Quit, 8 - Passed Away)
+    int64 status = 4;
+    // patient phone number
+    string phoneNumber = 5;
+    // patient email
+    string email = 6;
+    // patient latest declare time in milliseconds
+    int64 lastDeclared = 7;
+    // patient number of swabs (covid-19 test)
+    int64 swabCount = 8;
+    // patient episode
+    int64 episode = 9;
+    // patient type (1 - PUI, 2 - Contact Tracing)
+    int64 type = 10;
+    // patient latest declare result (true - has symptom, false - no symptom)
+    bool lastDeclareResult = 11;
+    // patient date of exposure
+    string exposureDate = 12;
+    // patient source of exposure
+    string exposureSource = 13;
+    // patient days since exposure (inclusive)
+    int64 daysSinceExposure = 14;
+    // patient registration number
+    string registrationNum = 15;
+    // patient alternative contact number
+    string alternateContact = 16;
+    // patient isolation address
+    string isolationAddress = 17;
+    // patient date of symptom
+    string symptomDate = 18;
+    // patient date of swab
+    string swabDate = 19;
+    // patient days since fever (inclusive)
+    int64 feverContDay = 20;
+    // doctors' remarks on patient
+    string remarks = 21;
+    // patient localization (1 - English, 2 - Malay， 3 - Chinese, 4 - Tamil)
+    int64 localization = 22;
+    // patient latest report calling status
+    int64 callingStatus = 23;
+    // patient consent signing time in milliseconds
+    int64 consent = 25;
+    // patient privacy policy signing time in milliseconds
+    int64 privacyPolicy = 26;
+    // patient date of starting fever
+    string feverStartDate = 27;
+    // patient location of swab
+    string swabLocation = 28;
+    // patient day since swab
+    int64 daysSinceSwab = 29;
+    // patient type change date
+    string typeChangeDate = 30;
+    // patient home address
+    string homeAddress = 31;
+    // patient swab status
+    int64 swabStatus = 32;
+    // patient is other swab location
+    bool isOtherSwabLocation = 33;
+    // patient is same address
+    bool isSameAddress = 34;
+    // patient registration status
+    int64 registrationStatus = 35;
+}
+
+// common patient request payload
+message CommonPatientRequest {
+    // patient IC / passport
+    string id = 1;
+    // patient object
+    Patient data = 2;
+}
+
+// common patients request payload
+message CommonPatientsRequest {
+    // patient ids
+    repeated string ids = 1;
+    // patient payload
+    Patient data = 2;
+}
+
+// common patients response payload
+message CommonPatientsResponse {
+    // patients payload
+    repeated Patient data = 1;
+    // total patients
+    int64 total = 2;
+}
+
+// common patient response payload
+message CommonPatientResponse {
+    // patient payload
+    Patient data = 1;
+}
+
+// swab payload
+message Swab {
+    // swab ID (patient id + date)
+    string id = 1;
+    // patient id
+    string patientId = 2;
+    // patient name
+    string patientName = 3;
+    // patient phone number
+    string patientPhoneNumber = 4;
+    // swab status (1 - positive, 2 - negative, 3 - pending)
+    int64 status = 5;
+    // swab date
+    string date = 6;
+    // swab location
+    string location = 7;
+    // is other swab location
+    bool isOtherSwabLocation = 8;
+}
+
+// update swab request payload
+message CommonSwabRequest {
+    // swab id
+    string id = 1;
+    // swab payload
+    Swab data = 2;
+}
+
+//  common swabs request payload
+message CommonSwabsRequest {
+    // swab ids
+    repeated string ids = 1;
+    // swab payload
+    Swab data = 2;
+}
+
+// common swabs response payload
+message CommonSwabsResponse {
+    // swabs payload
+    repeated Swab data = 1;
+    // total swabs
+    int64 total = 2;
+}
+
+// get swab response payload
+message CommonSwabResponse {
+    // swab payload
+    Swab data = 1;
+}
+
+// user payload
+message User {
+    // user id
+    string id = 1;
+    // user role: superuser, chatbot, admin, nurse
+    string role = 2;
+    // user display name
+    string displayName = 3;
+    // user phone number
+    string phoneNumber = 4;
+    // user email
+    string email = 5;
+    // user account status (true - disabled, false - enabled)
+    bool disabled = 6;
+    // user hashed password
+    string password = 7;
+    // questions JSON
+    string finalQuestionsJson = 8;
+    // chart
+    string chart = 9;
+}
+
+// common user request payload
+message CommonUserRequest {
+    // user id
+    string id = 1;
+    // user payload
+    User data = 2;
+}
+
+// common users request payload
+message CommonUsersRequest {
+    // user ids
+    repeated string ids = 1;
+    // user payload
+    User data = 2;
+}
+
+// common users response payload
+message CommonUsersResponse {
+    // users payload
+    repeated User data = 1;
+    // total users
+    int64 total = 2;
+}
+
+// common user response payload
+message CommonUserResponse {
+    // user payload
+    User data = 1;
+}
+
+// declaration payload
+message Declaration {
+    string id = 1;
+    // patient IC / passport
+    string patientId = 2;
+    // cough (1 - no cough, 2 - getting better, 3 - cough remains the same, 4 - start coughing today, 5 - getting worse)
+    int64 cough = 3;
+    // sore throat (1 - meno sore throat, 2 - getting better, 3 - sore throat remains the same, 4 - start having sore throat today, 5 - getting worse)
+    int64 throat = 4;
+    // fever (1 - no fever, 3 - fever remains the same, 4 - start having a fever today, 5 - getting worse)
+    int64 fever = 5;
+    // breathing difficulty (1 - no, 4 - has)
+    int64 breathe = 6;
+    // chest pain (1 - no, 4 - has)
+    int64 chest = 7;
+    // blue face (1 - no, 4 - has)
+    int64 blue = 8;
+    // drowsiness (1 - no, 4 - has)
+    int64 drowsy = 9;
+    // loss of taste / smell
+    int64 loss = 10;
+    // report result (has symptom / no symptom)
+    bool hasSymptom = 11;
+    // report submission time in milliseconds
+    int64 submittedAt = 12;
+    // report calling status (1 - don’t have to call, 2 - patient called UMMC, 3 - UMMC called patient, 4 - no call yet)
+    int64 callingStatus = 13;
+    // report date in string yyyyMMdd
+    string date = 14;
+    // patient name
+    string patientName = 15;
+    // patient phone number
+    string patientPhoneNumber = 16;
+    // doctor remarks on the report
+    string doctorRemarks = 17;
+}
+
+// common declaration request payload
+message CommonDeclarationRequest {
+    // declaration id (not used )
+    string id = 1;
+    // declaration payload
+    Declaration data = 2;
+}
+
+// common declarations request payload
+message CommonDeclarationsRequest {
+    // declaration ids
+    repeated string ids = 1;
+    // declaration payload
+    Declaration data = 2;
+}
+
+// common declaration response payload
+message CommonDeclarationResponse {
+    // declaration payload
+    Declaration data = 1;
+}
+// get declarations response payload
+message CommonDeclarationsResponse {
+    // declarations payload
+    repeated Declaration data = 1;
+    // total declarations
+    int64 total = 2;
+}
+
+// client update patient request payload
+message ClientUpdatePatientRequest {
+    // patient telegram ID
+    string telegramId = 1;
+    // patient name
+    string name = 2;
+    // patient phone number
+    string phoneNumber = 3;
+    // patient IC / passport
+    string id = 4;
+    // patient status (1 - Symptomatic, 2 - Asymptomatic，3 - Confirmed but not Admitted, 4 - Confirmed and Admitted, 5 - Completed, 6 - Recovered, 7 - Quit, 8 - Passed Away)
+    int64 status = 5;
+    // patient email
+    string email = 6;
+    // patient latest declare time in milliseconds
+    int64 lastDeclared = 7;
+    // patient episode
+    int64 episode = 8;
+    // patient type  (1 - PUI, 2 - Contact Tracing)
+    int64 type = 9;
+    // patient localization (1 - English, 2 - Malay， 3 - Chinese, 4 - Tamil)
+    int64 localization = 10;
+    // doctors' remarks on patient
+    string remarks = 11;
+    // patient consent signing time in milliseconds
+    int64 consent = 12;
+    // patient privacy policy signing time in milliseconds
+    int64 privacyPolicy = 13;
+}
+
+// client get patients request payload
+message ClientGetPatientsRequest {
+    // patient telegram ID
+    string telegramId = 1;
+    // patient phone number
+    string phoneNumber = 2;
+    // patient id
+    string id = 3;
+    // day of monitoring
+    int64 day = 4;
+}
+
+// client get patients request payload
+message ClientGetPatientV2Request {
+    // patient telegram ID
+    string telegramId = 1;
+    // patient phone number
+    string phoneNumber = 2;
+    // patient id
+    string id = 3;
+}
+
+// client get undeclared patients request payload
+message ClientGetUndeclaredPatientsRequest {
+    // undeclared from given millisecond time (deprecated, now depending on 12 am)
+    int64 from = 1;
+    // undeclared to given millisecond time (deprecated)
+    int64 to = 2;
+}
+
+// client create declaration request payload
+message ClientCreateDeclarationRequest {
+    // patient IC / passport
+    string patientId = 1;
+    // cough (1 - no cough, 2 - getting better, 3 - cough remains the same, 4 - start coughing today, 5 - getting worse)
+    int64 cough = 2;
+    // sore throat (1 - no sore throat, 2 - getting better, 3 - sore throat remains the same, 4 - start having sore throat today, 5 - getting worse)
+    int64 throat = 3;
+    // fever (1 - no fever, 3 - fever remains the same, 4 - start having a fever today, 5 - getting worse)
+    int64 fever = 4;
+    // breathing difficulty (1 - no, 4 - has)
+    int64 breathe = 5;
+    // chest pain (1 - no, 4 - has)
+    int64 chest = 6;
+    // blue face (1 - no, 4 - has)
+    int64 blue = 7;
+    // drowsiness (1 - no, 4 - has)
+    int64 drowsy = 8;
+    // loss of taste / smell
+    int64 loss = 9;
+}
+
+// client get patients response payload
+message ClientGetPatientsResponse {
+    // patients payload
+    repeated Patient patients = 1;
+}
+
+// client get patient V2 response payload
+message ClientGetPatientV2Response {
+    Patient data = 1;
+}
+
+// client update patient V2 response payload
+message ClientUpdatePatientV2Response {
+    int64 registrationStatus = 1;
+}
+
+// client get undeclared patients response payload
+message ClientGetUndeclaredPatientsResponse {
+    // patients payload
+    repeated Patient patients = 1;
+}
+
+// client create declaration response payload
+message ClientCreateDeclarationResponse {
+    // client report result
+    bool hasSymptom = 1;
+}
+
+// report payload
+message Report {
+    // don't have to call count
+    int64 dontHaveToCallCount = 1;
+    // patient called count
+    int64 patientCalledCount = 2;
+    // UMMC called count
+    int64 ummcCalledCount = 3;
+    // no yet called count
+    int64 noYetCallCount = 4;
+    // date of report
+    string date = 5;
+    // undeclared count
+    int64 undeclaredCount = 6;
+    // declared count
+    int64 declaredCount = 7;
+    // asymptomatic patient count
+    int64 asymptomatic = 8;
+    // symptomatic patient count
+    int64 symptomatic = 9;
+    // confirmed but not admitted patient count
+    int64 confirmedButNotAdmitted = 10;
+    // confirmed and admitted patient count
+    int64 confirmedAndAdmitted = 11;
+    // completed patient count
+    int64 completed = 12;
+    // quit patient count
+    int64 quit = 13;
+    // recovered patient count
+    int64 recovered = 14;
+    // passed away patient count
+    int64 passedAway = 15;
+}
+
+// get report request payload
+message GetReportRequest {
+    // date of report
+    string date = 1;
+    // type of report (1 - status, 2 - declaration, 3 - calling status)
+    int64 type = 2;
+}
+
+// get reports request payload
+message GetReportsRequest {
+    // from date (inclusive, in yyyyMMdd format)
+    string from = 1;
+    // to date (inclusive, in yyyyMMdd format)
+    string to = 2;
+    // type of report (1 - status, 2 - declaration, 3 - calling status)
+    int64 type = 3;
+}
+
+// common report response payload
+message CommonReportResponse {
+    // report payload
+    Report data = 1;
+}
+
+// common reports response payload
+message CommonReportsResponse {
+    // reports payload
+    repeated Report data = 1;
+}
+
+// activity payload
+message Activity {
+    // activity ID
+    string id = 1;
+    // user id
+    string userId = 2;
+    // user name
+    string userName = 3;
+    // old patient
+    Patient oldPatient = 4;
+    // new patient
+    Patient newPatient = 5;
+    // old swab
+    Swab oldSwab = 6;
+    // new swab
+    Swab newSwab = 7;
+    // time
+    int64 time = 8;
+}
+
+// common activities response payload
+message CommonActivitiesResponse {
+    // activities payload
+    repeated Activity data = 1;
+    // total activities
+    int64 total = 2;
+}
+
+// common activity response payload
+message CommonActivityResponse {
+    // activity payload
+    Activity data = 1;
+}

@@ -1,0 +1,164 @@
+@startuml
+namespace model {
+    interface IModel  {
+        + ClientCreateDeclaration(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error)
+        + CreateDeclaration(ctx context.Context, declaration *dto.Declaration, patientType int64) (*dto.Declaration, error)
+        + GetDeclaration(ctx context.Context, declarationID string, patientType int64) (*dto.Declaration, error)
+        + UpdateDeclaration(ctx context.Context, declaration *dto.Declaration, patientType int64) (*dto.Declaration, error)
+        + DeleteDeclaration(ctx context.Context, declarationID string, patientType int64) (*dto.Declaration, error)
+        + BatchGetDeclarations(ctx context.Context, declarationID []string, patientType int64) ([]*dto.Declaration, error)
+        + UpdateDeclarations(ctx context.Context, declaration *dto.Declaration, ids []string, patientType int64) ([]string, error)
+        + DeleteDeclarations(ctx context.Context, declarationID []string, patientType int64) ([]string, error)
+        + QueryDeclarations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}, patientType int64) (int64, []*dto.Declaration, error)
+        + QueryDeclarationsByTime(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error)
+        + QueryDeclarationsByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64, patientType int64) (int64, []*dto.Declaration, error)
+        + QueryDeclarationsByPatientID(ctx context.Context, id string, patientType int64) (int64, []*dto.Declaration, error)
+        + GetStableDeclarations(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error)
+        + CreatePatient(ctx context.Context, patient *dto.Patient, user *dto.User) (*dto.Patient, error)
+        + GetPatient(ctx context.Context, id string, patientType int64) (*dto.Patient, error)
+        + QueryPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}, patientType int64) (int64, []*dto.Patient, error)
+        + BatchGetPatients(ctx context.Context, ids []string, patientType int64) ([]*dto.Patient, error)
+        + GetPatientsByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+        + GetSwabPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+        + GetDeclaredPatientsByTime(ctx context.Context, from int64, patientType int64) ([]*dto.Patient, error)
+        + GetUndeclaredPatientsByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+        + UpdatePatient(ctx context.Context, patient *dto.Patient, patientType int64, user *dto.User) (*dto.Patient, error)
+        + UpdatePatients(ctx context.Context, patient *dto.Patient, ids []string, patientType int64, user *dto.User) ([]string, error)
+        + DeletePatient(ctx context.Context, id string, patientType int64) (*dto.Patient, error)
+        + DeletePatients(ctx context.Context, ids []string, patientType int64) ([]string, error)
+        + ClientGetPatientsByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error)
+        + ClientUpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.Patient, error)
+        + ClientGetUndeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
+        + CreateSwab(ctx context.Context, swab *dto.Swab, patientType int64, user *dto.User) (*dto.Swab, error)
+        + UpdateSwab(ctx context.Context, swab *dto.Swab, patientType int64, user *dto.User) (*dto.Swab, error)
+        + UpdateSwabs(ctx context.Context, swab *dto.Swab, ids []string, patientType int64, user *dto.User) ([]string, error)
+        + GetSwab(ctx context.Context, id string, patientType int64) (*dto.Swab, error)
+        + BatchGetSwabs(ctx context.Context, ids []string, patientType int64) ([]*dto.Swab, error)
+        + QuerySwabs(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}, patientType int64) (int64, []*dto.Swab, error)
+        + DeleteSwab(ctx context.Context, id string, patientType int64) (*dto.Swab, error)
+        + DeleteSwabs(ctx context.Context, ids []string, patientType int64) ([]string, error)
+        + QuerySwabsByPatientID(ctx context.Context, id string, patientType int64) ([]*dto.Swab, error)
+        + CreateUser(ctx context.Context, user *dto.User) (*dto.User, error)
+        + UpdateUser(ctx context.Context, user *dto.User) (*dto.User, error)
+        + UpdateUserPassword(ctx context.Context, user *dto.User) (*dto.User, error)
+        + CreateToken(ctx context.Context, auth *dto.AuthObject) (*dto.AuthObject, error)
+        + RevokeTokensByUserID(ctx context.Context, id string) error
+        + GetUserIDByToken(ctx context.Context, token string) (string, error)
+        + UpdateUsers(ctx context.Context, user *dto.User, ids []string) ([]string, error)
+        + GetUser(ctx context.Context, id string) (*dto.User, error)
+        + BatchGetUsers(ctx context.Context, ids []string) ([]*dto.User, error)
+        + QueryUsers(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error)
+        + DeleteUser(ctx context.Context, id string) (*dto.User, error)
+        + RevokeUserTokens(ctx context.Context) error
+        + DeleteUsers(ctx context.Context, ids []string) ([]string, error)
+        + Login(ctx context.Context, email string, password string) (*dto.User, error)
+        + VerifyUser(ctx context.Context, header string) (*dto.User, error)
+        + Logout(ctx context.Context, header string) error
+        + Refresh(ctx context.Context, header string) (*dto.User, error)
+        + GetDeclarationReport(ctx context.Context, dateString string, patientType int64) (*dto.DeclarationReport, error)
+        + GetDeclarationReports(ctx context.Context, from string, to string, patientType int64) ([]*dto.DeclarationReport, error)
+        + GetCallingReport(ctx context.Context, date string, patientType int64) (*dto.CallingReport, error)
+        + GetCallingReports(ctx context.Context, from string, to string, patientType int64) ([]*dto.CallingReport, error)
+        + GetPatientStatusReport(ctx context.Context, dateString string, patientType int64) (*dto.PatientStatusReport, error)
+        + GetPatientStatusReports(ctx context.Context, from string, to string, patientType int64) ([]*dto.PatientStatusReport, error)
+        + GenerateReport(ctx context.Context, date string) error
+        + SyncDays(ctx context.Context) error
+        + SyncPatientReport(ctx context.Context) error
+        + CreateActivity(ctx context.Context, activity *dto.Activity) (*dto.Activity, error)
+        + QueryActivities(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}) (int64, []*dto.Activity, error)
+
+    }
+    class Model << (S,Aquamarine) >> {
+        - declarationDAO dao.IDeclarationDAO
+        - patientDAO dao.IPatientDAO
+        - swabDAO dao.ISwabDAO
+        - userDAO dao.IUserDAO
+        - declarationReportDAO dao.IDeclarationReport
+        - callingReportDAO dao.ICallingReport
+        - patientStatusReportDAO dao.IPatientStatusReport
+        - authDAO dao.IAuthDAO
+        - activityDAO dao.IActivityDAO
+
+        - createSwabActivity(ctx context.Context, oldSwab *dto.Swab, newSwab *dto.Swab, user *dto.User) (*dto.Activity, error)
+        - verifyPassword(hashPassword string, plainPassword string) bool
+        - createToken(id string) (*dto.User, error)
+        - createAuth(id string, td *dto.User) error
+        - verifyToken(header string) (*jwt.Token, error)
+        - extractTokenMetadata(header string) (*dto.User, error)
+        - fetchAuth(authD *dto.User) (string, error)
+        - extractToken(header string) string
+        - deleteAuth(givenUuid string) error
+        - createPatientActivity(ctx context.Context, oldPatient *dto.Patient, newPatient *dto.Patient, user *dto.User) (*dto.Activity, error)
+
+        + GetDeclarationReport(ctx context.Context, dateString string, patientType int64) (*dto.DeclarationReport, error)
+        + GetDeclarationReports(ctx context.Context, from string, to string, patientType int64) ([]*dto.DeclarationReport, error)
+        + GetCallingReport(ctx context.Context, date string, patientType int64) (*dto.CallingReport, error)
+        + GetCallingReports(ctx context.Context, from string, to string, patientType int64) ([]*dto.CallingReport, error)
+        + GetPatientStatusReport(ctx context.Context, dateString string, patientType int64) (*dto.PatientStatusReport, error)
+        + GetPatientStatusReports(ctx context.Context, from string, to string, patientType int64) ([]*dto.PatientStatusReport, error)
+        + GenerateReport(ctx context.Context, date string) error
+        + SyncPatientReport(ctx context.Context) error
+        + SyncDays(ctx context.Context) error
+        + CreateSwab(ctx context.Context, swab *dto.Swab, patientType int64, user *dto.User) (*dto.Swab, error)
+        + UpdateSwab(ctx context.Context, swab *dto.Swab, patientType int64, user *dto.User) (*dto.Swab, error)
+        + UpdateSwabs(ctx context.Context, swab *dto.Swab, ids []string, patientType int64, user *dto.User) ([]string, error)
+        + GetSwab(ctx context.Context, id string, patientType int64) (*dto.Swab, error)
+        + BatchGetSwabs(ctx context.Context, ids []string, patientType int64) ([]*dto.Swab, error)
+        + QuerySwabs(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}, patientType int64) (int64, []*dto.Swab, error)
+        + DeleteSwab(ctx context.Context, id string, patientType int64) (*dto.Swab, error)
+        + DeleteSwabs(ctx context.Context, ids []string, patientType int64) ([]string, error)
+        + QuerySwabsByPatientID(ctx context.Context, id string, patientType int64) ([]*dto.Swab, error)
+        + CreateUser(ctx context.Context, user *dto.User) (*dto.User, error)
+        + UpdateUser(ctx context.Context, user *dto.User) (*dto.User, error)
+        + UpdateUserPassword(ctx context.Context, user *dto.User) (*dto.User, error)
+        + UpdateUsers(ctx context.Context, user *dto.User, ids []string) ([]string, error)
+        + GetUser(ctx context.Context, id string) (*dto.User, error)
+        + CreateToken(ctx context.Context, auth *dto.AuthObject) (*dto.AuthObject, error)
+        + GetUserIDByToken(ctx context.Context, token string) (string, error)
+        + RevokeTokensByUserID(ctx context.Context, id string) error
+        + BatchGetUsers(ctx context.Context, ids []string) ([]*dto.User, error)
+        + QueryUsers(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error)
+        + DeleteUser(ctx context.Context, id string) (*dto.User, error)
+        + RevokeUserTokens(ctx context.Context) error
+        + DeleteUsers(ctx context.Context, ids []string) ([]string, error)
+        + Login(ctx context.Context, email string, password string) (*dto.User, error)
+        + VerifyUser(ctx context.Context, header string) (*dto.User, error)
+        + Logout(ctx context.Context, header string) error
+        + Refresh(ctx context.Context, header string) (*dto.User, error)
+        + CreateActivity(ctx context.Context, activity *dto.Activity) (*dto.Activity, error)
+        + QueryActivities(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}) (int64, []*dto.Activity, error)
+        + ClientCreateDeclaration(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error)
+        + CreateDeclaration(ctx context.Context, declaration *dto.Declaration, patientType int64) (*dto.Declaration, error)
+        + GetDeclaration(ctx context.Context, declarationID string, patientType int64) (*dto.Declaration, error)
+        + UpdateDeclaration(ctx context.Context, declaration *dto.Declaration, patientType int64) (*dto.Declaration, error)
+        + UpdateDeclarations(ctx context.Context, declaration *dto.Declaration, ids []string, patientType int64) ([]string, error)
+        + DeleteDeclaration(ctx context.Context, declarationID string, patientType int64) (*dto.Declaration, error)
+        + BatchGetDeclarations(ctx context.Context, declarationIDs []string, patientType int64) ([]*dto.Declaration, error)
+        + DeleteDeclarations(ctx context.Context, declarationIDs []string, patientType int64) ([]string, error)
+        + QueryDeclarations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}, patientType int64) (int64, []*dto.Declaration, error)
+        + QueryDeclarationsByTime(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error)
+        + QueryDeclarationsByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64, patientType int64) (int64, []*dto.Declaration, error)
+        + QueryDeclarationsByPatientID(ctx context.Context, id string, patientType int64) (int64, []*dto.Declaration, error)
+        + GetStableDeclarations(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error)
+        + CreatePatient(ctx context.Context, patient *dto.Patient, user *dto.User) (*dto.Patient, error)
+        + GetPatient(ctx context.Context, id string, patientType int64) (*dto.Patient, error)
+        + QueryPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter <font color=blue>map</font>[string]<font color=blue>interface</font>{}, patientType int64) (int64, []*dto.Patient, error)
+        + BatchGetPatients(ctx context.Context, ids []string, patientType int64) ([]*dto.Patient, error)
+        + GetPatientsByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+        + GetSwabPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+        + GetDeclaredPatientsByTime(ctx context.Context, from int64, patientType int64) ([]*dto.Patient, error)
+        + GetUndeclaredPatientsByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+        + UpdatePatient(ctx context.Context, patient *dto.Patient, patientType int64, user *dto.User) (*dto.Patient, error)
+        + UpdatePatients(ctx context.Context, patient *dto.Patient, ids []string, patientType int64, user *dto.User) ([]string, error)
+        + DeletePatient(ctx context.Context, id string, patientType int64) (*dto.Patient, error)
+        + DeletePatients(ctx context.Context, ids []string, patientType int64) ([]string, error)
+        + ClientUpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.Patient, error)
+        + ClientGetUndeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
+        + ClientGetPatientsByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error)
+
+    }
+}
+
+"model.IModel" <|-- "model.Model"
+
+@enduml
