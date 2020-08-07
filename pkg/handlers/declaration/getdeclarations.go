@@ -17,7 +17,7 @@ type GetDeclarationsHandler struct {
 	Model model.IModel
 }
 
-func (s *GetDeclarationsHandler) GetDeclarations(ctx context.Context, req *pb.CommonGetsRequest, user *dto.User) (*pb.CommonDeclarationsResponse, error) {
+func (s *GetDeclarationsHandler) GetDeclarations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonDeclarationsResponse, error) {
 	var sort *dto.SortData
 	var itemsRange *dto.RangeData
 	filter := map[string]interface{}{}
@@ -25,7 +25,7 @@ func (s *GetDeclarationsHandler) GetDeclarations(ctx context.Context, req *pb.Co
 	// If the request is batch get, call batch get model
 	if len(req.Ids) > 0 {
 		req.Ids = s.processReq(req.Ids)
-		declarations, err := s.Model.BatchGetDeclarations(ctx, req.Ids, constants.UserPatientMap[user.Role])
+		declarations, err := s.Model.BatchGetDeclarations(ctx, req.Ids)
 		if err != nil {
 			if status.Code(err) == codes.Unknown {
 				return nil, constants.DeclarationNotFoundError
@@ -55,7 +55,7 @@ func (s *GetDeclarationsHandler) GetDeclarations(ctx context.Context, req *pb.Co
 		filter[req.FilterItem] = req.FilterValue
 	}
 
-	total, declarations, err := s.Model.QueryDeclarations(ctx, sort, itemsRange, filter, constants.UserPatientMap[user.Role])
+	total, declarations, err := s.Model.QueryDeclarations(ctx, sort, itemsRange, filter)
 	if err != nil {
 		if status.Code(err) == codes.Unknown {
 			return nil, constants.DeclarationNotFoundError

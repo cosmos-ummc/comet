@@ -25,7 +25,7 @@ func (s *ClientGetPatientV2Handler) ClientGetPatientV2(ctx context.Context, req 
 		filter[constants.PhoneNumber] = req.PhoneNumber
 	}
 
-	_, patients, err := s.Model.QueryPatients(ctx, nil, nil, filter, constants.AllPatients)
+	_, patients, err := s.Model.QueryPatients(ctx, nil, nil, filter)
 	if err != nil {
 		return nil, constants.InternalError
 	}

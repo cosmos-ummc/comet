@@ -2,10 +2,11 @@ package declaration
 
 import (
 	pb "comet/pkg/api"
-	"comet/pkg/dto"
+	"comet/pkg/constants"
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
+	"github.com/twinj/uuid"
 )
 
 type ClientCreateDeclarationHandler struct {
@@ -13,25 +14,18 @@ type ClientCreateDeclarationHandler struct {
 }
 
 func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Context, req *pb.ClientCreateDeclarationRequest) (*pb.ClientCreateDeclarationResponse, error) {
-	declaration := &dto.Declaration{
-		ID:                 "",
-		PatientID:          utility.RemoveZeroWidth(req.PatientId),
-		PatientName:        "",
-		PatientPhoneNumber: "",
-		Result:             nil,
-		Category:           "",
-		Score:              0,
-		Status:             0,
-		SubmittedAt:        0,
-		DoctorRemarks:      "",
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
 	}
+	req.Data.Id = uuid.NewV4().String()
+	declaration := utility.PbToDeclaration(req.Data)
 
-	rslt, err := s.Model.ClientCreateDeclaration(ctx, declaration)
+	_, err := s.Model.ClientCreateDeclaration(ctx, declaration)
 	if err != nil {
 		return nil, err
 	}
 	resp := &pb.ClientCreateDeclarationResponse{
-		HasSymptom: rslt.HasSymptom,
+		HasSymptom: constants.Severe,
 	}
 	return resp, nil
 }

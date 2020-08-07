@@ -33,7 +33,7 @@ func (s *GetPasswordResetHandler) GetPasswordReset(ctx context.Context, req *pb.
 	auth, err := s.Model.CreateToken(ctx, &dto.AuthObject{
 		UserId:      req.Id,
 		TTL:         utility.MilliToTime(time.Now().Add(time.Hour*24*constants.PasswordResetTokenTTLDays).Unix()*1000 - 1000),
-		DisplayName: user.DisplayName,
+		DisplayName: user.Name,
 		Type:        constants.Reset,
 	})
 	if err != nil {
@@ -44,7 +44,7 @@ func (s *GetPasswordResetHandler) GetPasswordReset(ctx context.Context, req *pb.
 	passwordReset := os.Getenv("ADMIN_URL") + "/#/resetpassword?token=" + auth.Token
 
 	// send password reset email
-	err = utility.SendPasswordResetEmail(user.Email, user.DisplayName, passwordReset)
+	err = utility.SendPasswordResetEmail(user.Email, user.Name, passwordReset)
 	if err != nil {
 		logger.Log.Warn("GetPasswordReset: " + err.Error())
 		return nil, err

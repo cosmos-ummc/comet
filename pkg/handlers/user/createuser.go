@@ -24,11 +24,11 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 	user := &dto.User{
 		ID:          uuid.NewV4().String(),
 		Role:        utility.RemoveZeroWidth(req.Data.Role),
-		DisplayName: utility.RemoveZeroWidth(req.Data.DisplayName),
+		Name:        req.Data.Name,
 		PhoneNumber: utility.RemoveZeroWidth(req.Data.PhoneNumber),
 		Email:       utility.RemoveZeroWidth(req.Data.Email),
 		Password:    utility.RemoveZeroWidth(req.Data.Password),
-		Disabled:    false,
+		BlockList:   req.Data.BlockList,
 	}
 	err := s.validateAndProcessReq(user)
 	if err != nil {
@@ -65,7 +65,7 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 }
 
 func (s *CreateUserHandler) validateAndProcessReq(user *dto.User) error {
-	user.DisplayName = utility.NormalizeName(user.DisplayName)
+	user.Name = utility.NormalizeName(user.Name)
 	user.PhoneNumber = utility.NormalizePhoneNumber(user.PhoneNumber, "")
 	user.Email = utility.NormalizeEmail(user.Email)
 	user.Role = utility.NormalizeRole(user.Role)

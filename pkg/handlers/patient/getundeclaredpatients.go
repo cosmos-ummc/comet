@@ -14,7 +14,7 @@ type GetUndeclaredPatientsHandler struct {
 	Model model.IModel
 }
 
-func (s *GetUndeclaredPatientsHandler) GetUndeclaredPatients(ctx context.Context, req *pb.CommonGetsRequest, user *dto.User) (*pb.CommonPatientsResponse, error) {
+func (s *GetUndeclaredPatientsHandler) GetUndeclaredPatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
 	timeString := utility.TimeToDateString(utility.MalaysiaTime(time.Now()))
 	t, err := utility.DateStringToTime(timeString)
 	if err != nil {
@@ -36,7 +36,7 @@ func (s *GetUndeclaredPatientsHandler) GetUndeclaredPatients(ctx context.Context
 		}
 	}
 
-	total, patients, err := s.Model.GetUndeclaredPatientsByTime(ctx, utility.TimeToMilli(t), sortData, rangeData, constants.UserPatientMap[user.Role])
+	total, patients, err := s.Model.GetUndeclaredPatientsByTime(ctx, utility.TimeToMilli(t), sortData, rangeData)
 	if err != nil {
 		return nil, constants.InternalError
 	}

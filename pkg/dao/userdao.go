@@ -104,7 +104,7 @@ func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto
 			query := bson.M{
 				"$or": bson.A{
 					bson.M{
-						constants.DisplayName: bson.M{
+						constants.Name: bson.M{
 							"$regex":   fmt.Sprintf("%s.*", filter.Value),
 							"$options": "i",
 						},

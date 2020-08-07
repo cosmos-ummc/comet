@@ -14,7 +14,7 @@ type GetPatientsHandler struct {
 	Model model.IModel
 }
 
-func (s *GetPatientsHandler) GetPatients(ctx context.Context, req *pb.CommonGetsRequest, user *dto.User) (*pb.CommonPatientsResponse, error) {
+func (s *GetPatientsHandler) GetPatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
 	var sort *dto.SortData
 	var itemsRange *dto.RangeData
 	filter := map[string]interface{}{}
@@ -23,7 +23,7 @@ func (s *GetPatientsHandler) GetPatients(ctx context.Context, req *pb.CommonGets
 	if len(req.Ids) > 0 && req.Ids[0] != "" {
 		req.Ids = s.processReq(req.Ids)
 
-		patients, err := s.Model.BatchGetPatients(ctx, req.Ids, constants.UserPatientMap[user.Role])
+		patients, err := s.Model.BatchGetPatients(ctx, req.Ids)
 		if err != nil {
 			return nil, constants.InternalError
 		}
@@ -51,7 +51,7 @@ func (s *GetPatientsHandler) GetPatients(ctx context.Context, req *pb.CommonGets
 		filter[req.FilterItem] = req.FilterValue
 	}
 
-	total, patients, err := s.Model.QueryPatients(ctx, sort, itemsRange, filter, constants.UserPatientMap[user.Role])
+	total, patients, err := s.Model.QueryPatients(ctx, sort, itemsRange, filter)
 	if err != nil {
 		return nil, constants.InternalError
 	}

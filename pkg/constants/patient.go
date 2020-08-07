@@ -1,14 +1,8 @@
 package constants
 
 const (
-	Symptomatic = iota + 1
-	Asymptomatic
-	ConfirmedButNotAdmitted
-	ConfirmedAndAdmitted
-	Completed
-	Recovered
-	Quit
-	PassedAway
+	Mild = iota + 1
+	Severe
 )
 
 // Registration Status

@@ -96,37 +96,10 @@ func (v *PatientDAO) GetByStatus(ctx context.Context, status []int64, sort *dto.
 	return v.query(ctx, sort, itemsRange, filter)
 }
 
-// GetSwabPatients gets swab patients of the specified type >= 14 days (ONLY RETURN PATIENTS WITH STATUS 1, 2, 3)
-func (v *PatientDAO) GetSwabPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
-	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
-	filter := bson.D{{
-		"$and",
-		bson.A{
-			bson.D{{
-				constants.DaysSinceSwab,
-				bson.D{{
-					"$gte",
-					14,
-				}},
-			}},
-			bson.D{{
-				constants.Status,
-				bson.D{{
-					"$in",
-					statusBSON,
-				}},
-			}},
-		},
-	}}
-
-	return v.query(ctx, sort, itemsRange, filter)
-}
-
 // GetDeclaredByTime gets declared patients of the specified type in given from timestamp
 func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error) {
 	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 
-	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
 		"$and",
 		bson.A{
@@ -135,13 +108,6 @@ func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64) ([]*dto.
 				bson.D{{
 					"$gte",
 					from,
-				}},
-			}},
-			bson.D{{
-				constants.Status,
-				bson.D{{
-					"$in",
-					statusBSON,
 				}},
 			}},
 		},
@@ -167,7 +133,6 @@ func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64) ([]*dto.
 
 // GetUndeclaredByTime gets undeclared patients of the specified type given from timestamp
 func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
-	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
 		"$and",
 		bson.A{
@@ -178,13 +143,6 @@ func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *
 					from,
 				}},
 			}},
-			bson.D{{
-				constants.Status,
-				bson.D{{
-					"$in",
-					statusBSON,
-				}},
-			}},
 		},
 	}}
 
@@ -193,7 +151,6 @@ func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *
 
 // GetByConsentTime gets patients given from and to consent timestamp
 func (v *PatientDAO) GetByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error) {
-	statusBSON := bson.A{constants.Asymptomatic, constants.Symptomatic, constants.ConfirmedButNotAdmitted}
 	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	cursor, err := collection.Find(ctx, bson.D{{
 		"$and",
@@ -210,13 +167,6 @@ func (v *PatientDAO) GetByConsentTime(ctx context.Context, from int64, to int64)
 				bson.D{{
 					"$lte",
 					to,
-				}},
-			}},
-			bson.D{{
-				constants.Status,
-				bson.D{{
-					"$in",
-					statusBSON,
 				}},
 			}},
 		},
@@ -274,7 +224,6 @@ func (v *PatientDAO) BatchDelete(ctx context.Context, ids []string) ([]string, e
 
 // ClientGetUndeclaredByTime gets undeclared patients given from timestamp (ONLY RETURN PATIENTS WITH STATUS 1, 2, 3 AND WITH TELEGRAM_ID)
 func (v *PatientDAO) ClientGetUndeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error) {
-	statusBSON := bson.A{constants.Asymptomatic, constants.Symptomatic, constants.ConfirmedButNotAdmitted}
 	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	cursor, err := collection.Find(ctx, bson.D{{
 		"$and",
@@ -284,13 +233,6 @@ func (v *PatientDAO) ClientGetUndeclaredByTime(ctx context.Context, from int64) 
 				bson.D{{
 					"$lt",
 					from,
-				}},
-			}},
-			bson.D{{
-				constants.Status,
-				bson.D{{
-					"$in",
-					statusBSON,
 				}},
 			}},
 			bson.D{{
@@ -321,7 +263,6 @@ func (v *PatientDAO) ClientGetUndeclaredByTime(ctx context.Context, from int64) 
 
 // QueryNoCall queries patients who have declared but no yet call
 func (v *PatientDAO) QueryNoCall(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
-	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
 		"$and",
 		bson.A{
@@ -333,21 +274,11 @@ func (v *PatientDAO) QueryNoCall(ctx context.Context, from int64, sort *dto.Sort
 				}},
 			}},
 			bson.D{{
-				constants.Status,
-				bson.D{{
-					"$in",
-					statusBSON,
-				}},
-			}},
-			bson.D{{
 				constants.Declarations + "." + constants.SubmittedAt,
 				bson.D{{
 					"$gte",
 					from,
 				}},
-			}},
-			bson.D{{
-				constants.Declarations + "." + constants.CallingStatus, constants.NoYetCall,
 			}},
 		},
 	}}
@@ -538,15 +469,8 @@ func (v *PatientDAO) parseFilter(filter map[string]interface{}) bson.D {
 
 			} else if key == constants.Status ||
 				key == constants.LastDeclared ||
-				key == constants.SwabCount ||
-				key == constants.Episode ||
-				key == constants.DaysSinceExposure ||
-				key == constants.DaysSinceSwab ||
-				key == constants.FeverContDay ||
-				key == constants.Localization ||
 				key == constants.Consent ||
-				key == constants.PrivacyPolicy ||
-				key == constants.CallingStatus {
+				key == constants.PrivacyPolicy {
 				result = append(result, bson.E{Key: key, Value: utility.SafeCastInt64(value)})
 
 			} else if key != constants.Type { // prevent access-control by-passing and nasty bugs

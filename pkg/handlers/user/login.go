@@ -27,7 +27,7 @@ func (s *LoginHandler) userToResp(user *dto.User) *pb.LoginResponse {
 	return &pb.LoginResponse{
 		AccessToken:  user.AccessToken,
 		RefreshToken: user.RefreshToken,
-		DisplayName:  user.DisplayName,
+		DisplayName:  user.Name,
 		Role:         user.Role,
 		Id:           user.ID,
 	}

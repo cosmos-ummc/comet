@@ -3,7 +3,6 @@ package declaration
 import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
-	"comet/pkg/dto"
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
@@ -16,8 +15,8 @@ type GetDeclarationHandler struct {
 	Model model.IModel
 }
 
-func (s *GetDeclarationHandler) GetDeclaration(ctx context.Context, req *pb.CommonGetRequest, user *dto.User) (*pb.CommonDeclarationResponse, error) {
-	declaration, err := s.Model.GetDeclaration(ctx, req.Id, constants.UserPatientMap[user.Role])
+func (s *GetDeclarationHandler) GetDeclaration(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonDeclarationResponse, error) {
+	declaration, err := s.Model.GetDeclaration(ctx, req.Id)
 	if err != nil {
 		if status.Code(err) == codes.Unknown {
 			return nil, constants.DeclarationNotFoundError

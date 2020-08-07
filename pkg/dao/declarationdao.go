@@ -6,9 +6,6 @@ import (
 	"comet/pkg/utility"
 	"context"
 	"fmt"
-	"strconv"
-	"strings"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -101,13 +98,6 @@ func (v *DeclarationDAO) QueryByCallingStatusAndTime(ctx context.Context, callin
 					from,
 				}},
 			}},
-			bson.D{{
-				constants.CallingStatus,
-				bson.D{{
-					"$in",
-					callingStatus,
-				}},
-			}},
 		},
 	}}
 
@@ -164,13 +154,6 @@ func (v *DeclarationDAO) QueryStableDeclarations(ctx context.Context, from int64
 				bson.D{{
 					"$gte",
 					from,
-				}},
-			}},
-			bson.D{{
-				constants.HasSymptom,
-				bson.D{{
-					"$eq",
-					false,
 				}},
 			}},
 		},
@@ -257,10 +240,6 @@ func (v *DeclarationDAO) parseFilter(filter map[string]interface{}) bson.D {
 						},
 					},
 				})
-			} else if key == constants.HasSymptom {
-				if v, err := strconv.ParseBool(strings.ToLower(fmt.Sprint(value))); err != nil {
-					result = append(result, bson.E{Key: key, Value: v})
-				}
 			} else if key == constants.ID ||
 				key == constants.PatientID ||
 				key == constants.PatientName ||

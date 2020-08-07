@@ -26,34 +26,6 @@ func (s *UpdateUserHandler) UpdateUser(ctx context.Context, req *pb.CommonUserRe
 		return nil, err
 	}
 
-	// special case: if questions JSON is updated, only update the questions JSON
-	if req.Data.FinalQuestionsJson != "" && req.Data.PhoneNumber == "" {
-		u.FinalQuestionsJSON = req.Data.FinalQuestionsJson
-		v, err := s.Model.UpdateUser(ctx, u)
-		if err != nil {
-			if status.Code(err) == codes.Unknown {
-				return nil, constants.UserNotFoundError
-			}
-			return nil, constants.InternalError
-		}
-		resp := utility.UserToResponse(v)
-		return resp, nil
-	}
-
-	// special case: if chart is updated, only update the chart
-	if req.Data.Chart != "" && req.Data.PhoneNumber == "" {
-		u.Chart = req.Data.Chart
-		v, err := s.Model.UpdateUser(ctx, u)
-		if err != nil {
-			if status.Code(err) == codes.Unknown {
-				return nil, constants.UserNotFoundError
-			}
-			return nil, constants.InternalError
-		}
-		resp := utility.UserToResponse(v)
-		return resp, nil
-	}
-
 	err = s.validateAndProcessReq(user)
 	if err != nil {
 		return nil, err
@@ -100,21 +72,20 @@ func (s *UpdateUserHandler) UpdateUser(ctx context.Context, req *pb.CommonUserRe
 
 func (s *UpdateUserHandler) reqToUser(req *pb.CommonUserRequest) *dto.User {
 	user := &dto.User{
-		ID:                 utility.RemoveZeroWidth(req.Id),
-		Role:               utility.RemoveZeroWidth(req.Data.Role),
-		DisplayName:        utility.RemoveZeroWidth(req.Data.DisplayName),
-		PhoneNumber:        utility.RemoveZeroWidth(req.Data.PhoneNumber),
-		Email:              utility.RemoveZeroWidth(req.Data.Email),
-		Disabled:           false,
-		Password:           utility.RemoveZeroWidth(req.Data.Password),
-		FinalQuestionsJSON: req.Data.FinalQuestionsJson,
-		Chart:              req.Data.Chart,
+		ID:          utility.RemoveZeroWidth(req.Id),
+		Role:        utility.RemoveZeroWidth(req.Data.Role),
+		Name:        utility.RemoveZeroWidth(req.Data.Name),
+		PhoneNumber: utility.RemoveZeroWidth(req.Data.PhoneNumber),
+		Email:       utility.RemoveZeroWidth(req.Data.Email),
+		Disabled:    false,
+		Password:    utility.RemoveZeroWidth(req.Data.Password),
+		BlockList:   req.Data.BlockList,
 	}
 	return user
 }
 
 func (s *UpdateUserHandler) validateAndProcessReq(user *dto.User) error {
-	user.DisplayName = utility.NormalizeName(user.DisplayName)
+	user.Name = utility.NormalizeName(user.Name)
 	user.PhoneNumber = utility.NormalizePhoneNumber(user.PhoneNumber, "")
 	user.Role = utility.NormalizeRole(user.Role)
 	user.Email = utility.NormalizeEmail(user.Email)

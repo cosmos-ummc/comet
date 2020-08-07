@@ -3,7 +3,6 @@ package declaration
 import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
-	"comet/pkg/dto"
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
@@ -17,9 +16,9 @@ type DeleteDeclarationsHandler struct {
 	Model model.IModel
 }
 
-func (s *DeleteDeclarationsHandler) DeleteDeclarations(ctx context.Context, req *pb.CommonDeletesRequest, user *dto.User) (*pb.CommonIdsResponse, error) {
+func (s *DeleteDeclarationsHandler) DeleteDeclarations(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
 	req.Ids = s.processReq(req.Ids)
-	ids, err := s.Model.DeleteDeclarations(ctx, req.Ids, constants.UserPatientMap[user.Role])
+	ids, err := s.Model.DeleteDeclarations(ctx, req.Ids)
 	if err != nil {
 		if status.Code(err) == codes.Unknown {
 			return nil, constants.DeclarationNotFoundError

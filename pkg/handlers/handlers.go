@@ -4,11 +4,10 @@ import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
 	"comet/pkg/dto"
-	"comet/pkg/handlers/activity"
 	"comet/pkg/handlers/declaration"
 	"comet/pkg/handlers/patient"
+	"comet/pkg/handlers/question"
 	"comet/pkg/handlers/report"
-	"comet/pkg/handlers/swab"
 	"comet/pkg/handlers/user"
 	"comet/pkg/logger"
 	"comet/pkg/model"
@@ -38,7 +37,7 @@ func (s *Handlers) CreatePatient(ctx context.Context, req *pb.CommonPatientReque
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.CreatePatientHandler{Model: s.Model}
-	resp, err := handler.CreatePatient(ctx, req, u)
+	resp, err := handler.CreatePatient(ctx, req)
 	if err != nil {
 		logger.Log.Error("CreatePatientHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("PatientID", req.Id))
 		return nil, err
@@ -53,7 +52,7 @@ func (s *Handlers) GetPatient(ctx context.Context, req *pb.CommonGetRequest) (*p
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.GetPatientHandler{Model: s.Model}
-	resp, err := handler.GetPatient(ctx, req, u)
+	resp, err := handler.GetPatient(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetPatientHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("PatientID", req.Id))
 		return nil, err
@@ -68,7 +67,7 @@ func (s *Handlers) GetPatients(ctx context.Context, req *pb.CommonGetsRequest) (
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.GetPatientsHandler{Model: s.Model}
-	resp, err := handler.GetPatients(ctx, req, u)
+	resp, err := handler.GetPatients(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetPatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
@@ -83,72 +82,12 @@ func (s *Handlers) GetUndeclaredPatients(ctx context.Context, req *pb.CommonGets
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.GetUndeclaredPatientsHandler{Model: s.Model}
-	resp, err := handler.GetUndeclaredPatients(ctx, req, u)
+	resp, err := handler.GetUndeclaredPatients(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetUndeclaredPatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
 	}
 	logger.Log.Info("GetUndeclaredPatientsHandler", zap.String("UserID", u.ID))
-	return resp, nil
-}
-
-func (s *Handlers) GetCallPatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
-	u, err := s.validateUser(ctx, constants.AllCanAccess)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &patient.GetCallPatientsHandler{Model: s.Model}
-	resp, err := handler.GetCallPatients(ctx, req, u)
-	if err != nil {
-		logger.Log.Error("GetCallPatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
-		return nil, err
-	}
-	logger.Log.Info("GetCallPatientsHandler", zap.String("UserID", u.ID))
-	return resp, nil
-}
-
-func (s *Handlers) GetNoCallPatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
-	u, err := s.validateUser(ctx, constants.AllCanAccess)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &patient.GetNoCallPatientsHandler{Model: s.Model}
-	resp, err := handler.GetNoCallPatients(ctx, req, u)
-	if err != nil {
-		logger.Log.Error("GetNoCallPatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
-		return nil, err
-	}
-	logger.Log.Info("GetNoCallPatientsHandler", zap.String("UserID", u.ID))
-	return resp, nil
-}
-
-func (s *Handlers) GetSwabPatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
-	u, err := s.validateUser(ctx, constants.AllCanAccess)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &patient.GetSwabPatientsHandler{Model: s.Model}
-	resp, err := handler.GetSwabPatients(ctx, req, u)
-	if err != nil {
-		logger.Log.Error("GetSwabPatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
-		return nil, err
-	}
-	logger.Log.Info("GetSwabPatientsHandler", zap.String("UserID", u.ID))
-	return resp, nil
-}
-
-func (s *Handlers) GetOtherPatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
-	u, err := s.validateUser(ctx, constants.AllCanAccess)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &patient.GetOtherPatientsHandler{Model: s.Model}
-	resp, err := handler.GetOtherPatients(ctx, req, u)
-	if err != nil {
-		logger.Log.Error("GetOtherPatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
-		return nil, err
-	}
-	logger.Log.Info("GetOtherPatientsHandler", zap.String("UserID", u.ID))
 	return resp, nil
 }
 
@@ -158,7 +97,22 @@ func (s *Handlers) GetStablePatients(ctx context.Context, req *pb.CommonGetsRequ
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.GetStablePatientsHandler{Model: s.Model}
-	resp, err := handler.GetStablePatients(ctx, req, u)
+	resp, err := handler.GetStablePatients(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetStablePatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetStablePatientsHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetUnstablePatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &patient.GetStablePatientsHandler{Model: s.Model}
+	resp, err := handler.GetStablePatients(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetStablePatientsHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
@@ -173,7 +127,7 @@ func (s *Handlers) UpdatePatient(ctx context.Context, req *pb.CommonPatientReque
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.UpdatePatientHandler{Model: s.Model}
-	resp, err := handler.UpdatePatient(ctx, req, u)
+	resp, err := handler.UpdatePatient(ctx, req)
 	if err != nil {
 		logger.Log.Error("UpdatePatientHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("PatientID", req.Id))
 		return nil, err
@@ -188,7 +142,7 @@ func (s *Handlers) UpdatePatients(ctx context.Context, req *pb.CommonPatientsReq
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.UpdatePatientsHandler{Model: s.Model}
-	resp, err := handler.UpdatePatients(ctx, req, u)
+	resp, err := handler.UpdatePatients(ctx, req)
 	if err != nil {
 		logger.Log.Error("UpdatePatientsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("PatientIDs", req.Ids))
 		return nil, err
@@ -203,7 +157,7 @@ func (s *Handlers) DeletePatient(ctx context.Context, req *pb.CommonDeleteReques
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.DeletePatientHandler{Model: s.Model}
-	resp, err := handler.DeletePatient(ctx, req, u)
+	resp, err := handler.DeletePatient(ctx, req)
 	if err != nil {
 		logger.Log.Error("DeletePatientHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("PatientID", req.Id))
 		return nil, err
@@ -218,7 +172,7 @@ func (s *Handlers) DeletePatients(ctx context.Context, req *pb.CommonDeletesRequ
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &patient.DeletePatientsHandler{Model: s.Model}
-	resp, err := handler.DeletePatients(ctx, req, u)
+	resp, err := handler.DeletePatients(ctx, req)
 	if err != nil {
 		logger.Log.Error("DeletePatientsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("PatientIDs", req.Ids))
 		return nil, err
@@ -328,7 +282,7 @@ func (s *Handlers) DeleteUsers(ctx context.Context, req *pb.CommonDeletesRequest
 	return resp, nil
 }
 
-func (s *Handlers) CreateSwab(ctx context.Context, req *pb.CommonSwabRequest) (*pb.CommonSwabResponse, error) {
+func (s *Handlers) CreateQuestion(ctx context.Context, req *pb.CommonQuestionRequest) (*pb.CommonQuestionResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
@@ -336,103 +290,103 @@ func (s *Handlers) CreateSwab(ctx context.Context, req *pb.CommonSwabRequest) (*
 	if req.Data == nil {
 		return nil, constants.InvalidArgumentError
 	}
-	handler := &swab.CreateSwabHandler{Model: s.Model}
-	resp, err := handler.CreateSwab(ctx, req, u)
+	handler := &question.CreateQuestionHandler{Model: s.Model}
+	resp, err := handler.CreateQuestion(ctx, req)
 	if err != nil {
-		logger.Log.Error("CreateSwabHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("PatientID", req.Data.PatientId))
+		logger.Log.Error("CreateQuestionHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
 	}
-	logger.Log.Info("CreateSwabHandler", zap.String("UserID", u.ID), zap.String("PatientID", req.Data.PatientId))
+	logger.Log.Info("CreateQuestionHandler", zap.String("UserID", u.ID))
 	return resp, nil
 }
 
-func (s *Handlers) GetSwab(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonSwabResponse, error) {
+func (s *Handlers) GetQuestion(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonQuestionResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
 	}
-	handler := &swab.GetSwabHandler{Model: s.Model}
-	resp, err := handler.GetSwab(ctx, req, u)
+	handler := &question.GetQuestionHandler{Model: s.Model}
+	resp, err := handler.GetQuestion(ctx, req)
 	if err != nil {
-		logger.Log.Error("GetSwabHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("SwabID", req.Id))
+		logger.Log.Error("GetQuestionHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("QuestionID", req.Id))
 		return nil, err
 	}
-	logger.Log.Info("GetSwabHandler", zap.String("UserID", u.ID), zap.String("SwabID", req.Id))
+	logger.Log.Info("GetQuestionHandler", zap.String("UserID", u.ID), zap.String("QuestionID", req.Id))
 	return resp, nil
 }
 
-func (s *Handlers) GetSwabs(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonSwabsResponse, error) {
+func (s *Handlers) GetQuestions(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonQuestionsResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
 	}
-	handler := &swab.GetSwabsHandler{Model: s.Model}
-	resp, err := handler.GetSwabs(ctx, req, u)
+	handler := &question.GetQuestionsHandler{Model: s.Model}
+	resp, err := handler.GetQuestions(ctx, req)
 	if err != nil {
-		logger.Log.Error("GetSwabsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("SwabIDs", req.Ids))
+		logger.Log.Error("GetQuestionsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
 		return nil, err
 	}
-	logger.Log.Info("GetSwabsHandler", zap.String("UserID", u.ID), zap.Strings("SwabIDs", req.Ids))
+	logger.Log.Info("GetQuestionsHandler", zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
 	return resp, nil
 }
 
-func (s *Handlers) UpdateSwab(ctx context.Context, req *pb.CommonSwabRequest) (*pb.CommonSwabResponse, error) {
+func (s *Handlers) UpdateQuestion(ctx context.Context, req *pb.CommonQuestionRequest) (*pb.CommonQuestionResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
 	}
-	handler := &swab.UpdateSwabHandler{Model: s.Model}
-	resp, err := handler.UpdateSwab(ctx, req, u)
+	handler := &question.UpdateQuestionHandler{Model: s.Model}
+	resp, err := handler.UpdateQuestion(ctx, req)
 	if err != nil {
-		logger.Log.Error("UpdateSwabHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("SwabID", req.Id))
+		logger.Log.Error("UpdateQuestionHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("QuestionID", req.Id))
 		return nil, err
 	}
-	logger.Log.Info("UpdateSwabHandler", zap.String("UserID", u.ID), zap.String("SwabID", req.Id))
+	logger.Log.Info("UpdateQuestionHandler", zap.String("UserID", u.ID), zap.String("QuestionID", req.Id))
 	return resp, nil
 }
 
-func (s *Handlers) UpdateSwabs(ctx context.Context, req *pb.CommonSwabsRequest) (*pb.CommonIdsResponse, error) {
+func (s *Handlers) UpdateQuestions(ctx context.Context, req *pb.CommonQuestionsRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
 	}
-	handler := &swab.UpdateSwabsHandler{Model: s.Model}
-	resp, err := handler.UpdateSwabs(ctx, req, u)
+	handler := &question.UpdateQuestionsHandler{Model: s.Model}
+	resp, err := handler.UpdateQuestions(ctx, req)
 	if err != nil {
-		logger.Log.Error("UpdateSwabsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("SwabIDs", req.Ids))
+		logger.Log.Error("UpdateQuestionsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
 		return nil, err
 	}
-	logger.Log.Info("UpdateSwabsHandler", zap.String("UserID", u.ID), zap.Strings("SwabIDs", req.Ids))
+	logger.Log.Info("UpdateQuestionsHandler", zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
 	return resp, nil
 }
 
-func (s *Handlers) DeleteSwab(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonSwabResponse, error) {
+func (s *Handlers) DeleteQuestion(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonQuestionResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
 	}
-	handler := &swab.DeleteSwabHandler{Model: s.Model}
-	resp, err := handler.DeleteSwab(ctx, req, u)
+	handler := &question.DeleteQuestionHandler{Model: s.Model}
+	resp, err := handler.DeleteQuestion(ctx, req)
 	if err != nil {
-		logger.Log.Error("DeleteSwabHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("SwabID", req.Id))
+		logger.Log.Error("DeleteQuestionHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("QuestionID", req.Id))
 		return nil, err
 	}
-	logger.Log.Info("DeleteSwabHandler", zap.String("UserID", u.ID), zap.String("SwabID", req.Id))
+	logger.Log.Info("DeleteQuestionHandler", zap.String("UserID", u.ID), zap.String("QuestionID", req.Id))
 	return resp, nil
 }
 
-func (s *Handlers) DeleteSwabs(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+func (s *Handlers) DeleteQuestions(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {
 		return nil, constants.UnauthorizedAccessError
 	}
-	handler := &swab.DeleteSwabsHandler{Model: s.Model}
-	resp, err := handler.DeleteSwabs(ctx, req, u)
+	handler := &question.DeleteQuestionsHandler{Model: s.Model}
+	resp, err := handler.DeleteQuestions(ctx, req)
 	if err != nil {
-		logger.Log.Error("DeleteSwabsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("SwabIDs", req.Ids))
+		logger.Log.Error("DeleteQuestionsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
 		return nil, err
 	}
-	logger.Log.Info("DeleteSwabsHandler", zap.String("UserID", u.ID), zap.Strings("SwabIDs", req.Ids))
+	logger.Log.Info("DeleteQuestionsHandler", zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
 	return resp, nil
 }
 
@@ -445,15 +399,13 @@ func (s *Handlers) CreateDeclaration(ctx context.Context, req *pb.CommonDeclarat
 		return nil, constants.InvalidArgumentError
 	}
 	handler := &declaration.CreateDeclarationHandler{Model: s.Model}
-	resp, err := handler.CreateDeclaration(ctx, req, u)
+	resp, err := handler.CreateDeclaration(ctx, req)
 	if err != nil {
 		logger.Log.Error("CreateDeclarationHandler: "+err.Error(),
-			zap.String("UserID", u.ID), zap.String("PatientID", req.Data.PatientId),
-			zap.String("Date", req.Data.Date))
+			zap.String("UserID", u.ID), zap.String("PatientID", req.Data.PatientId))
 		return nil, err
 	}
-	logger.Log.Info("CreateDeclarationHandler", zap.String("UserID", u.ID), zap.String("PatientID", req.Data.PatientId),
-		zap.String("Date", req.Data.Date))
+	logger.Log.Info("CreateDeclarationHandler", zap.String("UserID", u.ID), zap.String("PatientID", req.Data.PatientId))
 	return resp, nil
 }
 
@@ -463,7 +415,7 @@ func (s *Handlers) GetDeclaration(ctx context.Context, req *pb.CommonGetRequest)
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &declaration.GetDeclarationHandler{Model: s.Model}
-	resp, err := handler.GetDeclaration(ctx, req, u)
+	resp, err := handler.GetDeclaration(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetDeclarationHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("DeclarationID", req.Id))
 		return nil, err
@@ -478,7 +430,7 @@ func (s *Handlers) GetDeclarations(ctx context.Context, req *pb.CommonGetsReques
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &declaration.GetDeclarationsHandler{Model: s.Model}
-	resp, err := handler.GetDeclarations(ctx, req, u)
+	resp, err := handler.GetDeclarations(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetDeclarationsHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
@@ -493,7 +445,7 @@ func (s *Handlers) UpdateDeclaration(ctx context.Context, req *pb.CommonDeclarat
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &declaration.UpdateDeclarationHandler{Model: s.Model}
-	resp, err := handler.UpdateDeclaration(ctx, req, u)
+	resp, err := handler.UpdateDeclaration(ctx, req)
 	if err != nil {
 		logger.Log.Error("UpdateDeclarationHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("DeclarationID", req.Id))
 		return nil, err
@@ -508,7 +460,7 @@ func (s *Handlers) UpdateDeclarations(ctx context.Context, req *pb.CommonDeclara
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &declaration.UpdateDeclarationsHandler{Model: s.Model}
-	resp, err := handler.UpdateDeclarations(ctx, req, u)
+	resp, err := handler.UpdateDeclarations(ctx, req)
 	if err != nil {
 		logger.Log.Error("UpdateDeclarationsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("DeclarationIDs", req.Ids))
 		return nil, err
@@ -523,7 +475,7 @@ func (s *Handlers) DeleteDeclaration(ctx context.Context, req *pb.CommonDeleteRe
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &declaration.DeleteDeclarationHandler{Model: s.Model}
-	resp, err := handler.DeleteDeclaration(ctx, req, u)
+	resp, err := handler.DeleteDeclaration(ctx, req)
 	if err != nil {
 		logger.Log.Error("DeleteDeclarationHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("DeclarationID", req.Id))
 		return nil, err
@@ -538,7 +490,7 @@ func (s *Handlers) DeleteDeclarations(ctx context.Context, req *pb.CommonDeletes
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &declaration.DeleteDeclarationsHandler{Model: s.Model}
-	resp, err := handler.DeleteDeclarations(ctx, req, u)
+	resp, err := handler.DeleteDeclarations(ctx, req)
 	if err != nil {
 		logger.Log.Error("DeleteDeclarationsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("DeclarationIDs", req.Ids))
 		return nil, err
@@ -553,7 +505,7 @@ func (s *Handlers) GetReport(ctx context.Context, req *pb.GetReportRequest) (*pb
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &report.GetReportHandler{Model: s.Model}
-	resp, err := handler.GetReport(ctx, req, u)
+	resp, err := handler.GetReport(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetReportHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
@@ -568,7 +520,7 @@ func (s *Handlers) GetReports(ctx context.Context, req *pb.GetReportsRequest) (*
 		return nil, constants.UnauthorizedAccessError
 	}
 	handler := &report.GetReportsHandler{Model: s.Model}
-	resp, err := handler.GetReports(ctx, req, u)
+	resp, err := handler.GetReports(ctx, req)
 	if err != nil {
 		logger.Log.Error("GetReportsHandler: "+err.Error(), zap.String("UserID", u.ID))
 		return nil, err
@@ -719,36 +671,6 @@ func (s *Handlers) ClientCreateDeclaration(ctx context.Context, req *pb.ClientCr
 		return nil, err
 	}
 	logger.Log.Info("ClientCreateDeclarationHandler", zap.String("PatientID", req.PatientId))
-	return resp, nil
-}
-
-func (s *Handlers) GetActivities(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonActivitiesResponse, error) {
-	u, err := s.validateUser(ctx, constants.SuperUserOnly)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &activity.GetActivitiesHandler{Model: s.Model}
-	resp, err := handler.GetActivities(ctx, req)
-	if err != nil {
-		logger.Log.Error("GetActivitiesHandler: "+err.Error(), zap.String("UserID", u.ID))
-		return nil, err
-	}
-	logger.Log.Info("GetActivitiesHandler", zap.String("UserID", u.ID))
-	return resp, nil
-}
-
-func (s *Handlers) GetActivity(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonActivityResponse, error) {
-	u, err := s.validateUser(ctx, constants.SuperUserOnly)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &activity.GetActivityHandler{Model: s.Model}
-	resp, err := handler.GetActivity(ctx, req)
-	if err != nil {
-		logger.Log.Error("GetActivityHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ActivityID", req.Id))
-		return nil, err
-	}
-	logger.Log.Info("GetActivityHandler", zap.String("UserID", u.ID), zap.String("ActivityID", req.Id))
 	return resp, nil
 }
 

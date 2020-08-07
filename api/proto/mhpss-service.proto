@@ -187,6 +187,51 @@ service MhpssService {
             get: "/v1/reports"
         };
     }
+    // Create Question
+    rpc CreateQuestion (CommonQuestionRequest) returns (CommonQuestionResponse) {
+        option (google.api.http) = {
+            post: "/v1/questions/{id}"
+            body: "*"
+        };
+    }
+    // Get Question
+    rpc GetQuestion (CommonGetRequest) returns (CommonQuestionResponse) {
+        option (google.api.http) = {
+            get: "/v1/questions/{id}"
+        };
+    }
+    // Update Question
+    rpc UpdateQuestion (CommonQuestionRequest) returns (CommonQuestionResponse) {
+        option (google.api.http) = {
+            put: "/v1/questions/{id}"
+            body: "*"
+        };
+    }
+    // Update Questions
+    rpc UpdateQuestions (CommonQuestionsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/questions"
+            body: "*"
+        };
+    }
+    // Delete Question
+    rpc DeleteQuestion (CommonDeleteRequest) returns (CommonQuestionResponse) {
+        option (google.api.http) = {
+            delete: "/v1/questions/{id}"
+        };
+    }
+    // Delete Questions
+    rpc DeleteQuestions (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/questions"
+        };
+    }
+    // Get Questions
+    rpc GetQuestions (CommonGetsRequest) returns (CommonQuestionsResponse) {
+        option (google.api.http) = {
+            get: "/v1/questions"
+        };
+    }
     // Get Password Reset
     rpc GetPasswordReset (GetPasswordResetRequest) returns (GetPasswordResetResponse) {
         option (google.api.http) = {
@@ -370,6 +415,7 @@ message Patient {
     int64 lastDassResult = 14;
     int64 lastIesrResult = 15;
     int64 registrationStatus = 16;
+    string userId = 17;
 }
 
 // common patient request payload
@@ -562,22 +608,7 @@ message ClientGetUndeclaredPatientsRequest {
 message ClientCreateDeclarationRequest {
     // patient IC / passport
     string patientId = 1;
-    // cough (1 - no cough, 2 - getting better, 3 - cough remains the same, 4 - start coughing today, 5 - getting worse)
-    int64 cough = 2;
-    // sore throat (1 - no sore throat, 2 - getting better, 3 - sore throat remains the same, 4 - start having sore throat today, 5 - getting worse)
-    int64 throat = 3;
-    // fever (1 - no fever, 3 - fever remains the same, 4 - start having a fever today, 5 - getting worse)
-    int64 fever = 4;
-    // breathing difficulty (1 - no, 4 - has)
-    int64 breathe = 5;
-    // chest pain (1 - no, 4 - has)
-    int64 chest = 6;
-    // blue face (1 - no, 4 - has)
-    int64 blue = 7;
-    // drowsiness (1 - no, 4 - has)
-    int64 drowsy = 8;
-    // loss of taste / smell
-    int64 loss = 9;
+    Declaration data = 2;
 }
 
 // client get patients response payload
@@ -605,7 +636,7 @@ message ClientGetUndeclaredPatientsResponse {
 // client create declaration response payload
 message ClientCreateDeclarationResponse {
     // client report result
-    bool hasSymptom = 1;
+    int64 hasSymptom = 1;
 }
 
 // report payload
@@ -647,4 +678,34 @@ message Question {
     string type = 3;
     string content = 4;
     int64 score = 5;
+}
+
+// common question request payload
+message CommonQuestionRequest {
+    // question id (not used )
+    string id = 1;
+    // question payload
+    Question data = 2;
+}
+
+// common questions request payload
+message CommonQuestionsRequest {
+    // question ids
+    repeated string ids = 1;
+    // question payload
+    Question data = 2;
+}
+
+// common question response payload
+message CommonQuestionResponse {
+    // question payload
+    Question data = 1;
+}
+
+// get questions response payload
+message CommonQuestionsResponse {
+    // questions payload
+    repeated Question data = 1;
+    // total questions
+    int64 total = 2;
 }

@@ -165,6 +165,21 @@ func DeclarationToResponse(declaration *dto.Declaration) *pb.CommonDeclarationRe
 	}
 }
 
+func PbToDeclaration(declaration *pb.Declaration) *dto.Declaration {
+	return &dto.Declaration{
+		ID:                 declaration.Id,
+		PatientID:          declaration.PatientId,
+		PatientName:        declaration.PatientName,
+		PatientPhoneNumber: declaration.PatientPhoneNumber,
+		Result:             PbToQuestions(declaration.Result),
+		Category:           declaration.Category,
+		Score:              declaration.Score,
+		Status:             declaration.Status,
+		SubmittedAt:        declaration.SubmittedAt,
+		DoctorRemarks:      declaration.DoctorRemarks,
+	}
+}
+
 func DeclarationsToResponse(declarations []*dto.Declaration) *pb.CommonDeclarationsResponse {
 	var resps []*pb.Declaration
 	for _, declaration := range declarations {
@@ -204,6 +219,51 @@ func QuestionsToPb(questions []*dto.Question) []*pb.Question {
 		resps = append(resps, resp)
 	}
 	return resps
+}
+
+func PbToQuestions(questions []*pb.Question) []*dto.Question {
+	var resps []*dto.Question
+	for _, question := range questions {
+		resp := &dto.Question{
+			ID:       question.Id,
+			Category: question.Category,
+			Type:     question.Type,
+			Content:  question.Content,
+			Score:    question.Score,
+		}
+		resps = append(resps, resp)
+	}
+	return resps
+}
+
+func QuestionToResponse(question *dto.Question) *pb.CommonQuestionResponse {
+	return &pb.CommonQuestionResponse{
+		Data: &pb.Question{
+			Id:       question.ID,
+			Category: question.Category,
+			Type:     question.Type,
+			Content:  question.Content,
+			Score:    question.Score,
+		},
+	}
+}
+
+func QuestionsToResponse(questions []*dto.Question) *pb.CommonQuestionsResponse {
+	var resps []*pb.Question
+	for _, question := range questions {
+		resp := &pb.Question{
+			Id:       question.ID,
+			Category: question.Category,
+			Type:     question.Type,
+			Content:  question.Content,
+			Score:    question.Score,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonQuestionsResponse{
+		Data: resps,
+	}
+	return rslt
 }
 
 // -------------- Questions -----------------

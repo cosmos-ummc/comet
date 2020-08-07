@@ -809,6 +809,289 @@
         ]
       }
     },
+    "/v1/questions": {
+      "get": {
+        "summary": "Get Questions",
+        "operationId": "GetQuestions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "item",
+            "description": "item to sort.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "description": "item to order.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "description": "pagination from.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "to",
+            "description": "pagination to.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "filterItem",
+            "description": "item to filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filterValue",
+            "description": "value to filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ids",
+            "description": "patient ids.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Questions",
+        "operationId": "DeleteQuestions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ids",
+            "description": "ids.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "put": {
+        "summary": "Update Questions",
+        "operationId": "UpdateQuestions",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
+    "/v1/questions/{id}": {
+      "get": {
+        "summary": "Get Question",
+        "operationId": "GetQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "patient IC / passport",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Question",
+        "operationId": "DeleteQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "post": {
+        "summary": "Create Question",
+        "operationId": "CreateQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "question id (not used )",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "put": {
+        "summary": "Update Question",
+        "operationId": "UpdateQuestion",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "question id (not used )",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonQuestionRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/refresh": {
       "post": {
         "summary": "Refresh",
@@ -1603,45 +1886,8 @@
           "type": "string",
           "title": "patient IC / passport"
         },
-        "cough": {
-          "type": "string",
-          "format": "int64",
-          "title": "cough (1 - no cough, 2 - getting better, 3 - cough remains the same, 4 - start coughing today, 5 - getting worse)"
-        },
-        "throat": {
-          "type": "string",
-          "format": "int64",
-          "title": "sore throat (1 - no sore throat, 2 - getting better, 3 - sore throat remains the same, 4 - start having sore throat today, 5 - getting worse)"
-        },
-        "fever": {
-          "type": "string",
-          "format": "int64",
-          "title": "fever (1 - no fever, 3 - fever remains the same, 4 - start having a fever today, 5 - getting worse)"
-        },
-        "breathe": {
-          "type": "string",
-          "format": "int64",
-          "title": "breathing difficulty (1 - no, 4 - has)"
-        },
-        "chest": {
-          "type": "string",
-          "format": "int64",
-          "title": "chest pain (1 - no, 4 - has)"
-        },
-        "blue": {
-          "type": "string",
-          "format": "int64",
-          "title": "blue face (1 - no, 4 - has)"
-        },
-        "drowsy": {
-          "type": "string",
-          "format": "int64",
-          "title": "drowsiness (1 - no, 4 - has)"
-        },
-        "loss": {
-          "type": "string",
-          "format": "int64",
-          "title": "loss of taste / smell"
+        "data": {
+          "$ref": "#/definitions/pbDeclaration"
         }
       },
       "title": "client create declaration request payload"
@@ -1650,8 +1896,8 @@
       "type": "object",
       "properties": {
         "hasSymptom": {
-          "type": "boolean",
-          "format": "boolean",
+          "type": "string",
+          "format": "int64",
           "title": "client report result"
         }
       },
@@ -1898,6 +2144,65 @@
       },
       "title": "common patients response payload"
     },
+    "pbCommonQuestionRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "title": "question id (not used )"
+        },
+        "data": {
+          "$ref": "#/definitions/pbQuestion",
+          "title": "question payload"
+        }
+      },
+      "title": "common question request payload"
+    },
+    "pbCommonQuestionResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/pbQuestion",
+          "title": "question payload"
+        }
+      },
+      "title": "common question response payload"
+    },
+    "pbCommonQuestionsRequest": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "title": "question ids"
+        },
+        "data": {
+          "$ref": "#/definitions/pbQuestion",
+          "title": "question payload"
+        }
+      },
+      "title": "common questions request payload"
+    },
+    "pbCommonQuestionsResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbQuestion"
+          },
+          "title": "questions payload"
+        },
+        "total": {
+          "type": "string",
+          "format": "int64",
+          "title": "total questions"
+        }
+      },
+      "title": "get questions response payload"
+    },
     "pbCommonReportResponse": {
       "type": "object",
       "properties": {
@@ -2137,6 +2442,9 @@
         "registrationStatus": {
           "type": "string",
           "format": "int64"
+        },
+        "userId": {
+          "type": "string"
         }
       },
       "title": "patient payload"

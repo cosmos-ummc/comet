@@ -28,6 +28,7 @@ const (
 	Access  = "access"
 	Refresh = "refresh"
 	Reset   = "reset"
+
 	// Common
 	ID                 = "id"
 	PatientID          = "patientId"
@@ -41,32 +42,16 @@ const (
 	// Patients
 	Name              = "name"
 	TelegramID        = "telegramId"
-	DaysSinceExposure = "daysSinceExposure"
 	LastDeclared      = "lastDeclared"
-	SwabCount         = "swabCount"
-	Episode           = "episode"
-	Type              = "type"
 	LastDeclareResult = "lastDeclareResult"
-	ExposureDate      = "exposureDate"
-	RegistrationNum   = "registrationNum"
-	AlternateContact  = "alternateContact"
-	IsolationAddress  = "isolationAddress"
-	SymptomDate       = "symptomDate"
-	SwabDate          = "swabDate"
-	FeverContDay      = "feverContDay"
-	Localization      = "localization"
-	ExposureSource    = "exposureSource"
 	Consent           = "consent"
 	PrivacyPolicy     = "privacyPolicy"
-	FeverStartDate    = "feverStartDate"
-	DaysSinceSwab     = "daysSinceSwab"
 
 	// Users
-	DisplayName = "displayName"
-	Email       = "email"
-	Role        = "role"
-	Disabled    = "disabled"
-	Password    = "password"
+	Email    = "email"
+	Role     = "role"
+	Disabled = "disabled"
+	Password = "password"
 
 	Date = "date"
 
@@ -75,23 +60,17 @@ const (
 	Category = "category"
 
 	// Declarations
-	HasSymptom    = "hasSymptom"
 	SubmittedAt   = "submittedAt"
-	Cough         = "cough"
-	Throat        = "throat"
-	Fever         = "fever"
-	Breathe       = "breathe"
-	Chest         = "chest"
-	Blue          = "blue"
-	Drowsy        = "drowsy"
-	CallingStatus = "callingStatus"
 	DoctorRemarks = "doctorRemarks"
 
+	// AuthObjects
 	Authorized  = "authorized"
 	AccessUuid  = "accessUuid"
 	UserId      = "userId"
 	Exp         = "exp"
 	RefreshUuid = "refreshUuid"
+	Type        = "type"
+	DisplayName = "displayName"
 )
 
 // Keywords

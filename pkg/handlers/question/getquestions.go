@@ -1,4 +1,4 @@
-package swab
+package question
 
 import (
 	pb "comet/pkg/api"
@@ -13,11 +13,11 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-type GetSwabsHandler struct {
+type GetQuestionsHandler struct {
 	Model model.IModel
 }
 
-func (s *GetSwabsHandler) GetSwabs(ctx context.Context, req *pb.CommonGetsRequest, user *dto.User) (*pb.CommonSwabsResponse, error) {
+func (s *GetQuestionsHandler) GetQuestions(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonQuestionsResponse, error) {
 	var sort *dto.SortData
 	var itemsRange *dto.RangeData
 	filter := map[string]interface{}{}
@@ -25,12 +25,12 @@ func (s *GetSwabsHandler) GetSwabs(ctx context.Context, req *pb.CommonGetsReques
 	// If the request is batch get, call batch get model
 	if len(req.Ids) > 0 {
 		req.Ids = s.processReq(req.Ids)
-		swabs, err := s.Model.BatchGetSwabs(ctx, req.Ids, constants.UserPatientMap[user.Role])
+		questions, err := s.Model.BatchGetQuestions(ctx, req.Ids)
 		if err != nil {
 			return nil, constants.InternalError
 		}
-		resp := utility.SwabsToResponse(swabs)
-		resp.Total = int64(len(swabs))
+		resp := utility.QuestionsToResponse(questions)
+		resp.Total = int64(len(questions))
 		return resp, nil
 	}
 
@@ -52,20 +52,20 @@ func (s *GetSwabsHandler) GetSwabs(ctx context.Context, req *pb.CommonGetsReques
 		filter[req.FilterItem] = req.FilterValue
 	}
 
-	total, swabs, err := s.Model.QuerySwabs(ctx, sort, itemsRange, filter, constants.UserPatientMap[user.Role])
+	total, questions, err := s.Model.QueryQuestions(ctx, sort, itemsRange, filter)
 	if err != nil {
 		if status.Code(err) == codes.Unknown {
-			return nil, constants.SwabNotFoundError
+			return nil, constants.QuestionNotFoundError
 		}
 		return nil, constants.InternalError
 	}
 
-	resp := utility.SwabsToResponse(swabs)
+	resp := utility.QuestionsToResponse(questions)
 	resp.Total = total
 	return resp, nil
 }
 
-func (s *GetSwabsHandler) processReq(ids []string) []string {
+func (s *GetQuestionsHandler) processReq(ids []string) []string {
 	// Ids is actually just ONE long string stored in a slice. The length of ids will always be 1
 	// Protobuf doesn't know to split and what delimiter you use. So, split manually
 	split := strings.Split(ids[0], ",")

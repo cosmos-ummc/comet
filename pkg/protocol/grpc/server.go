@@ -28,7 +28,7 @@ func RunServer(ctx context.Context, handler handlers.IHandlers, port string) err
 
 	// register handlers
 	server := grpc.NewServer(opts...)
-	pb.RegisterCosmosServiceServer(server, handler)
+	pb.RegisterMhpssServiceServer(server, handler)
 
 	// graceful shutdown
 	c := make(chan os.Signal, 1)

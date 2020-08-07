@@ -40,9 +40,9 @@ func (s *ClientGetPatientsHandler) ClientGetPatients(ctx context.Context, req *p
 		return s.patientsToResp(patients), nil
 	}
 
-	// if no param is given, return all patients with status symptomatic, asymptomatic and confirmed but not admitted
+	// if no param is given, return all patients
 	if req.TelegramId == "" && req.PhoneNumber == "" && req.Id == "" {
-		_, patients, err := s.Model.GetPatientsByStatus(ctx, []int64{constants.Asymptomatic, constants.Symptomatic, constants.ConfirmedButNotAdmitted}, nil, nil, constants.AllPatients)
+		_, patients, err := s.Model.QueryPatients(ctx, nil, nil, nil)
 		if err != nil {
 			return nil, constants.InternalError
 		}
@@ -58,7 +58,7 @@ func (s *ClientGetPatientsHandler) ClientGetPatients(ctx context.Context, req *p
 		filter[constants.PhoneNumber] = req.PhoneNumber
 	}
 
-	_, patients, err := s.Model.QueryPatients(ctx, nil, nil, filter, constants.AllPatients)
+	_, patients, err := s.Model.QueryPatients(ctx, nil, nil, filter)
 	if err != nil {
 		return nil, constants.InternalError
 	}
@@ -70,35 +70,22 @@ func (s *ClientGetPatientsHandler) patientsToResp(patients []*dto.Patient) *pb.C
 	var resps []*pb.Patient
 	for _, patient := range patients {
 		resp := &pb.Patient{
-			Id:                patient.ID,
-			TelegramId:        patient.TelegramID,
-			Name:              patient.Name,
-			Status:            patient.Status,
-			PhoneNumber:       patient.PhoneNumber,
-			Email:             patient.Email,
-			LastDeclared:      patient.LastDeclared,
-			SwabCount:         patient.SwabCount,
-			Episode:           patient.Episode,
-			Type:              patient.Type,
-			TypeChangeDate:    patient.TypeChangeDate,
-			LastDeclareResult: patient.LastDeclareResult,
-			ExposureDate:      patient.ExposureDate,
-			ExposureSource:    patient.ExposureSource,
-			DaysSinceExposure: patient.DaysSinceExposure,
-			RegistrationNum:   patient.RegistrationNum,
-			AlternateContact:  patient.AlternateContact,
-			IsolationAddress:  patient.IsolationAddress,
-			SymptomDate:       patient.SymptomDate,
-			SwabDate:          patient.SwabDate,
-			Remarks:           patient.Remarks,
-			Localization:      patient.Localization,
-			Consent:           patient.Consent,
-			PrivacyPolicy:     patient.PrivacyPolicy,
-			FeverStartDate:    patient.FeverStartDate,
-			FeverContDay:      patient.FeverContDay,
-			DaysSinceSwab:     patient.DaysSinceSwab,
-			HomeAddress:       patient.HomeAddress,
-			IsSameAddress:     patient.IsSameAddress,
+			Id:                 patient.ID,
+			TelegramId:         patient.TelegramID,
+			Name:               patient.Name,
+			Status:             patient.Status,
+			PhoneNumber:        patient.PhoneNumber,
+			Email:              patient.Email,
+			IsolationAddress:   patient.IsolationAddress,
+			Remarks:            patient.Remarks,
+			Consent:            patient.Consent,
+			PrivacyPolicy:      patient.PrivacyPolicy,
+			HomeAddress:        patient.HomeAddress,
+			LastDassTime:       patient.LastDassTime,
+			LastIesrTime:       patient.LastIesrTime,
+			LastDassResult:     patient.LastDassResult,
+			LastIesrResult:     patient.LastIesrResult,
+			RegistrationStatus: patient.RegistrationStatus,
 		}
 		resps = append(resps, resp)
 	}

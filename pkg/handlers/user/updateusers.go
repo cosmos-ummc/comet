@@ -76,17 +76,17 @@ func (s *UpdateUsersHandler) UpdateUsers(ctx context.Context, req *pb.CommonUser
 func (s *UpdateUsersHandler) reqToUser(req *pb.CommonUsersRequest) *dto.User {
 	user := &dto.User{
 		Role:        utility.RemoveZeroWidth(req.Data.Role),
-		DisplayName: utility.RemoveZeroWidth(req.Data.DisplayName),
+		Name:        utility.RemoveZeroWidth(req.Data.Name),
 		PhoneNumber: utility.RemoveZeroWidth(req.Data.PhoneNumber),
 		Email:       utility.RemoveZeroWidth(req.Data.Email),
-		Disabled:    req.Data.Disabled,
+		BlockList:   req.Data.BlockList,
 		Password:    utility.RemoveZeroWidth(req.Data.Password),
 	}
 	return user
 }
 
 func (s *UpdateUsersHandler) validateAndProcessReq(user *dto.User) error {
-	user.DisplayName = utility.NormalizeName(user.DisplayName)
+	user.Name = utility.NormalizeName(user.Name)
 	user.PhoneNumber = utility.NormalizePhoneNumber(user.PhoneNumber, "")
 	user.Role = utility.NormalizeRole(user.Role)
 	user.Email = utility.NormalizeEmail(user.Email)

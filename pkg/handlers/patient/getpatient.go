@@ -3,7 +3,6 @@ package patient
 import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
-	"comet/pkg/dto"
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
@@ -16,10 +15,10 @@ type GetPatientHandler struct {
 	Model model.IModel
 }
 
-func (s *GetPatientHandler) GetPatient(ctx context.Context, req *pb.CommonGetRequest, user *dto.User) (*pb.CommonPatientResponse, error) {
+func (s *GetPatientHandler) GetPatient(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonPatientResponse, error) {
 	s.processReq(req)
 
-	patient, err := s.Model.GetPatient(ctx, req.Id, constants.UserPatientMap[user.Role])
+	patient, err := s.Model.GetPatient(ctx, req.Id)
 	if err != nil {
 		if status.Code(err) == codes.Unknown {
 			return nil, constants.PatientNotFoundError

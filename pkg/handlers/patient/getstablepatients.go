@@ -15,14 +15,14 @@ type GetStablePatientsHandler struct {
 	Model model.IModel
 }
 
-func (s *GetStablePatientsHandler) GetStablePatients(ctx context.Context, req *pb.CommonGetsRequest, user *dto.User) (*pb.CommonPatientsResponse, error) {
+func (s *GetStablePatientsHandler) GetStablePatients(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonPatientsResponse, error) {
 	t, err := utility.DateStringToTime(utility.TimeToDateString(utility.MalaysiaTime(time.Now())))
 	if err != nil {
 		return nil, constants.InternalError
 	}
 	timeMilli := utility.TimeToMilli(t)
 
-	_, declarations, err := s.Model.GetStableDeclarations(ctx, timeMilli, constants.UserPatientMap[user.Role])
+	_, declarations, err := s.Model.GetStableDeclarations(ctx, timeMilli)
 	if err != nil {
 		return nil, constants.InternalError
 	}
@@ -31,19 +31,11 @@ func (s *GetStablePatientsHandler) GetStablePatients(ctx context.Context, req *p
 	patients := []*dto.Patient{}
 	for _, declaration := range declarations {
 		// get patient
-		p, err := s.Model.GetPatient(ctx, declaration.PatientID, constants.UserPatientMap[user.Role])
+		p, err := s.Model.GetPatient(ctx, declaration.PatientID)
 		if err != nil {
 			// if type not allowed, skip the record
 			continue
 		}
-
-		// skip patients that are other status
-		if p.Status != constants.Symptomatic && p.Status != constants.Asymptomatic && p.Status != constants.ConfirmedButNotAdmitted {
-			continue
-		}
-
-		// put calling status in
-		p.CallingStatus = declaration.CallingStatus
 
 		patients = append(patients, p)
 	}
@@ -104,61 +96,9 @@ func (s *GetStablePatientsHandler) sortPatients(patients []*dto.Patient, field s
 		sort.Slice(patients, func(i, j int) bool {
 			return patients[i].Status < patients[j].Status
 		})
-	case "lastDeclared":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].LastDeclared < patients[j].LastDeclared
-		})
-	case "swabCount":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].SwabCount < patients[j].SwabCount
-		})
-	case "episode":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].Episode < patients[j].Episode
-		})
-	case "type":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].Type < patients[j].Type
-		})
-	case "lastDeclareResult":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].LastDeclareResult
-		})
-	case "exposureDate":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].ExposureDate < patients[j].ExposureDate
-		})
-	case "exposureSource":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].ExposureSource < patients[j].ExposureSource
-		})
-	case "daysSinceExposure":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].DaysSinceExposure < patients[j].DaysSinceExposure
-		})
-	case "registrationNum":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].RegistrationNum < patients[j].RegistrationNum
-		})
-	case "alternateContact":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].AlternateContact < patients[j].AlternateContact
-		})
 	case "isolationAddress":
 		sort.Slice(patients, func(i, j int) bool {
 			return patients[i].IsolationAddress < patients[j].IsolationAddress
-		})
-	case "symptomDate":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].SymptomDate < patients[j].SymptomDate
-		})
-	case "swabDate":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].SwabDate < patients[j].SwabDate
-		})
-	case "callingStatus":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].CallingStatus < patients[j].CallingStatus
 		})
 	case "consent":
 		sort.Slice(patients, func(i, j int) bool {
@@ -167,18 +107,6 @@ func (s *GetStablePatientsHandler) sortPatients(patients []*dto.Patient, field s
 	case "privacyPolicy":
 		sort.Slice(patients, func(i, j int) bool {
 			return patients[i].PrivacyPolicy < patients[j].PrivacyPolicy
-		})
-	case "feverStartDate":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].FeverStartDate < patients[j].FeverStartDate
-		})
-	case "feverContDay":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].FeverContDay < patients[j].FeverContDay
-		})
-	case "daysSinceSwab":
-		sort.Slice(patients, func(i, j int) bool {
-			return patients[i].DaysSinceSwab < patients[j].DaysSinceSwab
 		})
 	case "homeAddress":
 		sort.Slice(patients, func(i, j int) bool {

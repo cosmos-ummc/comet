@@ -48,11 +48,10 @@ func (m *Model) UpdateUser(ctx context.Context, user *dto.User) (*dto.User, erro
 	// patch user
 	oldEmail := u.Email
 	u.Role = user.Role
-	u.DisplayName = user.DisplayName
+	u.Name = user.Name
 	u.PhoneNumber = user.PhoneNumber
 	u.Email = user.Email
-	u.FinalQuestionsJSON = user.FinalQuestionsJSON
-	u.Chart = user.Chart
+	u.BlockList = user.BlockList
 
 	_, err = m.userDAO.Update(ctx, u)
 	if err != nil {

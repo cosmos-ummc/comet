@@ -12,58 +12,56 @@ type IModel interface {
 	// ClientCreateDeclaration creates new declaration or updates existing declaration
 	ClientCreateDeclaration(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error)
 	// CreateDeclaration creates new declaration
-	CreateDeclaration(ctx context.Context, declaration *dto.Declaration, patientType int64) (*dto.Declaration, error)
+	CreateDeclaration(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error)
 	// GetDeclaration gets declaration
-	GetDeclaration(ctx context.Context, declarationID string, patientType int64) (*dto.Declaration, error)
+	GetDeclaration(ctx context.Context, declarationID string) (*dto.Declaration, error)
 	// UpdateDeclaration updates declaration
-	UpdateDeclaration(ctx context.Context, declaration *dto.Declaration, patientType int64) (*dto.Declaration, error)
+	UpdateDeclaration(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error)
 	// DeleteDeclaration deletes declaration
-	DeleteDeclaration(ctx context.Context, declarationID string, patientType int64) (*dto.Declaration, error)
+	DeleteDeclaration(ctx context.Context, declarationID string) (*dto.Declaration, error)
 	// BatchGetDeclarations get declarations
-	BatchGetDeclarations(ctx context.Context, declarationID []string, patientType int64) ([]*dto.Declaration, error)
+	BatchGetDeclarations(ctx context.Context, declarationID []string) ([]*dto.Declaration, error)
 	// UpdateDeclarations update declarations
-	UpdateDeclarations(ctx context.Context, declaration *dto.Declaration, ids []string, patientType int64) ([]string, error)
+	UpdateDeclarations(ctx context.Context, declaration *dto.Declaration, ids []string) ([]string, error)
 	// DeleteDeclarations delete declarations
-	DeleteDeclarations(ctx context.Context, declarationID []string, patientType int64) ([]string, error)
+	DeleteDeclarations(ctx context.Context, declarationID []string) ([]string, error)
 	// QueryDeclarations query declarations
-	QueryDeclarations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}, patientType int64) (int64, []*dto.Declaration, error)
+	QueryDeclarations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Declaration, error)
 	// QueryDeclarationsByTime ...
-	QueryDeclarationsByTime(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error)
+	QueryDeclarationsByTime(ctx context.Context, from int64) (int64, []*dto.Declaration, error)
 	// QueryDeclarationsByCallingStatusAndTime ...
-	QueryDeclarationsByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64, patientType int64) (int64, []*dto.Declaration, error)
+	QueryDeclarationsByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64) (int64, []*dto.Declaration, error)
 	// QueryDeclarationsByPatientID ...
-	QueryDeclarationsByPatientID(ctx context.Context, id string, patientType int64) (int64, []*dto.Declaration, error)
+	QueryDeclarationsByPatientID(ctx context.Context, id string) (int64, []*dto.Declaration, error)
 	// GetStableDeclarations ...
-	GetStableDeclarations(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error)
+	GetStableDeclarations(ctx context.Context, from int64) (int64, []*dto.Declaration, error)
 	/////////////
 
 	///////////// Patient models
 	// CreatePatient creates new patient
-	CreatePatient(ctx context.Context, patient *dto.Patient, user *dto.User) (*dto.Patient, error)
+	CreatePatient(ctx context.Context, patient *dto.Patient) (*dto.Patient, error)
 	// GetPatient gets patient of specified type by ID
-	GetPatient(ctx context.Context, id string, patientType int64) (*dto.Patient, error)
+	GetPatient(ctx context.Context, id string) (*dto.Patient, error)
 	// QueryPatients queries patients of specified type by sort, range, filter
-	QueryPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}, patientType int64) (int64, []*dto.Patient, error)
+	QueryPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Patient, error)
 	// BatchGetPatients get patients of specified type by slice of IDs
-	BatchGetPatients(ctx context.Context, ids []string, patientType int64) ([]*dto.Patient, error)
+	BatchGetPatients(ctx context.Context, ids []string) ([]*dto.Patient, error)
 	// GetPatientsByStatus gets patients of specified type by list of status
-	GetPatientsByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
-	// GetSwabPatients get patients of specified type days since swab >= 14
-	GetSwabPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+	GetPatientsByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
 	// GetNoCallPatients queries patients who have declared but no yet call
-	GetNoCallPatients(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+	GetNoCallPatients(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
 	// GetDeclaredByTime gets declared patients of specified type in given from timestamp
-	GetDeclaredPatientsByTime(ctx context.Context, from int64, patientType int64) ([]*dto.Patient, error)
+	GetDeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	// GetUndeclaredPatientsByTime gets undeclared patients of specified type given from timestamp
-	GetUndeclaredPatientsByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error)
+	GetUndeclaredPatientsByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
 	// UpdatePatient updates patient
-	UpdatePatient(ctx context.Context, patient *dto.Patient, patientType int64, user *dto.User) (*dto.Patient, error)
+	UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.Patient, error)
 	// UpdatePatients update patients
-	UpdatePatients(ctx context.Context, patient *dto.Patient, ids []string, patientType int64, user *dto.User) ([]string, error)
+	UpdatePatients(ctx context.Context, patient *dto.Patient, ids []string) ([]string, error)
 	// DeletePatient deletes patient by ID
-	DeletePatient(ctx context.Context, id string, patientType int64) (*dto.Patient, error)
+	DeletePatient(ctx context.Context, id string) (*dto.Patient, error)
 	// DeletePatients delete patients by IDs
-	DeletePatients(ctx context.Context, ids []string, patientType int64) ([]string, error)
+	DeletePatients(ctx context.Context, ids []string) ([]string, error)
 	// ClientGetPatientsByConsentTime gets patients given from and to timestamp
 	ClientGetPatientsByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error)
 	// ClientUpdatePatient updates patient from chatbot client
