@@ -8,25 +8,11 @@ const (
 )
 
 const (
-	Superuser    = "superuser"
-	PuiAdmin     = "puiadmin"
-	ContactAdmin = "contactadmin"
-	PuiIk        = "puiik"
-	ContactIk    = "contactik"
-	ChatBot      = "chatbot"
+	Superuser  = "superuser"
+	Consultant = "consultant"
+	ChatBot    = "chatbot"
 )
 
 var SuperUserOnly = []string{Superuser}
-var AllCanAccess = []string{Superuser, PuiAdmin, ContactAdmin, PuiIk, ContactIk}
+var AllCanAccess = []string{Superuser, Consultant}
 var ChatBotOnly = []string{ChatBot}
-
-// UserPatientMap is used for access-control. It maps user roles to their respective patient types
-// Role that is mapped to AllPatients can access to both PUI and ContactTracing patients
-var UserPatientMap = map[string]int64{
-	ChatBot:      AllPatients,
-	Superuser:    AllPatients,
-	PuiAdmin:     PUI,
-	ContactAdmin: ContactTracing,
-	PuiIk:        PUI,
-	ContactIk:    ContactTracing,
-}

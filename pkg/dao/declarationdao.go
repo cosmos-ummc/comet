@@ -26,7 +26,7 @@ func InitDeclarationDAO(client *mongo.Client) IDeclarationDAO {
 
 // Create creates new declaration
 func (v *DeclarationDAO) Create(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Declarations)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 	if _, err := collection.InsertOne(ctx, declaration); err != nil {
 		return nil, err
 	}
@@ -34,12 +34,9 @@ func (v *DeclarationDAO) Create(ctx context.Context, declaration *dto.Declaratio
 }
 
 // Get gets declaration by ID
-func (v *DeclarationDAO) Get(ctx context.Context, id string, patientType int64) (*dto.Declaration, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Declarations)
+func (v *DeclarationDAO) Get(ctx context.Context, id string) (*dto.Declaration, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 	filter := bson.D{{constants.ID, id}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
 	declaration := &dto.Declaration{}
 	if err := collection.FindOne(ctx, filter).Decode(&declaration); err != nil {
 		return nil, err
@@ -49,7 +46,7 @@ func (v *DeclarationDAO) Get(ctx context.Context, id string, patientType int64) 
 
 // Update updates declaration
 func (v *DeclarationDAO) Update(ctx context.Context, declaration *dto.Declaration) (*dto.Declaration, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Declarations)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, declaration.ID}}, bson.D{
 		{"$set", declaration},
 	})
@@ -61,7 +58,7 @@ func (v *DeclarationDAO) Update(ctx context.Context, declaration *dto.Declaratio
 
 // Delete deletes declaration
 func (v *DeclarationDAO) Delete(ctx context.Context, id string) error {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Declarations)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 	_, err := collection.DeleteOne(ctx, bson.D{{constants.ID, id}})
 	if err != nil {
 		return err
@@ -69,17 +66,13 @@ func (v *DeclarationDAO) Delete(ctx context.Context, id string) error {
 	return nil
 }
 
-func (v *DeclarationDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}, patientType int64) (int64, []*dto.Declaration, error) {
+func (v *DeclarationDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Declaration, error) {
 	f := v.parseFilter(filter)
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		f = append(f, bson.E{Key: constants.PatientType, Value: patientType})
-	}
-
 	return v.query(ctx, sort, itemsRange, f)
 }
 
 // QueryByTime queries declarations given from timestamp
-func (v *DeclarationDAO) QueryByTime(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error) {
+func (v *DeclarationDAO) QueryByTime(ctx context.Context, from int64) (int64, []*dto.Declaration, error) {
 	filter := bson.D{{
 		"$and",
 		bson.A{
@@ -93,15 +86,11 @@ func (v *DeclarationDAO) QueryByTime(ctx context.Context, from int64, patientTyp
 		},
 	}}
 
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
-
 	return v.query(ctx, nil, nil, filter)
 }
 
 // QueryByCallingStatusAndTime queries declarations by time
-func (v *DeclarationDAO) QueryByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64, patientType int64) (int64, []*dto.Declaration, error) {
+func (v *DeclarationDAO) QueryByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64) (int64, []*dto.Declaration, error) {
 	filter := bson.D{{
 		"$and",
 		bson.A{
@@ -122,15 +111,11 @@ func (v *DeclarationDAO) QueryByCallingStatusAndTime(ctx context.Context, callin
 		},
 	}}
 
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
-
 	return v.query(ctx, nil, nil, filter)
 }
 
-func (v *DeclarationDAO) BatchGet(ctx context.Context, ids []string, patientType int64) ([]*dto.Declaration, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Declarations)
+func (v *DeclarationDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Declaration, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 
 	filter := bson.D{{
 		constants.ID,
@@ -139,9 +124,6 @@ func (v *DeclarationDAO) BatchGet(ctx context.Context, ids []string, patientType
 			ids,
 		}},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
@@ -173,7 +155,7 @@ func (v *DeclarationDAO) BatchDelete(ctx context.Context, ids []string) ([]strin
 	return deletedIDs, nil
 }
 
-func (v *DeclarationDAO) QueryStableDeclarations(ctx context.Context, from int64, patientType int64) (int64, []*dto.Declaration, error) {
+func (v *DeclarationDAO) QueryStableDeclarations(ctx context.Context, from int64) (int64, []*dto.Declaration, error) {
 	filter := bson.D{{
 		"$and",
 		bson.A{
@@ -194,10 +176,6 @@ func (v *DeclarationDAO) QueryStableDeclarations(ctx context.Context, from int64
 		},
 	}}
 
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
-
 	return v.query(ctx, nil, nil, filter)
 }
 
@@ -205,7 +183,7 @@ func (v *DeclarationDAO) QueryStableDeclarations(ctx context.Context, from int64
 // IMPORTANT SHIT: this query uses FIND. It will never return err codes.Unknown! Only FINDONE will return codes.Unknown
 // DO NOT check for codes.Unknown to see if there's result. It will never hit! Use length instead please.
 func (v *DeclarationDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Declaration, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Declarations)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 
 	findOptions := options.Find()
 	// set range

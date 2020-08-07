@@ -1,8 +1,8 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "CoSMoS Service",
-    "description": "CoSMoS Service handles requests from both Telegram chat bot and admin dashboard.",
+    "title": "MHPSS Service",
+    "description": "MHPSS Service handles requests from Telegram chat bot, admin dashboard and client website.",
     "version": "1.0.0",
     "contact": {
       "url": "https://github.com/cosmos-ummc/comet",
@@ -19,198 +19,6 @@
     "application/json"
   ],
   "paths": {
-    "/v1/activities": {
-      "get": {
-        "summary": "Get Activities",
-        "operationId": "GetActivities",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonActivitiesResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item",
-            "description": "item to sort.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "order",
-            "description": "item to order.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "from",
-            "description": "pagination from.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "to",
-            "description": "pagination to.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "filterItem",
-            "description": "item to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filterValue",
-            "description": "value to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ids",
-            "description": "patient ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/activities/{id}": {
-      "get": {
-        "summary": "Get Activity",
-        "operationId": "GetActivity",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonActivityResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "patient IC / passport",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/callpatients": {
-      "get": {
-        "summary": "Get Called Patients",
-        "operationId": "GetCallPatients",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonPatientsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item",
-            "description": "item to sort.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "order",
-            "description": "item to order.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "from",
-            "description": "pagination from.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "to",
-            "description": "pagination to.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "filterItem",
-            "description": "item to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filterValue",
-            "description": "value to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ids",
-            "description": "patient ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      }
-    },
     "/v1/client/declarations": {
       "post": {
         "summary": "Client Create Declaration",
@@ -240,7 +48,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -294,7 +102,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -335,7 +143,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -375,7 +183,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -455,7 +263,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "delete": {
@@ -489,7 +297,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "put": {
@@ -520,7 +328,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -552,7 +360,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "delete": {
@@ -582,7 +390,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "post": {
@@ -620,7 +428,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "put": {
@@ -658,7 +466,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -691,7 +499,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -714,167 +522,7 @@
           }
         },
         "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/nocallpatients": {
-      "get": {
-        "summary": "Get No Yet Called Patients",
-        "operationId": "GetNoCallPatients",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonPatientsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item",
-            "description": "item to sort.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "order",
-            "description": "item to order.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "from",
-            "description": "pagination from.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "to",
-            "description": "pagination to.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "filterItem",
-            "description": "item to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filterValue",
-            "description": "value to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ids",
-            "description": "patient ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/otherpatients": {
-      "get": {
-        "summary": "Get Other Patients",
-        "operationId": "GetOtherPatients",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonPatientsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item",
-            "description": "item to sort.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "order",
-            "description": "item to order.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "from",
-            "description": "pagination from.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "to",
-            "description": "pagination to.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "filterItem",
-            "description": "item to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filterValue",
-            "description": "value to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ids",
-            "description": "patient ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -954,7 +602,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "delete": {
@@ -988,7 +636,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "put": {
@@ -1019,7 +667,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1051,7 +699,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "delete": {
@@ -1081,7 +729,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "post": {
@@ -1119,7 +767,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "put": {
@@ -1157,7 +805,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1190,7 +838,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1226,18 +874,10 @@
             "in": "query",
             "required": false,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "description": "type of report (1 - status, 2 - declaration, 3 - calling status).",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1266,18 +906,10 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "type",
-            "description": "type of report (1 - status, 2 - declaration, 3 - calling status).",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1357,370 +989,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/swabpatients": {
-      "get": {
-        "summary": "Get Patients With Days Since Swab \u003e= 14",
-        "operationId": "GetSwabPatients",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonPatientsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item",
-            "description": "item to sort.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "order",
-            "description": "item to order.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "from",
-            "description": "pagination from.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "to",
-            "description": "pagination to.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "filterItem",
-            "description": "item to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filterValue",
-            "description": "value to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ids",
-            "description": "patient ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/swabs": {
-      "get": {
-        "summary": "Get Swabs",
-        "operationId": "GetSwabs",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "item",
-            "description": "item to sort.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "order",
-            "description": "item to order.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "from",
-            "description": "pagination from.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "to",
-            "description": "pagination to.",
-            "in": "query",
-            "required": false,
-            "type": "string",
-            "format": "int64"
-          },
-          {
-            "name": "filterItem",
-            "description": "item to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filterValue",
-            "description": "value to filter.",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "ids",
-            "description": "patient ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      },
-      "delete": {
-        "summary": "Delete Swabs",
-        "operationId": "DeleteSwabs",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonIdsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "ids",
-            "description": "ids.",
-            "in": "query",
-            "required": false,
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "collectionFormat": "multi"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      },
-      "put": {
-        "summary": "Update Swabs",
-        "operationId": "UpdateSwabs",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonIdsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabsRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      }
-    },
-    "/v1/swabs/{id}": {
-      "get": {
-        "summary": "Get Swab",
-        "operationId": "GetSwab",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "patient IC / passport",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      },
-      "delete": {
-        "summary": "Delete Swab",
-        "operationId": "DeleteSwab",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      },
-      "post": {
-        "summary": "Create Swab",
-        "operationId": "CreateSwab",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "swab id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CosmosService"
-        ]
-      },
-      "put": {
-        "summary": "Update Swab",
-        "operationId": "UpdateSwab",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "description": "swab id",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/pbCommonSwabRequest"
-            }
-          }
-        ],
-        "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1800,7 +1069,87 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
+        ]
+      }
+    },
+    "/v1/unstablepatients": {
+      "get": {
+        "summary": "Get Unstable Patients",
+        "operationId": "GetUnstablePatients",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonPatientsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "item",
+            "description": "item to sort.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "description": "item to order.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "description": "pagination from.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "to",
+            "description": "pagination to.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "filterItem",
+            "description": "item to filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filterValue",
+            "description": "value to filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ids",
+            "description": "patient ids.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "MhpssService"
         ]
       }
     },
@@ -1880,7 +1229,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "delete": {
@@ -1914,7 +1263,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "put": {
@@ -1945,7 +1294,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -1985,7 +1334,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -2017,7 +1366,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "delete": {
@@ -2047,7 +1396,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "post": {
@@ -2085,7 +1434,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       },
       "put": {
@@ -2123,7 +1472,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -2155,7 +1504,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -2201,7 +1550,7 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     },
@@ -2241,51 +1590,12 @@
           }
         ],
         "tags": [
-          "CosmosService"
+          "MhpssService"
         ]
       }
     }
   },
   "definitions": {
-    "pbActivity": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "title": "activity ID"
-        },
-        "userId": {
-          "type": "string",
-          "title": "user id"
-        },
-        "userName": {
-          "type": "string",
-          "title": "user name"
-        },
-        "oldPatient": {
-          "$ref": "#/definitions/pbPatient",
-          "title": "old patient"
-        },
-        "newPatient": {
-          "$ref": "#/definitions/pbPatient",
-          "title": "new patient"
-        },
-        "oldSwab": {
-          "$ref": "#/definitions/pbSwab",
-          "title": "old swab"
-        },
-        "newSwab": {
-          "$ref": "#/definitions/pbSwab",
-          "title": "new swab"
-        },
-        "time": {
-          "type": "string",
-          "format": "int64",
-          "title": "time"
-        }
-      },
-      "title": "activity payload"
-    },
     "pbClientCreateDeclarationRequest": {
       "type": "object",
       "properties": {
@@ -2457,34 +1767,6 @@
       },
       "title": "client update patient V2 response payload"
     },
-    "pbCommonActivitiesResponse": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/pbActivity"
-          },
-          "title": "activities payload"
-        },
-        "total": {
-          "type": "string",
-          "format": "int64",
-          "title": "total activities"
-        }
-      },
-      "title": "common activities response payload"
-    },
-    "pbCommonActivityResponse": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/pbActivity",
-          "title": "activity payload"
-        }
-      },
-      "title": "common activity response payload"
-    },
     "pbCommonDeclarationRequest": {
       "type": "object",
       "properties": {
@@ -2639,65 +1921,6 @@
       },
       "title": "common reports response payload"
     },
-    "pbCommonSwabRequest": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "title": "swab id"
-        },
-        "data": {
-          "$ref": "#/definitions/pbSwab",
-          "title": "swab payload"
-        }
-      },
-      "title": "update swab request payload"
-    },
-    "pbCommonSwabResponse": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "$ref": "#/definitions/pbSwab",
-          "title": "swab payload"
-        }
-      },
-      "title": "get swab response payload"
-    },
-    "pbCommonSwabsRequest": {
-      "type": "object",
-      "properties": {
-        "ids": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "title": "swab ids"
-        },
-        "data": {
-          "$ref": "#/definitions/pbSwab",
-          "title": "swab payload"
-        }
-      },
-      "title": "common swabs request payload"
-    },
-    "pbCommonSwabsResponse": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/pbSwab"
-          },
-          "title": "swabs payload"
-        },
-        "total": {
-          "type": "string",
-          "format": "int64",
-          "title": "total swabs"
-        }
-      },
-      "title": "common swabs response payload"
-    },
     "pbCommonUserRequest": {
       "type": "object",
       "properties": {
@@ -2767,65 +1990,6 @@
           "type": "string",
           "title": "patient IC / passport"
         },
-        "cough": {
-          "type": "string",
-          "format": "int64",
-          "title": "cough (1 - no cough, 2 - getting better, 3 - cough remains the same, 4 - start coughing today, 5 - getting worse)"
-        },
-        "throat": {
-          "type": "string",
-          "format": "int64",
-          "title": "sore throat (1 - meno sore throat, 2 - getting better, 3 - sore throat remains the same, 4 - start having sore throat today, 5 - getting worse)"
-        },
-        "fever": {
-          "type": "string",
-          "format": "int64",
-          "title": "fever (1 - no fever, 3 - fever remains the same, 4 - start having a fever today, 5 - getting worse)"
-        },
-        "breathe": {
-          "type": "string",
-          "format": "int64",
-          "title": "breathing difficulty (1 - no, 4 - has)"
-        },
-        "chest": {
-          "type": "string",
-          "format": "int64",
-          "title": "chest pain (1 - no, 4 - has)"
-        },
-        "blue": {
-          "type": "string",
-          "format": "int64",
-          "title": "blue face (1 - no, 4 - has)"
-        },
-        "drowsy": {
-          "type": "string",
-          "format": "int64",
-          "title": "drowsiness (1 - no, 4 - has)"
-        },
-        "loss": {
-          "type": "string",
-          "format": "int64",
-          "title": "loss of taste / smell"
-        },
-        "hasSymptom": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "report result (has symptom / no symptom)"
-        },
-        "submittedAt": {
-          "type": "string",
-          "format": "int64",
-          "title": "report submission time in milliseconds"
-        },
-        "callingStatus": {
-          "type": "string",
-          "format": "int64",
-          "title": "report calling status (1 - don’t have to call, 2 - patient called UMMC, 3 - UMMC called patient, 4 - no call yet)"
-        },
-        "date": {
-          "type": "string",
-          "title": "report date in string yyyyMMdd"
-        },
         "patientName": {
           "type": "string",
           "title": "patient name"
@@ -2833,6 +1997,28 @@
         "patientPhoneNumber": {
           "type": "string",
           "title": "patient phone number"
+        },
+        "result": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbQuestion"
+          }
+        },
+        "category": {
+          "type": "string"
+        },
+        "score": {
+          "type": "string",
+          "format": "int64"
+        },
+        "status": {
+          "type": "string",
+          "format": "int64"
+        },
+        "submittedAt": {
+          "type": "string",
+          "format": "int64",
+          "title": "report submission time in milliseconds"
         },
         "doctorRemarks": {
           "type": "string",
@@ -2910,82 +2096,13 @@
           "type": "string",
           "title": "patient email"
         },
-        "lastDeclared": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient latest declare time in milliseconds"
-        },
-        "swabCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient number of swabs (covid-19 test)"
-        },
-        "episode": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient episode"
-        },
-        "type": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient type (1 - PUI, 2 - Contact Tracing)"
-        },
-        "lastDeclareResult": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "patient latest declare result (true - has symptom, false - no symptom)"
-        },
-        "exposureDate": {
-          "type": "string",
-          "title": "patient date of exposure"
-        },
-        "exposureSource": {
-          "type": "string",
-          "title": "patient source of exposure"
-        },
-        "daysSinceExposure": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient days since exposure (inclusive)"
-        },
-        "registrationNum": {
-          "type": "string",
-          "title": "patient registration number"
-        },
-        "alternateContact": {
-          "type": "string",
-          "title": "patient alternative contact number"
-        },
         "isolationAddress": {
           "type": "string",
           "title": "patient isolation address"
         },
-        "symptomDate": {
-          "type": "string",
-          "title": "patient date of symptom"
-        },
-        "swabDate": {
-          "type": "string",
-          "title": "patient date of swab"
-        },
-        "feverContDay": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient days since fever (inclusive)"
-        },
         "remarks": {
           "type": "string",
           "title": "doctors' remarks on patient"
-        },
-        "localization": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient localization (1 - English, 2 - Malay， 3 - Chinese, 4 - Tamil)"
-        },
-        "callingStatus": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient latest report calling status"
         },
         "consent": {
           "type": "string",
@@ -2997,49 +2114,53 @@
           "format": "int64",
           "title": "patient privacy policy signing time in milliseconds"
         },
-        "feverStartDate": {
-          "type": "string",
-          "title": "patient date of starting fever"
-        },
-        "swabLocation": {
-          "type": "string",
-          "title": "patient location of swab"
-        },
-        "daysSinceSwab": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient day since swab"
-        },
-        "typeChangeDate": {
-          "type": "string",
-          "title": "patient type change date"
-        },
         "homeAddress": {
           "type": "string",
           "title": "patient home address"
         },
-        "swabStatus": {
+        "lastDassTime": {
           "type": "string",
-          "format": "int64",
-          "title": "patient swab status"
+          "format": "int64"
         },
-        "isOtherSwabLocation": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "patient is other swab location"
+        "lastIesrTime": {
+          "type": "string",
+          "format": "int64"
         },
-        "isSameAddress": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "patient is same address"
+        "lastDassResult": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lastIesrResult": {
+          "type": "string",
+          "format": "int64"
         },
         "registrationStatus": {
           "type": "string",
-          "format": "int64",
-          "title": "patient registration status"
+          "format": "int64"
         }
       },
       "title": "patient payload"
+    },
+    "pbQuestion": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "score": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
     "pbRefreshResponse": {
       "type": "object",
@@ -3055,122 +2176,19 @@
     "pbReport": {
       "type": "object",
       "properties": {
-        "dontHaveToCallCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "don't have to call count"
-        },
-        "patientCalledCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient called count"
-        },
-        "ummcCalledCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "UMMC called count"
-        },
-        "noYetCallCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "no yet called count"
-        },
         "date": {
           "type": "string",
           "title": "date of report"
         },
-        "undeclaredCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "undeclared count"
-        },
-        "declaredCount": {
-          "type": "string",
-          "format": "int64",
-          "title": "declared count"
-        },
-        "asymptomatic": {
-          "type": "string",
-          "format": "int64",
-          "title": "asymptomatic patient count"
-        },
-        "symptomatic": {
-          "type": "string",
-          "format": "int64",
-          "title": "symptomatic patient count"
-        },
-        "confirmedButNotAdmitted": {
-          "type": "string",
-          "format": "int64",
-          "title": "confirmed but not admitted patient count"
-        },
-        "confirmedAndAdmitted": {
-          "type": "string",
-          "format": "int64",
-          "title": "confirmed and admitted patient count"
-        },
-        "completed": {
-          "type": "string",
-          "format": "int64",
-          "title": "completed patient count"
-        },
-        "quit": {
-          "type": "string",
-          "format": "int64",
-          "title": "quit patient count"
-        },
-        "recovered": {
-          "type": "string",
-          "format": "int64",
-          "title": "recovered patient count"
-        },
-        "passedAway": {
-          "type": "string",
-          "format": "int64",
-          "title": "passed away patient count"
+        "counts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       },
       "title": "report payload"
-    },
-    "pbSwab": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "title": "swab ID (patient id + date)"
-        },
-        "patientId": {
-          "type": "string",
-          "title": "patient id"
-        },
-        "patientName": {
-          "type": "string",
-          "title": "patient name"
-        },
-        "patientPhoneNumber": {
-          "type": "string",
-          "title": "patient phone number"
-        },
-        "status": {
-          "type": "string",
-          "format": "int64",
-          "title": "swab status (1 - positive, 2 - negative, 3 - pending)"
-        },
-        "date": {
-          "type": "string",
-          "title": "swab date"
-        },
-        "location": {
-          "type": "string",
-          "title": "swab location"
-        },
-        "isOtherSwabLocation": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "is other swab location"
-        }
-      },
-      "title": "swab payload"
     },
     "pbUpdatePasswordRequest": {
       "type": "object",
@@ -3197,9 +2215,9 @@
           "type": "string",
           "title": "user role: superuser, chatbot, admin, nurse"
         },
-        "displayName": {
+        "name": {
           "type": "string",
-          "title": "user display name"
+          "title": "user name"
         },
         "phoneNumber": {
           "type": "string",
@@ -3209,22 +2227,15 @@
           "type": "string",
           "title": "user email"
         },
-        "disabled": {
-          "type": "boolean",
-          "format": "boolean",
-          "title": "user account status (true - disabled, false - enabled)"
-        },
         "password": {
           "type": "string",
           "title": "user hashed password"
         },
-        "finalQuestionsJson": {
-          "type": "string",
-          "title": "questions JSON"
-        },
-        "chart": {
-          "type": "string",
-          "title": "chart"
+        "blockList": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "user payload"

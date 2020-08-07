@@ -11,44 +11,41 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// SwabDAO ...
-type SwabDAO struct {
+// QuestionDAO ...
+type QuestionDAO struct {
 	client *mongo.Client
 }
 
-// InitSwabDAO ...
-func InitSwabDAO(client *mongo.Client) ISwabDAO {
-	return &SwabDAO{client: client}
+// InitQuestionDAO ...
+func InitQuestionDAO(client *mongo.Client) IQuestionDAO {
+	return &QuestionDAO{client: client}
 }
 
-// Create creates new swab
-func (v *SwabDAO) Create(ctx context.Context, swab *dto.Swab) (*dto.Swab, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Swabs)
-	if _, err := collection.InsertOne(ctx, swab); err != nil {
+// Create creates new question
+func (v *QuestionDAO) Create(ctx context.Context, question *dto.Question) (*dto.Question, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+	if _, err := collection.InsertOne(ctx, question); err != nil {
 		return nil, err
 	}
-	return swab, nil
+	return question, nil
 }
 
-// Get gets swab by ID
-func (v *SwabDAO) Get(ctx context.Context, id string, patientType int64) (*dto.Swab, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Swabs)
+// Get gets question by ID
+func (v *QuestionDAO) Get(ctx context.Context, id string) (*dto.Question, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
 	filter := bson.D{{constants.ID, id}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
 
-	swab := &dto.Swab{}
-	if err := collection.FindOne(ctx, filter).Decode(&swab); err != nil {
+	question := &dto.Question{}
+	if err := collection.FindOne(ctx, filter).Decode(&question); err != nil {
 		return nil, err
 	}
 
-	return swab, nil
+	return question, nil
 }
 
-// BatchGet gets swabs by slice of IDs
-func (v *SwabDAO) BatchGet(ctx context.Context, ids []string, patientType int64) ([]*dto.Swab, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Swabs)
+// BatchGet gets questions by slice of IDs
+func (v *QuestionDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Question, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
 
 	filter := bson.D{{
 		constants.ID,
@@ -57,9 +54,6 @@ func (v *SwabDAO) BatchGet(ctx context.Context, ids []string, patientType int64)
 			ids,
 		}},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.PatientType, Value: patientType})
-	}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
@@ -67,39 +61,35 @@ func (v *SwabDAO) BatchGet(ctx context.Context, ids []string, patientType int64)
 	}
 	defer cursor.Close(ctx)
 
-	var swabs []*dto.Swab
+	var questions []*dto.Question
 	for cursor.Next(ctx) {
-		swab := &dto.Swab{}
-		if err = cursor.Decode(&swab); err != nil {
+		question := &dto.Question{}
+		if err = cursor.Decode(&question); err != nil {
 			return nil, err
 		}
-		swabs = append(swabs, swab)
+		questions = append(questions, question)
 	}
 
-	return swabs, nil
+	return questions, nil
 }
 
-// Query queries swabs by sort, range, filter
-func (v *SwabDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}, patientType int64) (int64, []*dto.Swab, error) {
+// Query queries questions by sort, range, filter
+func (v *QuestionDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Question, error) {
 	f := v.parseFilter(filter)
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		f = append(f, bson.E{Key: constants.PatientType, Value: patientType})
-	}
-
 	return v.query(ctx, sort, itemsRange, f)
 }
 
-// Delete deletes swab by ID
-func (v *SwabDAO) Delete(ctx context.Context, id string) error {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Swabs)
+// Delete deletes question by ID
+func (v *QuestionDAO) Delete(ctx context.Context, id string) error {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
 	if _, err := collection.DeleteOne(ctx, bson.D{{constants.ID, id}}); err != nil {
 		return err
 	}
 	return nil
 }
 
-// BatchDelete deletes swabs by IDs
-func (v *SwabDAO) BatchDelete(ctx context.Context, ids []string) ([]string, error) {
+// BatchDelete deletes questions by IDs
+func (v *QuestionDAO) BatchDelete(ctx context.Context, ids []string) ([]string, error) {
 	var deletedIDs []string
 	for _, id := range ids {
 		err := v.Delete(ctx, id)
@@ -111,23 +101,23 @@ func (v *SwabDAO) BatchDelete(ctx context.Context, ids []string) ([]string, erro
 	return deletedIDs, nil
 }
 
-// Update updates swab
-func (v *SwabDAO) Update(ctx context.Context, swab *dto.Swab) (*dto.Swab, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Swabs)
-	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, swab.ID}}, bson.D{
-		{"$set", swab},
+// Update updates question
+func (v *QuestionDAO) Update(ctx context.Context, question *dto.Question) (*dto.Question, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, question.ID}}, bson.D{
+		{"$set", question},
 	})
 	if err != nil {
 		return nil, err
 	}
-	return swab, nil
+	return question, nil
 }
 
 // query is a generic mongodb find helper method
 // IMPORTANT SHIT: this query uses FIND. It will never return err codes.Unknown! Only FINDONE will return codes.Unknown
 // DO NOT check for codes.Unknown to see if there's result. It will never hit! Use length instead please.
-func (v *SwabDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Swab, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Swabs)
+func (v *QuestionDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Question, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
 
 	findOptions := options.Find()
 	// set range
@@ -151,27 +141,27 @@ func (v *SwabDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto
 	}
 	defer cursor.Close(ctx)
 
-	var swabs []*dto.Swab
+	var questions []*dto.Question
 	for cursor.Next(ctx) {
-		swab := &dto.Swab{}
-		if err = cursor.Decode(&swab); err != nil {
+		question := &dto.Question{}
+		if err = cursor.Decode(&question); err != nil {
 			return 0, nil, err
 		}
-		swabs = append(swabs, swab)
+		questions = append(questions, question)
 	}
 
-	count := int64(len(swabs))
+	count := int64(len(questions))
 	if itemsRange != nil { // count only if client query with range, else default to length of query results
 		if count, err = collection.CountDocuments(ctx, filter); err != nil {
 			return 0, nil, err
 		}
 	}
 
-	return count, swabs, nil
+	return count, questions, nil
 }
 
 // Low level filter parser, to be extended ...
-func (v *SwabDAO) parseFilter(filter map[string]interface{}) bson.D {
+func (v *QuestionDAO) parseFilter(filter map[string]interface{}) bson.D {
 	// cannot be nil
 	result := bson.D{}
 
@@ -182,13 +172,13 @@ func (v *SwabDAO) parseFilter(filter map[string]interface{}) bson.D {
 					Key: "$or",
 					Value: bson.A{
 						bson.M{
-							constants.Location: bson.M{
+							constants.Category: bson.M{
 								"$regex":   fmt.Sprintf("%s.*", value),
 								"$options": "i",
 							},
 						},
 						bson.M{
-							constants.PatientID: bson.M{
+							constants.Contents: bson.M{
 								"$regex":   fmt.Sprintf("%s.*", value),
 								"$options": "i",
 							},

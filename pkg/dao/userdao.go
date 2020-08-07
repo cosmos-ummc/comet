@@ -33,7 +33,7 @@ func (v *UserDAO) Create(ctx context.Context, user *dto.User) (*dto.User, error)
 	}
 
 	// create user
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Users)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Users)
 	if _, err := collection.InsertOne(ctx, user); err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (v *UserDAO) Create(ctx context.Context, user *dto.User) (*dto.User, error)
 
 // Get gets user by ID
 func (v *UserDAO) Get(ctx context.Context, id string) (*dto.User, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Users)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Users)
 	user := &dto.User{}
 	if err := collection.FindOne(ctx, bson.D{{constants.ID, id}}).Decode(&user); err != nil {
 		return nil, err
@@ -65,7 +65,7 @@ func (v *UserDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.User, erro
 
 // Query queries users by sort, range, filter
 func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Users)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Users)
 
 	var cursor *mongo.Cursor
 	var err error
@@ -187,7 +187,7 @@ func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto
 
 // Delete deletes user by ID
 func (v *UserDAO) Delete(ctx context.Context, id string) error {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Users)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Users)
 	if _, err := collection.DeleteOne(ctx, bson.D{{constants.ID, id}}); err != nil {
 		return err
 	}
@@ -209,7 +209,7 @@ func (v *UserDAO) BatchDelete(ctx context.Context, ids []string) ([]string, erro
 
 // Update updates user
 func (v *UserDAO) Update(ctx context.Context, user *dto.User) (*dto.User, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Users)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Users)
 	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, user.ID}}, bson.D{
 		{"$set", user},
 	})

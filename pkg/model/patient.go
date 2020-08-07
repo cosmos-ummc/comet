@@ -188,7 +188,7 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient, patient
 		(patient.Status != constants.Asymptomatic && patient.Status != constants.Symptomatic && patient.Status != constants.ConfirmedButNotAdmitted) {
 		// send completed message is patient status has changed to completed
 		if patient.Status == constants.Completed {
-			err = utility.SendBotNotification(p.TelegramID, constants.MessageMap[p.Localization])
+			err = utility.SendBotNotification(p.TelegramID, constants.CompletedMessage)
 			if err != nil {
 				logger.Log.Warn("failed to send completed message to telegramID: " + p.TelegramID)
 			}

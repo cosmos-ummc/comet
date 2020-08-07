@@ -2,20 +2,17 @@ package constants
 
 // Database
 const (
-	Cosmos = "cosmos"
+	Mhpss = "mhpss"
 )
 
 // Collections
 const (
-	Declarations         = "declarations"
-	Patients             = "patients"
-	Activities           = "activities"
-	Swabs                = "swabs"
-	Users                = "users"
-	PatientStatusReports = "patientstatusreports"
-	CallingReports       = "callingreports"
-	DeclarationReports   = "declarationreports"
-	AuthTokens           = "authtokens"
+	Declarations = "declarations"
+	Patients     = "patients"
+	Users        = "users"
+	AuthTokens   = "authtokens"
+	Reports      = "reports"
+	Questions    = "questions"
 )
 
 // Documents
@@ -71,17 +68,11 @@ const (
 	Disabled    = "disabled"
 	Password    = "password"
 
-	// Activities
-	UserName   = "userName"
-	OldPatient = "oldPatient"
-	NewPatient = "newPatient"
-	OldSwab    = "oldSwab"
-	NewSwab    = "newSwab"
+	Date = "date"
 
-	// Swabs
-	Count    = "count"
-	Date     = "date"
-	Location = "location"
+	// Questions
+	Contents = "contents"
+	Category = "category"
 
 	// Declarations
 	HasSymptom    = "hasSymptom"

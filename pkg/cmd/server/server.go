@@ -69,19 +69,6 @@ func RunServer() error {
 	// initialize handlers
 	handler := handlers.NewHandlers(model)
 
-	// send password reset link to all users
-	//_, us, err := model.QueryUsers(ctx, nil, nil, nil)
-	//if err == nil && len(us) > 0 {
-	//	for _, tmp := range us {
-	//		_, err = handler.GetPasswordReset(ctx, &pb.GetPasswordResetRequest{
-	//			Id: tmp.ID,
-	//		})
-	//		if err != nil {
-	//			logger.Log.Error(err.Error())
-	//		}
-	//	}
-	//}
-
 	// run HTTP gateway
 	go func() {
 		_ = rest.RunServer(ctx, cfg.GRPCPort, cfg.HTTPPort)

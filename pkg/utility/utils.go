@@ -3,7 +3,6 @@ package utility
 import (
 	"bytes"
 	"comet/pkg/constants"
-	"comet/pkg/dto"
 	"html/template"
 	"regexp"
 	"strconv"
@@ -14,38 +13,6 @@ import (
 
 	"github.com/dongri/phonenumber"
 )
-
-func ValidateDeclarationSymptom(declaration *dto.Declaration) bool {
-	if declaration.Blue == constants.HasBlue ||
-		declaration.Breathe == constants.HasBreathDifficulty ||
-		declaration.Chest == constants.HasChestPain ||
-		declaration.Cough == constants.CoughWorse ||
-		declaration.Cough == constants.StartCoughing ||
-		declaration.Drowsy == constants.HasDrowsy ||
-		declaration.Fever == constants.FeverWorse ||
-		declaration.Fever == constants.StartFever ||
-		declaration.Throat == constants.SoreThroatWorse ||
-		declaration.Throat == constants.StartSoreThroat ||
-		declaration.Loss == constants.HasLoss {
-		return true
-	}
-	return false
-}
-
-func GetPatientIDAndDateFromSwabID(id string) (string, string) {
-	ls := strings.Split(id, "_")
-	if len(ls) == 1 {
-		return ls[0], ""
-	}
-	if len(ls) == 0 {
-		return "", ""
-	}
-	return ls[0], ls[1]
-}
-
-func GenerateSwabID(patientID string, date string) string {
-	return patientID + "_" + date
-}
 
 func NormalizePhoneNumber(phoneNum string, countryCode string) string {
 	code := countryCode
@@ -114,17 +81,6 @@ func NormalizeName(name string) string {
 func NormalizeEmail(email string) string {
 	re := regexp.MustCompile(`[ ]`)
 	return strings.ToLower(re.ReplaceAllString(email, ""))
-}
-
-func DeclarationIDToPatientIDAndDate(declarationID string) (string, string) {
-	ls := strings.Split(declarationID, "_")
-	if len(ls) == 1 {
-		return ls[0], ""
-	}
-	if len(ls) == 0 {
-		return "", ""
-	}
-	return ls[0], ls[1]
 }
 
 func SafeCastInt64(val interface{}) int64 {

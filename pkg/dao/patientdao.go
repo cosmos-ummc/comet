@@ -26,7 +26,7 @@ func InitPatientDAO(client *mongo.Client) IPatientDAO {
 
 // Create creates new patient
 func (v *PatientDAO) Create(ctx context.Context, patient *dto.Patient) (*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	if _, err := collection.InsertOne(ctx, patient); err != nil {
 		return nil, err
 	}
@@ -34,13 +34,10 @@ func (v *PatientDAO) Create(ctx context.Context, patient *dto.Patient) (*dto.Pat
 }
 
 // Get gets patient by ID and type
-func (v *PatientDAO) Get(ctx context.Context, id string, patientType int64) (*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+func (v *PatientDAO) Get(ctx context.Context, id string) (*dto.Patient, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 
 	filter := bson.D{{constants.ID, id}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	patient := &dto.Patient{}
 	if err := collection.FindOne(ctx, filter).Decode(&patient); err != nil {
@@ -51,8 +48,8 @@ func (v *PatientDAO) Get(ctx context.Context, id string, patientType int64) (*dt
 }
 
 // BatchGet gets patients by slice of IDs and type
-func (v *PatientDAO) BatchGet(ctx context.Context, ids []string, patientType int64) ([]*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+func (v *PatientDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Patient, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 
 	filter := bson.D{{
 		constants.ID,
@@ -61,9 +58,6 @@ func (v *PatientDAO) BatchGet(ctx context.Context, ids []string, patientType int
 			ids,
 		}},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
@@ -84,18 +78,13 @@ func (v *PatientDAO) BatchGet(ctx context.Context, ids []string, patientType int
 }
 
 // Query queries patients by sort, range, type and a filter to match any number of fields
-func (v *PatientDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}, patientType int64) (int64, []*dto.Patient, error) {
-
+func (v *PatientDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Patient, error) {
 	f := v.parseFilter(filter)
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		f = append(f, bson.E{Key: constants.Type, Value: patientType})
-	}
-
 	return v.query(ctx, sort, itemsRange, f)
 }
 
 // GetByStatus gets patients by statuses and type
-func (v *PatientDAO) GetByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error) {
+func (v *PatientDAO) GetByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
 
 	filter := bson.D{{
 		constants.Status,
@@ -103,15 +92,12 @@ func (v *PatientDAO) GetByStatus(ctx context.Context, status []int64, sort *dto.
 			"$in",
 			status}},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	return v.query(ctx, sort, itemsRange, filter)
 }
 
 // GetSwabPatients gets swab patients of the specified type >= 14 days (ONLY RETURN PATIENTS WITH STATUS 1, 2, 3)
-func (v *PatientDAO) GetSwabPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error) {
+func (v *PatientDAO) GetSwabPatients(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
 	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
 		"$and",
@@ -132,16 +118,13 @@ func (v *PatientDAO) GetSwabPatients(ctx context.Context, sort *dto.SortData, it
 			}},
 		},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	return v.query(ctx, sort, itemsRange, filter)
 }
 
 // GetDeclaredByTime gets declared patients of the specified type in given from timestamp
-func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64, patientType int64) ([]*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 
 	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
@@ -163,9 +146,6 @@ func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64, patientT
 			}},
 		},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	cursor, err := collection.Find(ctx, filter)
 	if err != nil {
@@ -186,7 +166,7 @@ func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64, patientT
 }
 
 // GetUndeclaredByTime gets undeclared patients of the specified type given from timestamp
-func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error) {
+func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
 	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
 		"$and",
@@ -207,9 +187,6 @@ func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *
 			}},
 		},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	return v.query(ctx, sort, itemsRange, filter)
 }
@@ -217,7 +194,7 @@ func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *
 // GetByConsentTime gets patients given from and to consent timestamp
 func (v *PatientDAO) GetByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error) {
 	statusBSON := bson.A{constants.Asymptomatic, constants.Symptomatic, constants.ConfirmedButNotAdmitted}
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	cursor, err := collection.Find(ctx, bson.D{{
 		"$and",
 		bson.A{
@@ -263,7 +240,7 @@ func (v *PatientDAO) GetByConsentTime(ctx context.Context, from int64, to int64)
 
 // Update updates patient
 func (v *PatientDAO) Update(ctx context.Context, patient *dto.Patient) (*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, patient.ID}}, bson.D{
 		{"$set", patient},
 	})
@@ -275,7 +252,7 @@ func (v *PatientDAO) Update(ctx context.Context, patient *dto.Patient) (*dto.Pat
 
 // Delete deletes patient by ID
 func (v *PatientDAO) Delete(ctx context.Context, id string) error {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	if _, err := collection.DeleteOne(ctx, bson.D{{constants.ID, id}}); err != nil {
 		return err
 	}
@@ -298,7 +275,7 @@ func (v *PatientDAO) BatchDelete(ctx context.Context, ids []string) ([]string, e
 // ClientGetUndeclaredByTime gets undeclared patients given from timestamp (ONLY RETURN PATIENTS WITH STATUS 1, 2, 3 AND WITH TELEGRAM_ID)
 func (v *PatientDAO) ClientGetUndeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error) {
 	statusBSON := bson.A{constants.Asymptomatic, constants.Symptomatic, constants.ConfirmedButNotAdmitted}
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 	cursor, err := collection.Find(ctx, bson.D{{
 		"$and",
 		bson.A{
@@ -343,7 +320,7 @@ func (v *PatientDAO) ClientGetUndeclaredByTime(ctx context.Context, from int64) 
 }
 
 // QueryNoCall queries patients who have declared but no yet call
-func (v *PatientDAO) QueryNoCall(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData, patientType int64) (int64, []*dto.Patient, error) {
+func (v *PatientDAO) QueryNoCall(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
 	statusBSON := bson.A{constants.Symptomatic, constants.Asymptomatic, constants.ConfirmedButNotAdmitted}
 	filter := bson.D{{
 		"$and",
@@ -374,16 +351,13 @@ func (v *PatientDAO) QueryNoCall(ctx context.Context, from int64, sort *dto.Sort
 			}},
 		},
 	}}
-	if patientType == constants.PUI || patientType == constants.ContactTracing {
-		filter = append(filter, bson.E{Key: constants.Type, Value: patientType})
-	}
 
 	return v.aggregate(ctx, sort, itemsRange, filter)
 }
 
 // aggregate is a generic mongodb find helper method (based on filters in declarations collection)
 func (v *PatientDAO) aggregate(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 
 	result := mongo.Pipeline{}
 
@@ -483,7 +457,7 @@ func (v *PatientDAO) aggregate(ctx context.Context, sort *dto.SortData, itemsRan
 // IMPORTANT SHIT: this query uses FIND. It will never return err codes.Unknown! Only FINDONE will return codes.Unknown
 // DO NOT check for codes.Unknown to see if there's result. It will never hit! Use length instead please.
 func (v *PatientDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Patient, error) {
-	collection := v.client.Database(constants.Cosmos).Collection(constants.Patients)
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
 
 	findOptions := options.Find()
 	// set range

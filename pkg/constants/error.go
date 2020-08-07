@@ -12,7 +12,7 @@ var (
 	InvalidPatientStatusError = status.Error(codes.InvalidArgument, "Invalid patient status.")
 	InvalidAddressError       = status.Error(codes.InvalidArgument, "Invalid address.")
 	InvalidLanguageError      = status.Error(codes.InvalidArgument, "Invalid language.")
-	InvalidSwabStatusError    = status.Error(codes.InvalidArgument, "Invalid swab status.")
+	InvalidQuestionStatusError    = status.Error(codes.InvalidArgument, "Invalid swab status.")
 	InvalidPatientNameError   = status.Error(codes.InvalidArgument, "Invalid patient name.")
 	InvalidPatientIDError     = status.Error(codes.InvalidArgument, "Invalid patientID.")
 	InvalidPatientTypeError   = status.Error(codes.InvalidArgument, "Invalid patient type.")
@@ -22,7 +22,7 @@ var (
 	RemarksTooLongError       = status.Error(codes.InvalidArgument, "Remarks too long.")
 
 	PatientAlreadyExistError     = status.Error(codes.AlreadyExists, "Patient already exist!")
-	SwabAlreadyExistError        = status.Error(codes.AlreadyExists, "Swab already exist!")
+	QuestionAlreadyExistError        = status.Error(codes.AlreadyExists, "Question already exist!")
 	UserAlreadyExistError        = status.Error(codes.AlreadyExists, "User already exist!")
 	DeclarationAlreadyExistError = status.Error(codes.AlreadyExists, "Declaration already exist!")
 	PhoneNumberAlreadyExistError = status.Error(codes.AlreadyExists, "Phone number already exist, please use another phone number.")
@@ -31,7 +31,7 @@ var (
 	UserNotFoundError        = status.Error(codes.NotFound, "User not found!")
 	PatientNotFoundError     = status.Error(codes.NotFound, "Patient not found!")
 	ActivityNotFoundError    = status.Error(codes.NotFound, "Activity not found!")
-	SwabNotFoundError        = status.Error(codes.NotFound, "Swab not found!")
+	QuestionNotFoundError        = status.Error(codes.NotFound, "Question not found!")
 	DeclarationNotFoundError = status.Error(codes.NotFound, "Declaration not found!")
 	MetadataNotFoundError    = status.Error(codes.NotFound, "Metadata not found!")
 

@@ -14,15 +14,16 @@ type ClientCreateDeclarationHandler struct {
 
 func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Context, req *pb.ClientCreateDeclarationRequest) (*pb.ClientCreateDeclarationResponse, error) {
 	declaration := &dto.Declaration{
-		PatientID: utility.RemoveZeroWidth(req.PatientId),
-		Cough:     req.Cough,
-		Throat:    req.Throat,
-		Fever:     req.Fever,
-		Breathe:   req.Breathe,
-		Chest:     req.Chest,
-		Blue:      req.Blue,
-		Drowsy:    req.Drowsy,
-		Loss:      req.Loss,
+		ID:                 "",
+		PatientID:          utility.RemoveZeroWidth(req.PatientId),
+		PatientName:        "",
+		PatientPhoneNumber: "",
+		Result:             nil,
+		Category:           "",
+		Score:              0,
+		Status:             0,
+		SubmittedAt:        0,
+		DoctorRemarks:      "",
 	}
 
 	rslt, err := s.Model.ClientCreateDeclaration(ctx, declaration)

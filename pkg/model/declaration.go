@@ -19,9 +19,6 @@ func (m *Model) ClientCreateDeclaration(ctx context.Context, declaration *dto.De
 	// process some data
 	now := utility.MalaysiaTime(time.Now())
 	declaration.SubmittedAt = utility.TimeToMilli(now)
-	today := utility.TimeToDateString(utility.MilliToTime(declaration.SubmittedAt))
-	declaration.HasSymptom = utility.ValidateDeclarationSymptom(declaration)
-	declaration.ID = declaration.PatientID + "_" + today
 	declaration.Date = utility.TimeToDateString(now)
 
 	// check if patient exist, put patient name

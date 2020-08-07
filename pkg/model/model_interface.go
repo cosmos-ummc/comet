@@ -72,26 +72,23 @@ type IModel interface {
 	ClientGetUndeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	/////////////
 
-	///////////// Swab models
-	// CreateSwab creates new swab
-	CreateSwab(ctx context.Context, swab *dto.Swab, patientType int64, user *dto.User) (*dto.Swab, error)
-	// UpdateSwab updates swab
-	UpdateSwab(ctx context.Context, swab *dto.Swab, patientType int64, user *dto.User) (*dto.Swab, error)
-	// UpdateSwabs update swabs
-	UpdateSwabs(ctx context.Context, swab *dto.Swab, ids []string, patientType int64, user *dto.User) ([]string, error)
-	// GetSwab gets swab by ID
-	GetSwab(ctx context.Context, id string, patientType int64) (*dto.Swab, error)
-	// BatchGetSwabs get swabs by slice of IDs
-	BatchGetSwabs(ctx context.Context, ids []string, patientType int64) ([]*dto.Swab, error)
-	// QuerySwabs queries swabs by sort, range, filter
-	QuerySwabs(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}, patientType int64) (int64, []*dto.Swab, error)
-	// DeleteSwab deletes swab by ID
-	DeleteSwab(ctx context.Context, id string, patientType int64) (*dto.Swab, error)
-	// DeleteSwabs delete swabs by IDs
-	DeleteSwabs(ctx context.Context, ids []string, patientType int64) ([]string, error)
-	// QuerySwabsByPatientID ...
-	QuerySwabsByPatientID(ctx context.Context, id string, patientType int64) ([]*dto.Swab, error)
-
+	///////////// Question models
+	// CreateQuestion creates new question
+	CreateQuestion(ctx context.Context, question *dto.Question) (*dto.Question, error)
+	// UpdateQuestion updates question
+	UpdateQuestion(ctx context.Context, question *dto.Question) (*dto.Question, error)
+	// UpdateQuestions update questions
+	UpdateQuestions(ctx context.Context, question *dto.Question, ids []string) ([]string, error)
+	// GetQuestion gets question by ID
+	GetQuestion(ctx context.Context, id string) (*dto.Question, error)
+	// BatchGetQuestions get questions by slice of IDs
+	BatchGetQuestions(ctx context.Context, ids []string) ([]*dto.Question, error)
+	// QueryQuestions queries questions by sort, range, filter
+	QueryQuestions(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Question, error)
+	// DeleteQuestion deletes question by ID
+	DeleteQuestion(ctx context.Context, id string) (*dto.Question, error)
+	// DeleteQuestions delete questions by IDs
+	DeleteQuestions(ctx context.Context, ids []string) ([]string, error)
 	/////////////
 
 	///////////// User models
@@ -132,32 +129,15 @@ type IModel interface {
 	/////////////
 
 	///////////// Report models
-	// GetDeclarationReport gets declaration report
-	GetDeclarationReport(ctx context.Context, dateString string, patientType int64) (*dto.DeclarationReport, error)
-	// GetDeclarationReports get declaration reports given dates inclusive
-	GetDeclarationReports(ctx context.Context, from, to string, patientType int64) ([]*dto.DeclarationReport, error)
-	// GetCallingReport gets calling report
-	GetCallingReport(ctx context.Context, date string, patientType int64) (*dto.CallingReport, error)
-	// GetCallingReports get calling reports given dates inclusive
-	GetCallingReports(ctx context.Context, from, to string, patientType int64) ([]*dto.CallingReport, error)
-	// GetPatientStatusReport gets patient status report
-	GetPatientStatusReport(ctx context.Context, dateString string, patientType int64) (*dto.PatientStatusReport, error)
-	// GetPatientStatusReports get patient status reports given dates inclusive
-	GetPatientStatusReports(ctx context.Context, from, to string, patientType int64) ([]*dto.PatientStatusReport, error)
+	// GetReport gets report
+	GetReport(ctx context.Context, dateString string) (*dto.Report, error)
+	// GetReports get reports given dates inclusive
+	GetReports(ctx context.Context, from, to string) ([]*dto.Report, error)
 	// GenerateReport generates all reports based on latest data
 	GenerateReport(ctx context.Context, date string) error
 	// SyncDays syncs days
 	SyncDays(ctx context.Context) error
 	// SyncPatientReport sync patient record when changed type
 	SyncPatientReport(ctx context.Context) error
-	/////////////
-
-	///////////// Activity models
-	// CreateActivity creates new activity
-	CreateActivity(ctx context.Context, activity *dto.Activity) (*dto.Activity, error)
-	// GetActivity gets activity by ID
-	GetActivity(ctx context.Context, id string) (*dto.Activity, error)
-	// QueryActivities queries activities by sort, range, filter
-	QueryActivities(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Activity, error)
 	/////////////
 }
