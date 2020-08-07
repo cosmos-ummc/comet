@@ -10,41 +10,41 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// QuestionDAO ...
-type QuestionDAO struct {
+// MeetingDAO ...
+type MeetingDAO struct {
 	client *mongo.Client
 }
 
-// InitQuestionDAO ...
-func InitQuestionDAO(client *mongo.Client) IQuestionDAO {
-	return &QuestionDAO{client: client}
+// InitMeetingDAO ...
+func InitMeetingDAO(client *mongo.Client) IMeetingDAO {
+	return &MeetingDAO{client: client}
 }
 
-// Create creates new question
-func (v *QuestionDAO) Create(ctx context.Context, question *dto.Question) (*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
-	if _, err := collection.InsertOne(ctx, question); err != nil {
+// Create creates new meeting
+func (v *MeetingDAO) Create(ctx context.Context, meeting *dto.Meeting) (*dto.Meeting, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Meetings)
+	if _, err := collection.InsertOne(ctx, meeting); err != nil {
 		return nil, err
 	}
-	return question, nil
+	return meeting, nil
 }
 
-// Get gets question by ID
-func (v *QuestionDAO) Get(ctx context.Context, id string) (*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+// Get gets meeting by ID
+func (v *MeetingDAO) Get(ctx context.Context, id string) (*dto.Meeting, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Meetings)
 	filter := bson.D{{constants.ID, id}}
 
-	question := &dto.Question{}
-	if err := collection.FindOne(ctx, filter).Decode(&question); err != nil {
+	meeting := &dto.Meeting{}
+	if err := collection.FindOne(ctx, filter).Decode(&meeting); err != nil {
 		return nil, err
 	}
 
-	return question, nil
+	return meeting, nil
 }
 
-// BatchGet gets questions by slice of IDs
-func (v *QuestionDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+// BatchGet gets meetings by slice of IDs
+func (v *MeetingDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Meeting, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Meetings)
 
 	filter := bson.D{{
 		constants.ID,
@@ -60,35 +60,35 @@ func (v *QuestionDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Questi
 	}
 	defer cursor.Close(ctx)
 
-	var questions []*dto.Question
+	var meetings []*dto.Meeting
 	for cursor.Next(ctx) {
-		question := &dto.Question{}
-		if err = cursor.Decode(&question); err != nil {
+		meeting := &dto.Meeting{}
+		if err = cursor.Decode(&meeting); err != nil {
 			return nil, err
 		}
-		questions = append(questions, question)
+		meetings = append(meetings, meeting)
 	}
 
-	return questions, nil
+	return meetings, nil
 }
 
-// Query queries questions by sort, range, filter
-func (v *QuestionDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Question, error) {
+// Query queries meetings by sort, range, filter
+func (v *MeetingDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Meeting, error) {
 	f := v.parseFilter(filter)
 	return v.query(ctx, sort, itemsRange, f)
 }
 
-// Delete deletes question by ID
-func (v *QuestionDAO) Delete(ctx context.Context, id string) error {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+// Delete deletes meeting by ID
+func (v *MeetingDAO) Delete(ctx context.Context, id string) error {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Meetings)
 	if _, err := collection.DeleteOne(ctx, bson.D{{constants.ID, id}}); err != nil {
 		return err
 	}
 	return nil
 }
 
-// BatchDelete deletes questions by IDs
-func (v *QuestionDAO) BatchDelete(ctx context.Context, ids []string) ([]string, error) {
+// BatchDelete deletes meetings by IDs
+func (v *MeetingDAO) BatchDelete(ctx context.Context, ids []string) ([]string, error) {
 	var deletedIDs []string
 	for _, id := range ids {
 		err := v.Delete(ctx, id)
@@ -100,23 +100,23 @@ func (v *QuestionDAO) BatchDelete(ctx context.Context, ids []string) ([]string, 
 	return deletedIDs, nil
 }
 
-// Update updates question
-func (v *QuestionDAO) Update(ctx context.Context, question *dto.Question) (*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
-	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, question.ID}}, bson.D{
-		{"$set", question},
+// Update updates meeting
+func (v *MeetingDAO) Update(ctx context.Context, meeting *dto.Meeting) (*dto.Meeting, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Meetings)
+	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, meeting.ID}}, bson.D{
+		{"$set", meeting},
 	})
 	if err != nil {
 		return nil, err
 	}
-	return question, nil
+	return meeting, nil
 }
 
 // query is a generic mongodb find helper method
 // IMPORTANT SHIT: this query uses FIND. It will never return err codes.Unknown! Only FINDONE will return codes.Unknown
 // DO NOT check for codes.Unknown to see if there's result. It will never hit! Use length instead please.
-func (v *QuestionDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+func (v *MeetingDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Meeting, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.Meetings)
 
 	findOptions := options.Find()
 	// set range
@@ -140,27 +140,27 @@ func (v *QuestionDAO) query(ctx context.Context, sort *dto.SortData, itemsRange 
 	}
 	defer cursor.Close(ctx)
 
-	var questions []*dto.Question
+	var meetings []*dto.Meeting
 	for cursor.Next(ctx) {
-		question := &dto.Question{}
-		if err = cursor.Decode(&question); err != nil {
+		meeting := &dto.Meeting{}
+		if err = cursor.Decode(&meeting); err != nil {
 			return 0, nil, err
 		}
-		questions = append(questions, question)
+		meetings = append(meetings, meeting)
 	}
 
-	count := int64(len(questions))
+	count := int64(len(meetings))
 	if itemsRange != nil { // count only if client query with range, else default to length of query results
 		if count, err = collection.CountDocuments(ctx, filter); err != nil {
 			return 0, nil, err
 		}
 	}
 
-	return count, questions, nil
+	return count, meetings, nil
 }
 
 // Low level filter parser, to be extended ...
-func (v *QuestionDAO) parseFilter(filter map[string]interface{}) bson.D {
+func (v *MeetingDAO) parseFilter(filter map[string]interface{}) bson.D {
 	// cannot be nil
 	result := bson.D{}
 

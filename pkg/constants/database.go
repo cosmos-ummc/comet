@@ -13,6 +13,10 @@ const (
 	AuthTokens   = "authtokens"
 	Reports      = "reports"
 	Questions    = "questions"
+	ChatMessages = "chatmessages"
+	ChatRooms    = "chatrooms"
+	Consultants  = "consultants"
+	Meetings     = "meetings"
 )
 
 // Documents

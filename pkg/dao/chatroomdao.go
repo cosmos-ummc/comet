@@ -10,41 +10,41 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// QuestionDAO ...
-type QuestionDAO struct {
+// ChatRoomDAO ...
+type ChatRoomDAO struct {
 	client *mongo.Client
 }
 
-// InitQuestionDAO ...
-func InitQuestionDAO(client *mongo.Client) IQuestionDAO {
-	return &QuestionDAO{client: client}
+// InitChatRoomDAO ...
+func InitChatRoomDAO(client *mongo.Client) IChatRoomDAO {
+	return &ChatRoomDAO{client: client}
 }
 
-// Create creates new question
-func (v *QuestionDAO) Create(ctx context.Context, question *dto.Question) (*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
-	if _, err := collection.InsertOne(ctx, question); err != nil {
+// Create creates new chatRoom
+func (v *ChatRoomDAO) Create(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.ChatRoom, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.ChatRooms)
+	if _, err := collection.InsertOne(ctx, chatRoom); err != nil {
 		return nil, err
 	}
-	return question, nil
+	return chatRoom, nil
 }
 
-// Get gets question by ID
-func (v *QuestionDAO) Get(ctx context.Context, id string) (*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+// Get gets chatRoom by ID
+func (v *ChatRoomDAO) Get(ctx context.Context, id string) (*dto.ChatRoom, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.ChatRooms)
 	filter := bson.D{{constants.ID, id}}
 
-	question := &dto.Question{}
-	if err := collection.FindOne(ctx, filter).Decode(&question); err != nil {
+	chatRoom := &dto.ChatRoom{}
+	if err := collection.FindOne(ctx, filter).Decode(&chatRoom); err != nil {
 		return nil, err
 	}
 
-	return question, nil
+	return chatRoom, nil
 }
 
-// BatchGet gets questions by slice of IDs
-func (v *QuestionDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+// BatchGet gets chatRooms by slice of IDs
+func (v *ChatRoomDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.ChatRoom, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.ChatRooms)
 
 	filter := bson.D{{
 		constants.ID,
@@ -60,35 +60,35 @@ func (v *QuestionDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Questi
 	}
 	defer cursor.Close(ctx)
 
-	var questions []*dto.Question
+	var chatRooms []*dto.ChatRoom
 	for cursor.Next(ctx) {
-		question := &dto.Question{}
-		if err = cursor.Decode(&question); err != nil {
+		chatRoom := &dto.ChatRoom{}
+		if err = cursor.Decode(&chatRoom); err != nil {
 			return nil, err
 		}
-		questions = append(questions, question)
+		chatRooms = append(chatRooms, chatRoom)
 	}
 
-	return questions, nil
+	return chatRooms, nil
 }
 
-// Query queries questions by sort, range, filter
-func (v *QuestionDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Question, error) {
+// Query queries chatRooms by sort, range, filter
+func (v *ChatRoomDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.ChatRoom, error) {
 	f := v.parseFilter(filter)
 	return v.query(ctx, sort, itemsRange, f)
 }
 
-// Delete deletes question by ID
-func (v *QuestionDAO) Delete(ctx context.Context, id string) error {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+// Delete deletes chatRoom by ID
+func (v *ChatRoomDAO) Delete(ctx context.Context, id string) error {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.ChatRooms)
 	if _, err := collection.DeleteOne(ctx, bson.D{{constants.ID, id}}); err != nil {
 		return err
 	}
 	return nil
 }
 
-// BatchDelete deletes questions by IDs
-func (v *QuestionDAO) BatchDelete(ctx context.Context, ids []string) ([]string, error) {
+// BatchDelete deletes chatRooms by IDs
+func (v *ChatRoomDAO) BatchDelete(ctx context.Context, ids []string) ([]string, error) {
 	var deletedIDs []string
 	for _, id := range ids {
 		err := v.Delete(ctx, id)
@@ -100,23 +100,23 @@ func (v *QuestionDAO) BatchDelete(ctx context.Context, ids []string) ([]string, 
 	return deletedIDs, nil
 }
 
-// Update updates question
-func (v *QuestionDAO) Update(ctx context.Context, question *dto.Question) (*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
-	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, question.ID}}, bson.D{
-		{"$set", question},
+// Update updates chatRoom
+func (v *ChatRoomDAO) Update(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.ChatRoom, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.ChatRooms)
+	_, err := collection.UpdateOne(ctx, bson.D{{constants.ID, chatRoom.ID}}, bson.D{
+		{"$set", chatRoom},
 	})
 	if err != nil {
 		return nil, err
 	}
-	return question, nil
+	return chatRoom, nil
 }
 
 // query is a generic mongodb find helper method
 // IMPORTANT SHIT: this query uses FIND. It will never return err codes.Unknown! Only FINDONE will return codes.Unknown
 // DO NOT check for codes.Unknown to see if there's result. It will never hit! Use length instead please.
-func (v *QuestionDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Question, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Questions)
+func (v *ChatRoomDAO) query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.ChatRoom, error) {
+	collection := v.client.Database(constants.Mhpss).Collection(constants.ChatRooms)
 
 	findOptions := options.Find()
 	// set range
@@ -140,27 +140,27 @@ func (v *QuestionDAO) query(ctx context.Context, sort *dto.SortData, itemsRange 
 	}
 	defer cursor.Close(ctx)
 
-	var questions []*dto.Question
+	var chatRooms []*dto.ChatRoom
 	for cursor.Next(ctx) {
-		question := &dto.Question{}
-		if err = cursor.Decode(&question); err != nil {
+		chatRoom := &dto.ChatRoom{}
+		if err = cursor.Decode(&chatRoom); err != nil {
 			return 0, nil, err
 		}
-		questions = append(questions, question)
+		chatRooms = append(chatRooms, chatRoom)
 	}
 
-	count := int64(len(questions))
+	count := int64(len(chatRooms))
 	if itemsRange != nil { // count only if client query with range, else default to length of query results
 		if count, err = collection.CountDocuments(ctx, filter); err != nil {
 			return 0, nil, err
 		}
 	}
 
-	return count, questions, nil
+	return count, chatRooms, nil
 }
 
 // Low level filter parser, to be extended ...
-func (v *QuestionDAO) parseFilter(filter map[string]interface{}) bson.D {
+func (v *ChatRoomDAO) parseFilter(filter map[string]interface{}) bson.D {
 	// cannot be nil
 	result := bson.D{}
 

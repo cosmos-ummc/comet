@@ -118,3 +118,75 @@ type IAuthDAO interface {
 	// DeleteByID deletes tokens by userID
 	DeleteByID(ctx context.Context, id string) error
 }
+
+// IChatMessageDAO ...
+type IChatMessageDAO interface {
+	// Create creates new chatMessage
+	Create(ctx context.Context, chatMessage *dto.ChatMessage) (*dto.ChatMessage, error)
+	// Update updates chatMessage
+	Update(ctx context.Context, chatMessage *dto.ChatMessage) (*dto.ChatMessage, error)
+	// Get gets chatMessage by ID
+	Get(ctx context.Context, id string) (*dto.ChatMessage, error)
+	// BatchGet gets chatMessages by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.ChatMessage, error)
+	// Query queries chatMessages by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.ChatMessage, error)
+	// Delete deletes chatMessage by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes chatMessages by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
+// IChatRoomDAO ...
+type IChatRoomDAO interface {
+	// Create creates new chatRoom
+	Create(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.ChatRoom, error)
+	// Update updates chatRoom
+	Update(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.ChatRoom, error)
+	// Get gets chatRoom by ID
+	Get(ctx context.Context, id string) (*dto.ChatRoom, error)
+	// BatchGet gets chatRooms by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.ChatRoom, error)
+	// Query queries chatRooms by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.ChatRoom, error)
+	// Delete deletes chatRoom by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes chatRooms by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
+// IConsultantDAO ...
+type IConsultantDAO interface {
+	// Create creates new consultant
+	Create(ctx context.Context, consultant *dto.Consultant) (*dto.Consultant, error)
+	// Update updates consultant
+	Update(ctx context.Context, consultant *dto.Consultant) (*dto.Consultant, error)
+	// Get gets consultant by ID
+	Get(ctx context.Context, id string) (*dto.Consultant, error)
+	// BatchGet gets consultants by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.Consultant, error)
+	// Query queries consultants by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Consultant, error)
+	// Delete deletes consultant by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes consultants by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
+// IMeetingDAO ...
+type IMeetingDAO interface {
+	// Create creates new meeting
+	Create(ctx context.Context, meeting *dto.Meeting) (*dto.Meeting, error)
+	// Update updates meeting
+	Update(ctx context.Context, meeting *dto.Meeting) (*dto.Meeting, error)
+	// Get gets meeting by ID
+	Get(ctx context.Context, id string) (*dto.Meeting, error)
+	// BatchGet gets meetings by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.Meeting, error)
+	// Query queries meetings by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Meeting, error)
+	// Delete deletes meeting by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes meetings by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
