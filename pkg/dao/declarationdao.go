@@ -68,42 +68,6 @@ func (v *DeclarationDAO) Query(ctx context.Context, sort *dto.SortData, itemsRan
 	return v.query(ctx, sort, itemsRange, f)
 }
 
-// QueryByTime queries declarations given from timestamp
-func (v *DeclarationDAO) QueryByTime(ctx context.Context, from int64) (int64, []*dto.Declaration, error) {
-	filter := bson.D{{
-		"$and",
-		bson.A{
-			bson.D{{
-				constants.SubmittedAt,
-				bson.D{{
-					"$gt",
-					from,
-				}},
-			}},
-		},
-	}}
-
-	return v.query(ctx, nil, nil, filter)
-}
-
-// QueryByCallingStatusAndTime queries declarations by time
-func (v *DeclarationDAO) QueryByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64) (int64, []*dto.Declaration, error) {
-	filter := bson.D{{
-		"$and",
-		bson.A{
-			bson.D{{
-				constants.SubmittedAt,
-				bson.D{{
-					"$gte",
-					from,
-				}},
-			}},
-		},
-	}}
-
-	return v.query(ctx, nil, nil, filter)
-}
-
 func (v *DeclarationDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Declaration, error) {
 	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 
@@ -143,23 +107,6 @@ func (v *DeclarationDAO) BatchDelete(ctx context.Context, ids []string) ([]strin
 		deletedIDs = append(deletedIDs, id)
 	}
 	return deletedIDs, nil
-}
-
-func (v *DeclarationDAO) QueryStableDeclarations(ctx context.Context, from int64) (int64, []*dto.Declaration, error) {
-	filter := bson.D{{
-		"$and",
-		bson.A{
-			bson.D{{
-				constants.SubmittedAt,
-				bson.D{{
-					"$gte",
-					from,
-				}},
-			}},
-		},
-	}}
-
-	return v.query(ctx, nil, nil, filter)
 }
 
 // query is a generic mongodb find helper method

@@ -3039,6 +3039,10 @@
         "blocked": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },
@@ -3941,6 +3945,14 @@
           "items": {
             "type": "string"
           }
+        },
+        "visible": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "disabled": {
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "user payload"

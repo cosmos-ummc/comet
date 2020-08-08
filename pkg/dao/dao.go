@@ -18,8 +18,6 @@ type IPatientDAO interface {
 	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Patient, error)
 	// GetByStatus gets patients by statuses and type
 	GetByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
-	// GetDeclaredByTime gets declared patients of the specified type in given from timestamp
-	GetDeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	// GetUndeclaredByTime gets undeclared patients of the specified type given from timestamp
 	GetUndeclaredByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
 	// Update updates patient
@@ -32,8 +30,6 @@ type IPatientDAO interface {
 	ClientGetUndeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	// GetByConsentTime gets patients given from and to consent timestamp
 	GetByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error)
-	// QueryNoCall queries patients who have declared but no yet call
-	QueryNoCall(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
 }
 
 // IQuestionDAO ...
@@ -66,16 +62,10 @@ type IDeclarationDAO interface {
 	Delete(ctx context.Context, declarationID string) error
 	// Query queries declarations
 	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Declaration, error)
-	// Query queries declarations by time
-	QueryByTime(ctx context.Context, from int64) (int64, []*dto.Declaration, error)
-	// QueryByCallingStatusAndTime queries declarations by time
-	QueryByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64) (int64, []*dto.Declaration, error)
 	// BatchGet gets declarations
 	BatchGet(ctx context.Context, ids []string) ([]*dto.Declaration, error)
 	// BatchDelete deletes declarations
 	BatchDelete(ctx context.Context, ids []string) ([]string, error)
-	// QueryStableDeclarations query stable declarations
-	QueryStableDeclarations(ctx context.Context, from int64) (int64, []*dto.Declaration, error)
 }
 
 // IUserDAO ...

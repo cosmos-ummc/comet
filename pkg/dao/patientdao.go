@@ -3,7 +3,6 @@ package dao
 import (
 	"comet/pkg/constants"
 	"comet/pkg/dto"
-	"comet/pkg/logger"
 	"comet/pkg/utility"
 	"context"
 	"fmt"
@@ -96,48 +95,20 @@ func (v *PatientDAO) GetByStatus(ctx context.Context, status []int64, sort *dto.
 	return v.query(ctx, sort, itemsRange, filter)
 }
 
-// GetDeclaredByTime gets declared patients of the specified type in given from timestamp
-func (v *PatientDAO) GetDeclaredByTime(ctx context.Context, from int64) ([]*dto.Patient, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
-
-	filter := bson.D{{
-		"$and",
-		bson.A{
-			bson.D{{
-				constants.LastDeclared,
-				bson.D{{
-					"$gte",
-					from,
-				}},
-			}},
-		},
-	}}
-
-	cursor, err := collection.Find(ctx, filter)
-	if err != nil {
-		return nil, err
-	}
-	defer cursor.Close(ctx)
-
-	var patients []*dto.Patient
-	for cursor.Next(ctx) {
-		patient := &dto.Patient{}
-		if err = cursor.Decode(&patient); err != nil {
-			return nil, err
-		}
-		patients = append(patients, patient)
-	}
-
-	return patients, nil
-}
-
 // GetUndeclaredByTime gets undeclared patients of the specified type given from timestamp
 func (v *PatientDAO) GetUndeclaredByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
 	filter := bson.D{{
 		"$and",
 		bson.A{
 			bson.D{{
-				constants.LastDeclared,
+				constants.LastDassTime,
+				bson.D{{
+					"$lt",
+					from,
+				}},
+			}},
+			bson.D{{
+				constants.LastIesrTime,
 				bson.D{{
 					"$lt",
 					from,
@@ -259,129 +230,6 @@ func (v *PatientDAO) ClientGetUndeclaredByTime(ctx context.Context, from int64) 
 	}
 
 	return patients, nil
-}
-
-// QueryNoCall queries patients who have declared but no yet call
-func (v *PatientDAO) QueryNoCall(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
-	filter := bson.D{{
-		"$and",
-		bson.A{
-			bson.D{{
-				constants.LastDeclared,
-				bson.D{{
-					"$gte",
-					from,
-				}},
-			}},
-			bson.D{{
-				constants.Declarations + "." + constants.SubmittedAt,
-				bson.D{{
-					"$gte",
-					from,
-				}},
-			}},
-		},
-	}}
-
-	return v.aggregate(ctx, sort, itemsRange, filter)
-}
-
-// aggregate is a generic mongodb find helper method (based on filters in declarations collection)
-func (v *PatientDAO) aggregate(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter bson.D) (int64, []*dto.Patient, error) {
-	collection := v.client.Database(constants.Mhpss).Collection(constants.Patients)
-
-	result := mongo.Pipeline{}
-
-	// stage 1: lookup
-	result = append(result, bson.D{{
-		"$lookup", bson.M{
-			"from":         constants.Declarations,
-			"localField":   constants.ID,
-			"foreignField": constants.PatientID,
-			"as":           "declarations",
-		},
-	}})
-
-	// stage 2: unwind
-	result = append(result, bson.D{{
-		"$unwind", bson.M{
-			"path": "$declarations",
-		},
-	}})
-
-	// stage 3: match
-	result = append(result, bson.D{{
-		"$match", filter,
-	}})
-
-	// stage 4: sort
-	if sort != nil {
-		order := 1
-		if sort.Order == constants.DESC {
-			order = -1
-		}
-		result = append(result, bson.D{{
-			"$sort", bson.M{
-				sort.Item: order,
-			},
-		}})
-	}
-
-	// stage 5: set range
-	if itemsRange != nil {
-		result = append(result, bson.D{{
-			"$facet", bson.M{
-				"patients": mongo.Pipeline{
-					bson.D{{
-						"$skip", int64(itemsRange.From),
-					}},
-					bson.D{{
-						"$limit", int64(itemsRange.To + 1 - itemsRange.From),
-					}},
-				},
-				"count": mongo.Pipeline{
-					bson.D{{
-						"$count", "count",
-					}},
-				},
-			},
-		}})
-	}
-
-	cursor, err := collection.Aggregate(ctx, result)
-	if err != nil {
-		logger.Log.Error(err.Error())
-		return 0, nil, err
-	}
-	defer cursor.Close(ctx)
-
-	// if facet is used, decode into PatientsQuery
-	if itemsRange != nil {
-		for cursor.Next(ctx) {
-			result := &dto.PatientsQuery{}
-			if err = cursor.Decode(&result); err != nil {
-				logger.Log.Error(err.Error())
-				return 0, nil, err
-			}
-			if len(result.Count) < 1 || result.Count[0] == nil {
-				return 0, nil, nil
-			}
-			return result.Count[0].Count, result.Patients, nil
-		}
-	}
-
-	// else, decode into patient array
-	var patients []*dto.Patient
-	for cursor.Next(ctx) {
-		patient := &dto.Patient{}
-		if err = cursor.Decode(&patient); err != nil {
-			return 0, nil, err
-		}
-		patients = append(patients, patient)
-	}
-	count := int64(len(patients))
-
-	return count, patients, nil
 }
 
 // query is a generic mongodb find helper method

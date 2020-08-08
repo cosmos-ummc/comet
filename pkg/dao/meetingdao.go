@@ -171,13 +171,7 @@ func (v *MeetingDAO) parseFilter(filter map[string]interface{}) bson.D {
 					Key: "$or",
 					Value: bson.A{
 						bson.M{
-							constants.Category: bson.M{
-								"$regex":   fmt.Sprintf("%s.*", value),
-								"$options": "i",
-							},
-						},
-						bson.M{
-							constants.Contents: bson.M{
+							constants.PatientID: bson.M{
 								"$regex":   fmt.Sprintf("%s.*", value),
 								"$options": "i",
 							},

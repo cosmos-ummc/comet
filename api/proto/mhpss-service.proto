@@ -643,6 +643,8 @@ message User {
     // user hashed password
     string password = 6;
     repeated string blockList = 7;
+    bool visible = 8;
+    bool disabled = 9;
 }
 
 // common user request payload
@@ -921,6 +923,7 @@ message ChatRoom {
     string id = 1;
     repeated string participantIds = 2;
     bool blocked = 3;
+    int64 timestamp = 4;
 }
 
 message CommonChatRoomRequest {

@@ -8,6 +8,7 @@ import (
 	"comet/pkg/utility"
 	"context"
 	"github.com/twinj/uuid"
+	"time"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -25,6 +26,7 @@ func (s *CreateChatRoomHandler) CreateChatRoom(ctx context.Context, req *pb.Comm
 		ID:             uuid.NewV4().String(),
 		ParticipantIDs: req.Data.ParticipantIds,
 		Blocked:        req.Data.Blocked,
+		Timestamp:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
 	}
 
 	rslt, err := s.Model.CreateChatRoom(ctx, chatRoom)

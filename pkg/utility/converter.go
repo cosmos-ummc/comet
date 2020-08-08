@@ -120,6 +120,7 @@ func UserToResponse(user *dto.User) *pb.CommonUserResponse {
 			PhoneNumber: user.PhoneNumber,
 			Email:       user.Email,
 			BlockList:   user.BlockList,
+			Visible:     user.Visible,
 		},
 	}
 }
@@ -134,6 +135,7 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 			PhoneNumber: user.PhoneNumber,
 			Email:       user.Email,
 			BlockList:   user.BlockList,
+			Visible:     user.Visible,
 		}
 
 		resps = append(resps, resp)
@@ -310,6 +312,7 @@ func ChatRoomToResponse(chatRoom *dto.ChatRoom) *pb.CommonChatRoomResponse {
 			Id:             chatRoom.ID,
 			ParticipantIds: chatRoom.ParticipantIDs,
 			Blocked:        chatRoom.Blocked,
+			Timestamp:      chatRoom.Timestamp,
 		},
 	}
 }
@@ -321,6 +324,7 @@ func ChatRoomsToResponse(chatRooms []*dto.ChatRoom) *pb.CommonChatRoomsResponse 
 			Id:             chatRoom.ID,
 			ParticipantIds: chatRoom.ParticipantIDs,
 			Blocked:        chatRoom.Blocked,
+			Timestamp:      chatRoom.Timestamp,
 		}
 		resps = append(resps, resp)
 	}

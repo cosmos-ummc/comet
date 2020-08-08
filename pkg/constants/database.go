@@ -50,6 +50,8 @@ const (
 	LastDeclareResult = "lastDeclareResult"
 	Consent           = "consent"
 	PrivacyPolicy     = "privacyPolicy"
+	LastDassTime      = "lastDassTime"
+	LastIesrTime      = "lastIersTime"
 
 	// Users
 	Email    = "email"
@@ -66,6 +68,9 @@ const (
 	// Declarations
 	SubmittedAt   = "submittedAt"
 	DoctorRemarks = "doctorRemarks"
+
+	// ChatMessages
+	Content = "content"
 
 	// AuthObjects
 	Authorized  = "authorized"

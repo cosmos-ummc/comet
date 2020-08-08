@@ -18,4 +18,5 @@ type User struct {
 	RtExpires    int64    `json:"rtExpires" bson:"-"`
 	ResetExpires int64    `json:"resetExpires" bson:"-"`
 	BlockList    []string `json:"blockList" bson:"blockList"`
+	Visible      bool     `json:"visible" bson:"visible"`
 }

@@ -171,13 +171,19 @@ func (v *ConsultantDAO) parseFilter(filter map[string]interface{}) bson.D {
 					Key: "$or",
 					Value: bson.A{
 						bson.M{
-							constants.Category: bson.M{
+							constants.Name: bson.M{
 								"$regex":   fmt.Sprintf("%s.*", value),
 								"$options": "i",
 							},
 						},
 						bson.M{
-							constants.Contents: bson.M{
+							constants.PhoneNumber: bson.M{
+								"$regex":   fmt.Sprintf("%s.*", value),
+								"$options": "i",
+							},
+						},
+						bson.M{
+							constants.Email: bson.M{
 								"$regex":   fmt.Sprintf("%s.*", value),
 								"$options": "i",
 							},

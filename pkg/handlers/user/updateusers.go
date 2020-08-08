@@ -81,6 +81,8 @@ func (s *UpdateUsersHandler) reqToUser(req *pb.CommonUsersRequest) *dto.User {
 		Email:       utility.RemoveZeroWidth(req.Data.Email),
 		BlockList:   req.Data.BlockList,
 		Password:    utility.RemoveZeroWidth(req.Data.Password),
+		Visible:     req.Data.Visible,
+		Disabled:    req.Data.Disabled,
 	}
 	return user
 }

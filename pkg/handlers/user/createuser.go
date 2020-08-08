@@ -29,6 +29,8 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 		Email:       utility.RemoveZeroWidth(req.Data.Email),
 		Password:    utility.RemoveZeroWidth(req.Data.Password),
 		BlockList:   req.Data.BlockList,
+		Visible:     req.Data.Visible,
+		Disabled:    req.Data.Disabled,
 	}
 	err := s.validateAndProcessReq(user)
 	if err != nil {

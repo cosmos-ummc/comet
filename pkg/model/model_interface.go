@@ -27,14 +27,8 @@ type IModel interface {
 	DeleteDeclarations(ctx context.Context, declarationID []string) ([]string, error)
 	// QueryDeclarations query declarations
 	QueryDeclarations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Declaration, error)
-	// QueryDeclarationsByTime ...
-	QueryDeclarationsByTime(ctx context.Context, from int64) (int64, []*dto.Declaration, error)
-	// QueryDeclarationsByCallingStatusAndTime ...
-	QueryDeclarationsByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64) (int64, []*dto.Declaration, error)
 	// QueryDeclarationsByPatientID ...
 	QueryDeclarationsByPatientID(ctx context.Context, id string) (int64, []*dto.Declaration, error)
-	// GetStableDeclarations ...
-	GetStableDeclarations(ctx context.Context, from int64) (int64, []*dto.Declaration, error)
 	/////////////
 
 	///////////// Patient models
@@ -48,10 +42,6 @@ type IModel interface {
 	BatchGetPatients(ctx context.Context, ids []string) ([]*dto.Patient, error)
 	// GetPatientsByStatus gets patients of specified type by list of status
 	GetPatientsByStatus(ctx context.Context, status []int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
-	// GetNoCallPatients queries patients who have declared but no yet call
-	GetNoCallPatients(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
-	// GetDeclaredByTime gets declared patients of specified type in given from timestamp
-	GetDeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	// GetUndeclaredPatientsByTime gets undeclared patients of specified type given from timestamp
 	GetUndeclaredPatientsByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error)
 	// UpdatePatient updates patient

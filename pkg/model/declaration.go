@@ -148,24 +148,9 @@ func (m *Model) QueryDeclarations(ctx context.Context, sort *dto.SortData, items
 	return m.declarationDAO.Query(ctx, sort, itemsRange, filter)
 }
 
-// QueryDeclarations query declarations by time
-func (m *Model) QueryDeclarationsByTime(ctx context.Context, from int64) (int64, []*dto.Declaration, error) {
-	return m.declarationDAO.QueryByTime(ctx, from)
-}
-
-// QueryDeclarationsByCallingStatusAndTime ...
-func (m *Model) QueryDeclarationsByCallingStatusAndTime(ctx context.Context, callingStatus []int64, from int64) (int64, []*dto.Declaration, error) {
-	return m.declarationDAO.QueryByCallingStatusAndTime(ctx, callingStatus, from)
-}
-
 // QueryDeclarationsByPatientID ...
 func (m *Model) QueryDeclarationsByPatientID(ctx context.Context, id string) (int64, []*dto.Declaration, error) {
 	filter := map[string]interface{}{constants.PatientID: id}
 	total, declarations, err := m.declarationDAO.Query(ctx, nil, nil, filter)
 	return total, declarations, err
-}
-
-// Get stable declarations
-func (m *Model) GetStableDeclarations(ctx context.Context, from int64) (int64, []*dto.Declaration, error) {
-	return m.declarationDAO.QueryStableDeclarations(ctx, from)
 }

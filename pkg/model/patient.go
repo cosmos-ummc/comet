@@ -65,16 +65,6 @@ func (m *Model) GetPatientsByStatus(ctx context.Context, status []int64, sort *d
 	return m.patientDAO.GetByStatus(ctx, status, sort, itemsRange)
 }
 
-// GetNoCallPatients queries patients who have declared but no yet call
-func (m *Model) GetNoCallPatients(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
-	return m.patientDAO.QueryNoCall(ctx, from, sort, itemsRange)
-}
-
-// GetDeclaredByTime gets declared patients in given from timestamp
-func (m *Model) GetDeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error) {
-	return m.patientDAO.GetDeclaredByTime(ctx, from)
-}
-
 // GetUndeclaredPatientsByTime gets undeclared patients given from timestamp
 func (m *Model) GetUndeclaredPatientsByTime(ctx context.Context, from int64, sort *dto.SortData, itemsRange *dto.RangeData) (int64, []*dto.Patient, error) {
 	return m.patientDAO.GetUndeclaredByTime(ctx, from, sort, itemsRange)
