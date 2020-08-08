@@ -367,6 +367,51 @@ service MhpssService {
             get: "/v1/consultants"
         };
     }
+    // Create Meeting
+    rpc CreateMeeting (CommonMeetingRequest) returns (CommonMeetingResponse) {
+        option (google.api.http) = {
+            post: "/v1/meetings/{id}"
+            body: "*"
+        };
+    }
+    // Get Meeting
+    rpc GetMeeting (CommonGetRequest) returns (CommonMeetingResponse) {
+        option (google.api.http) = {
+            get: "/v1/meetings/{id}"
+        };
+    }
+    // Update Meeting
+    rpc UpdateMeeting (CommonMeetingRequest) returns (CommonMeetingResponse) {
+        option (google.api.http) = {
+            put: "/v1/meetings/{id}"
+            body: "*"
+        };
+    }
+    // Update Meetings
+    rpc UpdateMeetings (CommonMeetingsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/meetings"
+            body: "*"
+        };
+    }
+    // Delete Meeting
+    rpc DeleteMeeting (CommonDeleteRequest) returns (CommonMeetingResponse) {
+        option (google.api.http) = {
+            delete: "/v1/meetings/{id}"
+        };
+    }
+    // Delete Meetings
+    rpc DeleteMeetings (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/meetings"
+        };
+    }
+    // Get Meetings
+    rpc GetMeetings (CommonGetsRequest) returns (CommonMeetingsResponse) {
+        option (google.api.http) = {
+            get: "/v1/meetings"
+        };
+    }
     // Get Password Reset
     rpc GetPasswordReset (GetPasswordResetRequest) returns (GetPasswordResetResponse) {
         option (google.api.http) = {
@@ -921,5 +966,32 @@ message CommonConsultantResponse {
 
 message CommonConsultantsResponse {
     repeated Consultant data = 1;
+    int64 total = 2;
+}
+
+message Meeting {
+    string id = 1;
+    string patientId = 2;
+    string consultantId = 3;
+    int64 time = 4;
+    int64 status = 5;
+}
+
+message CommonMeetingRequest {
+    string id = 1;
+    Meeting data = 2;
+}
+
+message CommonMeetingsRequest {
+    repeated string ids = 1;
+    Meeting data = 2;
+}
+
+message CommonMeetingResponse {
+    Meeting data = 1;
+}
+
+message CommonMeetingsResponse {
+    repeated Meeting data = 1;
     int64 total = 2;
 }

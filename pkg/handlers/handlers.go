@@ -8,6 +8,7 @@ import (
 	chatRoom "comet/pkg/handlers/chatroom"
 	"comet/pkg/handlers/consultant"
 	"comet/pkg/handlers/declaration"
+	"comet/pkg/handlers/meeting"
 	"comet/pkg/handlers/patient"
 	"comet/pkg/handlers/question"
 	"comet/pkg/handlers/report"
@@ -714,6 +715,114 @@ func (s *Handlers) DeleteConsultants(ctx context.Context, req *pb.CommonDeletesR
 		return nil, err
 	}
 	logger.Log.Info("DeleteConsultantsHandler", zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateMeeting(ctx context.Context, req *pb.CommonMeetingRequest) (*pb.CommonMeetingResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &meeting.CreateMeetingHandler{Model: s.Model}
+	resp, err := handler.CreateMeeting(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateMeetingHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateMeetingHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetMeeting(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonMeetingResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meeting.GetMeetingHandler{Model: s.Model}
+	resp, err := handler.GetMeeting(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetMeetingHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("MeetingID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetMeetingHandler", zap.String("UserID", u.ID), zap.String("MeetingID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetMeetings(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonMeetingsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meeting.GetMeetingsHandler{Model: s.Model}
+	resp, err := handler.GetMeetings(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetMeetingsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("MeetingIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetMeetingsHandler", zap.String("UserID", u.ID), zap.Strings("MeetingIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateMeeting(ctx context.Context, req *pb.CommonMeetingRequest) (*pb.CommonMeetingResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meeting.UpdateMeetingHandler{Model: s.Model}
+	resp, err := handler.UpdateMeeting(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateMeetingHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("MeetingID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateMeetingHandler", zap.String("UserID", u.ID), zap.String("MeetingID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateMeetings(ctx context.Context, req *pb.CommonMeetingsRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meeting.UpdateMeetingsHandler{Model: s.Model}
+	resp, err := handler.UpdateMeetings(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateMeetingsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("MeetingIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateMeetingsHandler", zap.String("UserID", u.ID), zap.Strings("MeetingIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteMeeting(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonMeetingResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meeting.DeleteMeetingHandler{Model: s.Model}
+	resp, err := handler.DeleteMeeting(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteMeetingHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("MeetingID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteMeetingHandler", zap.String("UserID", u.ID), zap.String("MeetingID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteMeetings(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meeting.DeleteMeetingsHandler{Model: s.Model}
+	resp, err := handler.DeleteMeetings(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteMeetingsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("MeetingIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteMeetingsHandler", zap.String("UserID", u.ID), zap.Strings("MeetingIDs", req.Ids))
 	return resp, nil
 }
 

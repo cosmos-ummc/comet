@@ -365,3 +365,37 @@ func ConsultantsToResponse(consultants []*dto.Consultant) *pb.CommonConsultantsR
 }
 
 // -------------- Consultants -----------------
+
+// -------------- Meetings -----------------
+
+func MeetingToResponse(meeting *dto.Meeting) *pb.CommonMeetingResponse {
+	return &pb.CommonMeetingResponse{
+		Data: &pb.Meeting{
+			Id:           meeting.ID,
+			PatientId:    meeting.PatientID,
+			ConsultantId: meeting.ConsultantID,
+			Time:         meeting.Time,
+			Status:       meeting.Status,
+		},
+	}
+}
+
+func MeetingsToResponse(meetings []*dto.Meeting) *pb.CommonMeetingsResponse {
+	var resps []*pb.Meeting
+	for _, meeting := range meetings {
+		resp := &pb.Meeting{
+			Id:           meeting.ID,
+			PatientId:    meeting.PatientID,
+			ConsultantId: meeting.ConsultantID,
+			Time:         meeting.Time,
+			Status:       meeting.Status,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonMeetingsResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- Meetings -----------------
