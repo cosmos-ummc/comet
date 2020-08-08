@@ -89,6 +89,82 @@ type IModel interface {
 	DeleteQuestions(ctx context.Context, ids []string) ([]string, error)
 	/////////////
 
+	///////////// ChatMessage models
+	// CreateChatMessage creates new chatMessage
+	CreateChatMessage(ctx context.Context, chatMessage *dto.ChatMessage) (*dto.ChatMessage, error)
+	// UpdateChatMessage updates chatMessage
+	UpdateChatMessage(ctx context.Context, chatMessage *dto.ChatMessage) (*dto.ChatMessage, error)
+	// UpdateChatMessages update chatMessages
+	UpdateChatMessages(ctx context.Context, chatMessage *dto.ChatMessage, ids []string) ([]string, error)
+	// GetChatMessage gets chatMessage by ID
+	GetChatMessage(ctx context.Context, id string) (*dto.ChatMessage, error)
+	// BatchGetChatMessages get chatMessages by slice of IDs
+	BatchGetChatMessages(ctx context.Context, ids []string) ([]*dto.ChatMessage, error)
+	// QueryChatMessages queries chatMessages by sort, range, filter
+	QueryChatMessages(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.ChatMessage, error)
+	// DeleteChatMessage deletes chatMessage by ID
+	DeleteChatMessage(ctx context.Context, id string) (*dto.ChatMessage, error)
+	// DeleteChatMessages delete chatMessages by IDs
+	DeleteChatMessages(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
+	///////////// ChatRoom models
+	// CreateChatRoom creates new chatRoom
+	CreateChatRoom(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.ChatRoom, error)
+	// UpdateChatRoom updates chatRoom
+	UpdateChatRoom(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.ChatRoom, error)
+	// UpdateChatRooms update chatRooms
+	UpdateChatRooms(ctx context.Context, chatRoom *dto.ChatRoom, ids []string) ([]string, error)
+	// GetChatRoom gets chatRoom by ID
+	GetChatRoom(ctx context.Context, id string) (*dto.ChatRoom, error)
+	// BatchGetChatRooms get chatRooms by slice of IDs
+	BatchGetChatRooms(ctx context.Context, ids []string) ([]*dto.ChatRoom, error)
+	// QueryChatRooms queries chatRooms by sort, range, filter
+	QueryChatRooms(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.ChatRoom, error)
+	// DeleteChatRoom deletes chatRoom by ID
+	DeleteChatRoom(ctx context.Context, id string) (*dto.ChatRoom, error)
+	// DeleteChatRooms delete chatRooms by IDs
+	DeleteChatRooms(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
+	///////////// Consultant models
+	// CreateConsultant creates new consultant
+	CreateConsultant(ctx context.Context, consultant *dto.Consultant) (*dto.Consultant, error)
+	// UpdateConsultant updates consultant
+	UpdateConsultant(ctx context.Context, consultant *dto.Consultant) (*dto.Consultant, error)
+	// UpdateConsultants update consultants
+	UpdateConsultants(ctx context.Context, consultant *dto.Consultant, ids []string) ([]string, error)
+	// GetConsultant gets consultant by ID
+	GetConsultant(ctx context.Context, id string) (*dto.Consultant, error)
+	// BatchGetConsultants get consultants by slice of IDs
+	BatchGetConsultants(ctx context.Context, ids []string) ([]*dto.Consultant, error)
+	// QueryConsultants queries consultants by sort, range, filter
+	QueryConsultants(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Consultant, error)
+	// DeleteConsultant deletes consultant by ID
+	DeleteConsultant(ctx context.Context, id string) (*dto.Consultant, error)
+	// DeleteConsultants delete consultants by IDs
+	DeleteConsultants(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
+	///////////// Meeting models
+	// CreateMeeting creates new meeting
+	CreateMeeting(ctx context.Context, meeting *dto.Meeting) (*dto.Meeting, error)
+	// UpdateMeeting updates meeting
+	UpdateMeeting(ctx context.Context, meeting *dto.Meeting) (*dto.Meeting, error)
+	// UpdateMeetings update meetings
+	UpdateMeetings(ctx context.Context, meeting *dto.Meeting, ids []string) ([]string, error)
+	// GetMeeting gets meeting by ID
+	GetMeeting(ctx context.Context, id string) (*dto.Meeting, error)
+	// BatchGetMeetings get meetings by slice of IDs
+	BatchGetMeetings(ctx context.Context, ids []string) ([]*dto.Meeting, error)
+	// QueryMeetings queries meetings by sort, range, filter
+	QueryMeetings(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Meeting, error)
+	// DeleteMeeting deletes meeting by ID
+	DeleteMeeting(ctx context.Context, id string) (*dto.Meeting, error)
+	// DeleteMeetings delete meetings by IDs
+	DeleteMeetings(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
 	///////////// User models
 	// CreateUser creates new user
 	CreateUser(ctx context.Context, user *dto.User) (*dto.User, error)

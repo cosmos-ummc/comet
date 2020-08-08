@@ -14,6 +14,10 @@ type Model struct {
 	userDAO        dao.IUserDAO
 	reportDAO      dao.IReportDAO
 	authDAO        dao.IAuthDAO
+	chatMessageDAO dao.IChatMessageDAO
+	chatRoomDAO    dao.IChatRoomDAO
+	consultantDAO  dao.IConsultantDAO
+	meetingDAO     dao.IMeetingDAO
 }
 
 // InitModel ...
@@ -25,5 +29,9 @@ func InitModel(client *mongo.Client) IModel {
 		userDAO:        dao.InitUserDAO(client),
 		reportDAO:      dao.InitReportDAO(client),
 		authDAO:        dao.InitAuthDAO(client),
+		chatMessageDAO: dao.InitChatMessageDAO(client),
+		chatRoomDAO:    dao.InitChatRoomDAO(client),
+		consultantDAO:  dao.InitConsultantDAO(client),
+		meetingDAO:     dao.InitMeetingDAO(client),
 	}
 }

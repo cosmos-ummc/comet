@@ -232,6 +232,96 @@ service MhpssService {
             get: "/v1/questions"
         };
     }
+    // Create ChatMessage
+    rpc CreateChatMessage (CommonChatMessageRequest) returns (CommonChatMessageResponse) {
+        option (google.api.http) = {
+            post: "/v1/chatmessages/{id}"
+            body: "*"
+        };
+    }
+    // Get ChatMessage
+    rpc GetChatMessage (CommonGetRequest) returns (CommonChatMessageResponse) {
+        option (google.api.http) = {
+            get: "/v1/chatmessages/{id}"
+        };
+    }
+    // Update ChatMessage
+    rpc UpdateChatMessage (CommonChatMessageRequest) returns (CommonChatMessageResponse) {
+        option (google.api.http) = {
+            put: "/v1/chatmessages/{id}"
+            body: "*"
+        };
+    }
+    // Update ChatMessages
+    rpc UpdateChatMessages (CommonChatMessagesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/chatmessages"
+            body: "*"
+        };
+    }
+    // Delete ChatMessage
+    rpc DeleteChatMessage (CommonDeleteRequest) returns (CommonChatMessageResponse) {
+        option (google.api.http) = {
+            delete: "/v1/chatmessages/{id}"
+        };
+    }
+    // Delete ChatMessages
+    rpc DeleteChatMessages (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/chatmessages"
+        };
+    }
+    // Get ChatMessages
+    rpc GetChatMessages (CommonGetsRequest) returns (CommonChatMessagesResponse) {
+        option (google.api.http) = {
+            get: "/v1/chatmessages"
+        };
+    }
+    // Create ChatRoom
+    rpc CreateChatRoom (CommonChatRoomRequest) returns (CommonChatRoomResponse) {
+        option (google.api.http) = {
+            post: "/v1/chatrooms/{id}"
+            body: "*"
+        };
+    }
+    // Get ChatRoom
+    rpc GetChatRoom (CommonGetRequest) returns (CommonChatRoomResponse) {
+        option (google.api.http) = {
+            get: "/v1/chatrooms/{id}"
+        };
+    }
+    // Update ChatRoom
+    rpc UpdateChatRoom (CommonChatRoomRequest) returns (CommonChatRoomResponse) {
+        option (google.api.http) = {
+            put: "/v1/chatrooms/{id}"
+            body: "*"
+        };
+    }
+    // Update ChatRooms
+    rpc UpdateChatRooms (CommonChatRoomsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/chatrooms"
+            body: "*"
+        };
+    }
+    // Delete ChatRoom
+    rpc DeleteChatRoom (CommonDeleteRequest) returns (CommonChatRoomResponse) {
+        option (google.api.http) = {
+            delete: "/v1/chatrooms/{id}"
+        };
+    }
+    // Delete ChatRooms
+    rpc DeleteChatRooms (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/chatrooms"
+        };
+    }
+    // Get ChatRooms
+    rpc GetChatRooms (CommonGetsRequest) returns (CommonChatRoomsResponse) {
+        option (google.api.http) = {
+            get: "/v1/chatrooms"
+        };
+    }
     // Get Password Reset
     rpc GetPasswordReset (GetPasswordResetRequest) returns (GetPasswordResetResponse) {
         option (google.api.http) = {
@@ -707,5 +797,57 @@ message CommonQuestionsResponse {
     // questions payload
     repeated Question data = 1;
     // total questions
+    int64 total = 2;
+}
+
+message ChatMessage {
+    string id = 1;
+    string roomId = 2;
+    string senderId = 3;
+    string content = 4;
+    int64 timestamp = 5;
+}
+
+message CommonChatMessageRequest {
+    string id = 1;
+    ChatMessage data = 2;
+}
+
+message CommonChatMessagesRequest {
+    repeated string ids = 1;
+    ChatMessage data = 2;
+}
+
+message CommonChatMessageResponse {
+    ChatMessage data = 1;
+}
+
+message CommonChatMessagesResponse {
+    repeated ChatMessage data = 1;
+    int64 total = 2;
+}
+
+message ChatRoom {
+    string id = 1;
+    repeated string participantIds = 2;
+    bool blocked = 3;
+}
+
+message CommonChatRoomRequest {
+    string id = 1;
+    ChatRoom data = 2;
+}
+
+message CommonChatRoomsRequest {
+    repeated string ids = 1;
+    ChatRoom data = 2;
+}
+
+message CommonChatRoomResponse {
+    ChatRoom data = 1;
+}
+
+message CommonChatRoomsResponse {
+    repeated ChatRoom data = 1;
     int64 total = 2;
 }

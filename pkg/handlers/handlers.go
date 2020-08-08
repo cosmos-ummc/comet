@@ -4,6 +4,8 @@ import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
 	"comet/pkg/dto"
+	chatMessage "comet/pkg/handlers/chatmessage"
+	chatRoom "comet/pkg/handlers/chatroom"
 	"comet/pkg/handlers/declaration"
 	"comet/pkg/handlers/patient"
 	"comet/pkg/handlers/question"
@@ -387,6 +389,222 @@ func (s *Handlers) DeleteQuestions(ctx context.Context, req *pb.CommonDeletesReq
 		return nil, err
 	}
 	logger.Log.Info("DeleteQuestionsHandler", zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateChatMessage(ctx context.Context, req *pb.CommonChatMessageRequest) (*pb.CommonChatMessageResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &chatMessage.CreateChatMessageHandler{Model: s.Model}
+	resp, err := handler.CreateChatMessage(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateChatMessageHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateChatMessageHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetChatMessage(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonChatMessageResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatMessage.GetChatMessageHandler{Model: s.Model}
+	resp, err := handler.GetChatMessage(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetChatMessageHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ChatMessageID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetChatMessageHandler", zap.String("UserID", u.ID), zap.String("ChatMessageID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetChatMessages(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonChatMessagesResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatMessage.GetChatMessagesHandler{Model: s.Model}
+	resp, err := handler.GetChatMessages(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetChatMessagesHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ChatMessageIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetChatMessagesHandler", zap.String("UserID", u.ID), zap.Strings("ChatMessageIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateChatMessage(ctx context.Context, req *pb.CommonChatMessageRequest) (*pb.CommonChatMessageResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatMessage.UpdateChatMessageHandler{Model: s.Model}
+	resp, err := handler.UpdateChatMessage(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateChatMessageHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ChatMessageID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateChatMessageHandler", zap.String("UserID", u.ID), zap.String("ChatMessageID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateChatMessages(ctx context.Context, req *pb.CommonChatMessagesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatMessage.UpdateChatMessagesHandler{Model: s.Model}
+	resp, err := handler.UpdateChatMessages(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateChatMessagesHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ChatMessageIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateChatMessagesHandler", zap.String("UserID", u.ID), zap.Strings("ChatMessageIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteChatMessage(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonChatMessageResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatMessage.DeleteChatMessageHandler{Model: s.Model}
+	resp, err := handler.DeleteChatMessage(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteChatMessageHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ChatMessageID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteChatMessageHandler", zap.String("UserID", u.ID), zap.String("ChatMessageID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteChatMessages(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatMessage.DeleteChatMessagesHandler{Model: s.Model}
+	resp, err := handler.DeleteChatMessages(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteChatMessagesHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ChatMessageIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteChatMessagesHandler", zap.String("UserID", u.ID), zap.Strings("ChatMessageIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateChatRoom(ctx context.Context, req *pb.CommonChatRoomRequest) (*pb.CommonChatRoomResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &chatRoom.CreateChatRoomHandler{Model: s.Model}
+	resp, err := handler.CreateChatRoom(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateChatRoomHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateChatRoomHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetChatRoom(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonChatRoomResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatRoom.GetChatRoomHandler{Model: s.Model}
+	resp, err := handler.GetChatRoom(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetChatRoomHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ChatRoomID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetChatRoomHandler", zap.String("UserID", u.ID), zap.String("ChatRoomID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetChatRooms(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonChatRoomsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatRoom.GetChatRoomsHandler{Model: s.Model}
+	resp, err := handler.GetChatRooms(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetChatRoomsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetChatRoomsHandler", zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateChatRoom(ctx context.Context, req *pb.CommonChatRoomRequest) (*pb.CommonChatRoomResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatRoom.UpdateChatRoomHandler{Model: s.Model}
+	resp, err := handler.UpdateChatRoom(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateChatRoomHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ChatRoomID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateChatRoomHandler", zap.String("UserID", u.ID), zap.String("ChatRoomID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateChatRooms(ctx context.Context, req *pb.CommonChatRoomsRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatRoom.UpdateChatRoomsHandler{Model: s.Model}
+	resp, err := handler.UpdateChatRooms(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateChatRoomsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateChatRoomsHandler", zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteChatRoom(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonChatRoomResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatRoom.DeleteChatRoomHandler{Model: s.Model}
+	resp, err := handler.DeleteChatRoom(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteChatRoomHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ChatRoomID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteChatRoomHandler", zap.String("UserID", u.ID), zap.String("ChatRoomID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteChatRooms(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &chatRoom.DeleteChatRoomsHandler{Model: s.Model}
+	resp, err := handler.DeleteChatRooms(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteChatRoomsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteChatRoomsHandler", zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
 	return resp, nil
 }
 

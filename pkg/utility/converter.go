@@ -267,3 +267,67 @@ func QuestionsToResponse(questions []*dto.Question) *pb.CommonQuestionsResponse 
 }
 
 // -------------- Questions -----------------
+
+// -------------- ChatMessages -----------------
+
+func ChatMessageToResponse(chatMessage *dto.ChatMessage) *pb.CommonChatMessageResponse {
+	return &pb.CommonChatMessageResponse{
+		Data: &pb.ChatMessage{
+			Id:        chatMessage.ID,
+			RoomId:    chatMessage.RoomID,
+			SenderId:  chatMessage.SenderID,
+			Content:   chatMessage.Content,
+			Timestamp: chatMessage.Timestamp,
+		},
+	}
+}
+
+func ChatMessagesToResponse(chatMessages []*dto.ChatMessage) *pb.CommonChatMessagesResponse {
+	var resps []*pb.ChatMessage
+	for _, chatMessage := range chatMessages {
+		resp := &pb.ChatMessage{
+			Id:        chatMessage.ID,
+			RoomId:    chatMessage.RoomID,
+			SenderId:  chatMessage.SenderID,
+			Content:   chatMessage.Content,
+			Timestamp: chatMessage.Timestamp,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonChatMessagesResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- ChatMessages -----------------
+
+// -------------- ChatRooms -----------------
+
+func ChatRoomToResponse(chatRoom *dto.ChatRoom) *pb.CommonChatRoomResponse {
+	return &pb.CommonChatRoomResponse{
+		Data: &pb.ChatRoom{
+			Id:             chatRoom.ID,
+			ParticipantIds: chatRoom.ParticipantIDs,
+			Blocked:        chatRoom.Blocked,
+		},
+	}
+}
+
+func ChatRoomsToResponse(chatRooms []*dto.ChatRoom) *pb.CommonChatRoomsResponse {
+	var resps []*pb.ChatRoom
+	for _, chatRoom := range chatRooms {
+		resp := &pb.ChatRoom{
+			Id:             chatRoom.ID,
+			ParticipantIds: chatRoom.ParticipantIDs,
+			Blocked:        chatRoom.Blocked,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonChatRoomsResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- ChatRooms -----------------
