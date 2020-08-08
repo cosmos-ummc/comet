@@ -75,4 +75,12 @@ type IHandlers interface {
 	UpdateChatRooms(ctx context.Context, req *pb.CommonChatRoomsRequest) (*pb.CommonIdsResponse, error)
 	DeleteChatRoom(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonChatRoomResponse, error)
 	DeleteChatRooms(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
+
+	CreateConsultant(ctx context.Context, req *pb.CommonConsultantRequest) (*pb.CommonConsultantResponse, error)
+	GetConsultant(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonConsultantResponse, error)
+	GetConsultants(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonConsultantsResponse, error)
+	UpdateConsultant(ctx context.Context, req *pb.CommonConsultantRequest) (*pb.CommonConsultantResponse, error)
+	UpdateConsultants(ctx context.Context, req *pb.CommonConsultantsRequest) (*pb.CommonIdsResponse, error)
+	DeleteConsultant(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonConsultantResponse, error)
+	DeleteConsultants(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
 }

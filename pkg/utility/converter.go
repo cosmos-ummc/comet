@@ -331,3 +331,37 @@ func ChatRoomsToResponse(chatRooms []*dto.ChatRoom) *pb.CommonChatRoomsResponse 
 }
 
 // -------------- ChatRooms -----------------
+
+// -------------- Consultants -----------------
+
+func ConsultantToResponse(consultant *dto.Consultant) *pb.CommonConsultantResponse {
+	return &pb.CommonConsultantResponse{
+		Data: &pb.Consultant{
+			Id:          consultant.ID,
+			UserId:      consultant.UserID,
+			Name:        consultant.Name,
+			PhoneNumber: consultant.PhoneNumber,
+			Email:       consultant.Email,
+		},
+	}
+}
+
+func ConsultantsToResponse(consultants []*dto.Consultant) *pb.CommonConsultantsResponse {
+	var resps []*pb.Consultant
+	for _, consultant := range consultants {
+		resp := &pb.Consultant{
+			Id:          consultant.ID,
+			UserId:      consultant.UserID,
+			Name:        consultant.Name,
+			PhoneNumber: consultant.PhoneNumber,
+			Email:       consultant.Email,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonConsultantsResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- Consultants -----------------

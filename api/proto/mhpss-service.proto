@@ -322,6 +322,51 @@ service MhpssService {
             get: "/v1/chatrooms"
         };
     }
+    // Create Consultant
+    rpc CreateConsultant (CommonConsultantRequest) returns (CommonConsultantResponse) {
+        option (google.api.http) = {
+            post: "/v1/consultants/{id}"
+            body: "*"
+        };
+    }
+    // Get Consultant
+    rpc GetConsultant (CommonGetRequest) returns (CommonConsultantResponse) {
+        option (google.api.http) = {
+            get: "/v1/consultants/{id}"
+        };
+    }
+    // Update Consultant
+    rpc UpdateConsultant (CommonConsultantRequest) returns (CommonConsultantResponse) {
+        option (google.api.http) = {
+            put: "/v1/consultants/{id}"
+            body: "*"
+        };
+    }
+    // Update Consultants
+    rpc UpdateConsultants (CommonConsultantsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/consultants"
+            body: "*"
+        };
+    }
+    // Delete Consultant
+    rpc DeleteConsultant (CommonDeleteRequest) returns (CommonConsultantResponse) {
+        option (google.api.http) = {
+            delete: "/v1/consultants/{id}"
+        };
+    }
+    // Delete Consultants
+    rpc DeleteConsultants (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/consultants"
+        };
+    }
+    // Get Consultants
+    rpc GetConsultants (CommonGetsRequest) returns (CommonConsultantsResponse) {
+        option (google.api.http) = {
+            get: "/v1/consultants"
+        };
+    }
     // Get Password Reset
     rpc GetPasswordReset (GetPasswordResetRequest) returns (GetPasswordResetResponse) {
         option (google.api.http) = {
@@ -849,5 +894,32 @@ message CommonChatRoomResponse {
 
 message CommonChatRoomsResponse {
     repeated ChatRoom data = 1;
+    int64 total = 2;
+}
+
+message Consultant {
+    string id = 1;
+    string userId = 2;
+    string name = 3;
+    string phoneNumber = 4;
+    string email = 5;
+}
+
+message CommonConsultantRequest {
+    string id = 1;
+    Consultant data = 2;
+}
+
+message CommonConsultantsRequest {
+    repeated string ids = 1;
+    Consultant data = 2;
+}
+
+message CommonConsultantResponse {
+    Consultant data = 1;
+}
+
+message CommonConsultantsResponse {
+    repeated Consultant data = 1;
     int64 total = 2;
 }

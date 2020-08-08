@@ -6,6 +6,7 @@ import (
 	"comet/pkg/dto"
 	chatMessage "comet/pkg/handlers/chatmessage"
 	chatRoom "comet/pkg/handlers/chatroom"
+	"comet/pkg/handlers/consultant"
 	"comet/pkg/handlers/declaration"
 	"comet/pkg/handlers/patient"
 	"comet/pkg/handlers/question"
@@ -605,6 +606,114 @@ func (s *Handlers) DeleteChatRooms(ctx context.Context, req *pb.CommonDeletesReq
 		return nil, err
 	}
 	logger.Log.Info("DeleteChatRoomsHandler", zap.String("UserID", u.ID), zap.Strings("ChatRoomIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateConsultant(ctx context.Context, req *pb.CommonConsultantRequest) (*pb.CommonConsultantResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &consultant.CreateConsultantHandler{Model: s.Model}
+	resp, err := handler.CreateConsultant(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateConsultantHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateConsultantHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetConsultant(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonConsultantResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &consultant.GetConsultantHandler{Model: s.Model}
+	resp, err := handler.GetConsultant(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetConsultantHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ConsultantID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetConsultantHandler", zap.String("UserID", u.ID), zap.String("ConsultantID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetConsultants(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonConsultantsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &consultant.GetConsultantsHandler{Model: s.Model}
+	resp, err := handler.GetConsultants(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetConsultantsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetConsultantsHandler", zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateConsultant(ctx context.Context, req *pb.CommonConsultantRequest) (*pb.CommonConsultantResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &consultant.UpdateConsultantHandler{Model: s.Model}
+	resp, err := handler.UpdateConsultant(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateConsultantHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ConsultantID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateConsultantHandler", zap.String("UserID", u.ID), zap.String("ConsultantID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateConsultants(ctx context.Context, req *pb.CommonConsultantsRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &consultant.UpdateConsultantsHandler{Model: s.Model}
+	resp, err := handler.UpdateConsultants(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateConsultantsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateConsultantsHandler", zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteConsultant(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonConsultantResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &consultant.DeleteConsultantHandler{Model: s.Model}
+	resp, err := handler.DeleteConsultant(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteConsultantHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("ConsultantID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteConsultantHandler", zap.String("UserID", u.ID), zap.String("ConsultantID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteConsultants(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &consultant.DeleteConsultantsHandler{Model: s.Model}
+	resp, err := handler.DeleteConsultants(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteConsultantsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteConsultantsHandler", zap.String("UserID", u.ID), zap.Strings("ConsultantIDs", req.Ids))
 	return resp, nil
 }
 
