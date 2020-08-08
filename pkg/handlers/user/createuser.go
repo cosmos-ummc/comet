@@ -22,15 +22,16 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 		return nil, constants.InvalidArgumentError
 	}
 	user := &dto.User{
-		ID:          uuid.NewV4().String(),
-		Role:        utility.RemoveZeroWidth(req.Data.Role),
-		Name:        req.Data.Name,
-		PhoneNumber: utility.RemoveZeroWidth(req.Data.PhoneNumber),
-		Email:       utility.RemoveZeroWidth(req.Data.Email),
-		Password:    utility.RemoveZeroWidth(req.Data.Password),
-		BlockList:   req.Data.BlockList,
-		Visible:     req.Data.Visible,
-		Disabled:    req.Data.Disabled,
+		ID:               uuid.NewV4().String(),
+		Role:             utility.RemoveZeroWidth(req.Data.Role),
+		Name:             req.Data.Name,
+		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),
+		Email:            utility.RemoveZeroWidth(req.Data.Email),
+		Password:         utility.RemoveZeroWidth(req.Data.Password),
+		BlockList:        req.Data.BlockList,
+		Visible:          req.Data.Visible,
+		Disabled:         req.Data.Disabled,
+		NotFirstTimeChat: req.Data.NotFirstTimeChat,
 	}
 	err := s.validateAndProcessReq(user)
 	if err != nil {

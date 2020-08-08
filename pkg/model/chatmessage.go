@@ -112,10 +112,3 @@ func (m *Model) DeleteChatMessages(ctx context.Context, ids []string) ([]string,
 
 	return deletedIDs, nil
 }
-
-// QueryChatMessagesByPatientID ...
-func (m *Model) QueryChatMessagesByPatientID(ctx context.Context, id string) ([]*dto.ChatMessage, error) {
-	filter := map[string]interface{}{constants.PatientID: id}
-	_, chatMessages, err := m.chatMessageDAO.Query(ctx, nil, nil, filter)
-	return chatMessages, err
-}

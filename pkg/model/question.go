@@ -114,10 +114,3 @@ func (m *Model) DeleteQuestions(ctx context.Context, ids []string) ([]string, er
 
 	return deletedIDs, nil
 }
-
-// QueryQuestionsByPatientID ...
-func (m *Model) QueryQuestionsByPatientID(ctx context.Context, id string) ([]*dto.Question, error) {
-	filter := map[string]interface{}{constants.PatientID: id}
-	_, questions, err := m.questionDAO.Query(ctx, nil, nil, filter)
-	return questions, err
-}

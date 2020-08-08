@@ -114,13 +114,14 @@ func ReportsToResponse(reports []*dto.Report) *pb.CommonReportsResponse {
 func UserToResponse(user *dto.User) *pb.CommonUserResponse {
 	return &pb.CommonUserResponse{
 		Data: &pb.User{
-			Id:          user.ID,
-			Role:        user.Role,
-			Name:        user.Name,
-			PhoneNumber: user.PhoneNumber,
-			Email:       user.Email,
-			BlockList:   user.BlockList,
-			Visible:     user.Visible,
+			Id:               user.ID,
+			Role:             user.Role,
+			Name:             user.Name,
+			PhoneNumber:      user.PhoneNumber,
+			Email:            user.Email,
+			BlockList:        user.BlockList,
+			Visible:          user.Visible,
+			NotFirstTimeChat: user.NotFirstTimeChat,
 		},
 	}
 }
@@ -129,13 +130,14 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 	var resps []*pb.User
 	for _, user := range users {
 		resp := &pb.User{
-			Id:          user.ID,
-			Role:        user.Role,
-			Name:        user.Name,
-			PhoneNumber: user.PhoneNumber,
-			Email:       user.Email,
-			BlockList:   user.BlockList,
-			Visible:     user.Visible,
+			Id:               user.ID,
+			Role:             user.Role,
+			Name:             user.Name,
+			PhoneNumber:      user.PhoneNumber,
+			Email:            user.Email,
+			BlockList:        user.BlockList,
+			Visible:          user.Visible,
+			NotFirstTimeChat: user.NotFirstTimeChat,
 		}
 
 		resps = append(resps, resp)

@@ -72,15 +72,16 @@ func (s *UpdateUserHandler) UpdateUser(ctx context.Context, req *pb.CommonUserRe
 
 func (s *UpdateUserHandler) reqToUser(req *pb.CommonUserRequest) *dto.User {
 	user := &dto.User{
-		ID:          utility.RemoveZeroWidth(req.Id),
-		Role:        utility.RemoveZeroWidth(req.Data.Role),
-		Name:        utility.RemoveZeroWidth(req.Data.Name),
-		PhoneNumber: utility.RemoveZeroWidth(req.Data.PhoneNumber),
-		Email:       utility.RemoveZeroWidth(req.Data.Email),
-		Disabled:    req.Data.Disabled,
-		Password:    utility.RemoveZeroWidth(req.Data.Password),
-		BlockList:   req.Data.BlockList,
-		Visible:     req.Data.Visible,
+		ID:               utility.RemoveZeroWidth(req.Id),
+		Role:             utility.RemoveZeroWidth(req.Data.Role),
+		Name:             utility.RemoveZeroWidth(req.Data.Name),
+		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),
+		Email:            utility.RemoveZeroWidth(req.Data.Email),
+		Disabled:         req.Data.Disabled,
+		Password:         utility.RemoveZeroWidth(req.Data.Password),
+		BlockList:        req.Data.BlockList,
+		Visible:          req.Data.Visible,
+		NotFirstTimeChat: req.Data.NotFirstTimeChat,
 	}
 	return user
 }

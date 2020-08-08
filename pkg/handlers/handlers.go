@@ -17,12 +17,10 @@ import (
 	"comet/pkg/model"
 	"context"
 	"errors"
-	"os"
-	"strings"
-
 	"github.com/golang/protobuf/ptypes/empty"
 	"go.uber.org/zap"
 	"google.golang.org/grpc/metadata"
+	"os"
 )
 
 // Handlers ...
@@ -1140,7 +1138,8 @@ func (s *Handlers) validateUser(ctx context.Context, roles []string) (*dto.User,
 		return &dto.User{ID: token, Role: constants.Superuser}, nil
 	}
 
-	u, err := s.Model.VerifyUser(ctx, strings.Join(tokenSlice, " "))
+	// get user
+	u, err := s.Model.GetUser(ctx, token)
 	if err != nil {
 		return nil, err
 	}

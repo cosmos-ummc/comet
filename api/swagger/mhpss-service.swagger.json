@@ -3953,6 +3953,10 @@
         "disabled": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "notFirstTimeChat": {
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "user payload"

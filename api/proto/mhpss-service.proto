@@ -645,6 +645,7 @@ message User {
     repeated string blockList = 7;
     bool visible = 8;
     bool disabled = 9;
+    bool notFirstTimeChat = 10;
 }
 
 // common user request payload

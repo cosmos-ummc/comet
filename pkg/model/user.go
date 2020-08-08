@@ -52,6 +52,8 @@ func (m *Model) UpdateUser(ctx context.Context, user *dto.User) (*dto.User, erro
 	u.PhoneNumber = user.PhoneNumber
 	u.Email = user.Email
 	u.BlockList = user.BlockList
+	u.Visible = user.Visible
+	u.NotFirstTimeChat = user.NotFirstTimeChat
 
 	_, err = m.userDAO.Update(ctx, u)
 	if err != nil {

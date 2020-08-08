@@ -42,6 +42,7 @@ func (m *Model) UpdateChatRoom(ctx context.Context, chatRoom *dto.ChatRoom) (*dt
 	}
 
 	// patch chatRoom
+	s.Blocked = chatRoom.Blocked
 
 	// update chatRoom
 	_, err = m.chatRoomDAO.Update(ctx, s)
@@ -110,11 +111,4 @@ func (m *Model) DeleteChatRooms(ctx context.Context, ids []string) ([]string, er
 	}
 
 	return deletedIDs, nil
-}
-
-// QueryChatRoomsByPatientID ...
-func (m *Model) QueryChatRoomsByPatientID(ctx context.Context, id string) ([]*dto.ChatRoom, error) {
-	filter := map[string]interface{}{constants.PatientID: id}
-	_, chatRooms, err := m.chatRoomDAO.Query(ctx, nil, nil, filter)
-	return chatRooms, err
 }

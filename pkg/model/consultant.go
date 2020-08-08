@@ -42,6 +42,9 @@ func (m *Model) UpdateConsultant(ctx context.Context, consultant *dto.Consultant
 	}
 
 	// patch consultant
+	s.PhoneNumber = consultant.PhoneNumber
+	s.Email = consultant.Email
+	s.Name = consultant.Name
 
 	// update consultant
 	_, err = m.consultantDAO.Update(ctx, s)
@@ -110,11 +113,4 @@ func (m *Model) DeleteConsultants(ctx context.Context, ids []string) ([]string, 
 	}
 
 	return deletedIDs, nil
-}
-
-// QueryConsultantsByPatientID ...
-func (m *Model) QueryConsultantsByPatientID(ctx context.Context, id string) ([]*dto.Consultant, error) {
-	filter := map[string]interface{}{constants.PatientID: id}
-	_, consultants, err := m.consultantDAO.Query(ctx, nil, nil, filter)
-	return consultants, err
 }
