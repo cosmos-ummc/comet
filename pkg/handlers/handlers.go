@@ -1110,7 +1110,7 @@ func (s *Handlers) ClientCreateDeclaration(ctx context.Context, req *pb.ClientCr
 
 func (s *Handlers) validateUser(ctx context.Context, roles []string) (*dto.User, error) {
 	if os.Getenv("AUTH_ENABLED") != "true" {
-		return nil, nil
+		return &dto.User{}, nil
 	}
 	md, ok := metadata.FromIncomingContext(ctx)
 	if !ok {
