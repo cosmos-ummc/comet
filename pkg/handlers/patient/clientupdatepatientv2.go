@@ -7,8 +7,6 @@ import (
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
-	"unicode/utf8"
-
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -18,10 +16,6 @@ type ClientUpdatePatientV2Handler struct {
 }
 
 func (s *ClientUpdatePatientV2Handler) ClientUpdatePatientV2(ctx context.Context, req *pb.ClientUpdatePatientRequest) (*pb.ClientUpdatePatientV2Response, error) {
-	if utf8.RuneCountInString(req.Remarks) > 200 {
-		return nil, constants.RemarksTooLongError
-	}
-
 	patient := s.processReq(req)
 
 	_, err := s.Model.ClientUpdatePatient(ctx, patient)

@@ -596,6 +596,7 @@ message Patient {
     int64 lastIesrResult = 15;
     int64 registrationStatus = 16;
     string userId = 17;
+    int64 DaySinceMonitoring = 18;
 }
 
 // common patient request payload
@@ -729,32 +730,14 @@ message CommonDeclarationsResponse {
 
 // client update patient request payload
 message ClientUpdatePatientRequest {
-    // patient telegram ID
-    string telegramId = 1;
-    // patient name
-    string name = 2;
-    // patient phone number
-    string phoneNumber = 3;
     // patient IC / passport
-    string id = 4;
-    // patient status (1 - Symptomatic, 2 - Asymptomatic，3 - Confirmed but not Admitted, 4 - Confirmed and Admitted, 5 - Completed, 6 - Recovered, 7 - Quit, 8 - Passed Away)
-    int64 status = 5;
-    // patient email
-    string email = 6;
-    // patient latest declare time in milliseconds
-    int64 lastDeclared = 7;
-    // patient episode
-    int64 episode = 8;
-    // patient type  (1 - PUI, 2 - Contact Tracing)
-    int64 type = 9;
-    // patient localization (1 - English, 2 - Malay， 3 - Chinese, 4 - Tamil)
-    int64 localization = 10;
-    // doctors' remarks on patient
-    string remarks = 11;
+    string id = 1;
+    // patient telegram ID
+    string telegramId = 2;
     // patient consent signing time in milliseconds
-    int64 consent = 12;
+    int64 consent = 3;
     // patient privacy policy signing time in milliseconds
-    int64 privacyPolicy = 13;
+    int64 privacyPolicy = 4;
 }
 
 // client get patients request payload

@@ -61,19 +61,15 @@ func (m *Model) SyncDays(ctx context.Context) error {
 	}
 
 	for _, p := range patients {
-		// TODO: Calculate days of monitoring
-		//if p.FeverStartDate == "" {
-		//	p.FeverContDay = 0
-		//} else {
-		//	t, err := utility.DateStringToTime(p.FeverStartDate)
-		//	if err != nil {
-		//		return err
-		//	}
-		//	p.FeverContDay = utility.DaysElapsed(t, utility.MalaysiaTime(time.Now())) + 1
-		//}
+		if p.Consent == 0 {
+			p.Consent = 0
+		} else {
+			t := utility.MilliToTime(p.Consent)
+			p.DaySinceMonitoring = utility.DaysElapsed(t, utility.MalaysiaTime(time.Now())) + 1
+		}
 
 		// update patient
-		_, err = m.UpdatePatient(ctx, p)
+		_, err = m.patientDAO.Update(ctx, p)
 		if err != nil {
 			return err
 		}

@@ -3108,54 +3108,13 @@
     "pbClientUpdatePatientRequest": {
       "type": "object",
       "properties": {
-        "telegramId": {
-          "type": "string",
-          "title": "patient telegram ID"
-        },
-        "name": {
-          "type": "string",
-          "title": "patient name"
-        },
-        "phoneNumber": {
-          "type": "string",
-          "title": "patient phone number"
-        },
         "id": {
           "type": "string",
           "title": "patient IC / passport"
         },
-        "status": {
+        "telegramId": {
           "type": "string",
-          "format": "int64",
-          "title": "patient status (1 - Symptomatic, 2 - Asymptomatic，3 - Confirmed but not Admitted, 4 - Confirmed and Admitted, 5 - Completed, 6 - Recovered, 7 - Quit, 8 - Passed Away)"
-        },
-        "email": {
-          "type": "string",
-          "title": "patient email"
-        },
-        "lastDeclared": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient latest declare time in milliseconds"
-        },
-        "episode": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient episode"
-        },
-        "type": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient type  (1 - PUI, 2 - Contact Tracing)"
-        },
-        "localization": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient localization (1 - English, 2 - Malay， 3 - Chinese, 4 - Tamil)"
-        },
-        "remarks": {
-          "type": "string",
-          "title": "doctors' remarks on patient"
+          "title": "patient telegram ID"
         },
         "consent": {
           "type": "string",
@@ -3846,6 +3805,10 @@
         },
         "userId": {
           "type": "string"
+        },
+        "DaySinceMonitoring": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "patient payload"
