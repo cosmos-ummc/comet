@@ -23,7 +23,7 @@ func (s *CreateConsultantHandler) CreateConsultant(ctx context.Context, req *pb.
 	}
 	consultant := &dto.Consultant{
 		ID:          uuid.NewV4().String(),
-		UserID:      req.Data.UserId,
+		UserID:      uuid.NewV4().String(),
 		Name:        req.Data.Name,
 		PhoneNumber: utility.NormalizePhoneNumber(req.Data.PhoneNumber, ""),
 		Email:       req.Data.Email,
@@ -32,7 +32,7 @@ func (s *CreateConsultantHandler) CreateConsultant(ctx context.Context, req *pb.
 
 	// create user first then only can create consultant
 	user := &dto.User{
-		ID:          uuid.NewV4().String(),
+		ID:          consultant.UserID,
 		Role:        constants.Consultant,
 		Name:        consultant.Name,
 		PhoneNumber: consultant.PhoneNumber,
@@ -60,10 +60,7 @@ func (s *CreateConsultantHandler) CreateConsultant(ctx context.Context, req *pb.
 
 	_, err = s.Model.CreateUser(ctx, user)
 	if err != nil {
-		if status.Code(err) == codes.AlreadyExists {
-			return nil, constants.UserAlreadyExistError
-		}
-		return nil, constants.InternalError
+		return nil, err
 	}
 
 	// create consultant after user has been created

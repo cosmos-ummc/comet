@@ -100,20 +100,9 @@ func (m *Model) DeleteConsultant(ctx context.Context, id string) (*dto.Consultan
 	}
 
 	// delete user
-	_, users, err := m.QueryUsers(ctx, nil, nil, &dto.FilterData{
-		Item:  constants.ConsultantID,
-		Value: id,
-	})
+	_, err = m.DeleteUser(ctx, s.UserID)
 	if err != nil {
 		return nil, err
-	}
-	if len(users) != 0 {
-		for _, user := range users {
-			_, err = m.DeleteUser(ctx, user.ID)
-			if err != nil {
-				continue
-			}
-		}
 	}
 
 	return s, nil
