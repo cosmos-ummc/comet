@@ -72,6 +72,9 @@ const (
 	// ChatMessages
 	Content = "content"
 
+	// Consultants
+	ConsultantID = "consultantId"
+
 	// AuthObjects
 	Authorized  = "authorized"
 	AccessUuid  = "accessUuid"

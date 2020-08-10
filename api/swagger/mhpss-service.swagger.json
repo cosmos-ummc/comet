@@ -3626,6 +3626,9 @@
           "items": {
             "type": "string"
           }
+        },
+        "password": {
+          "type": "string"
         }
       }
     },
@@ -3815,6 +3818,9 @@
         "DaySinceMonitoring": {
           "type": "string",
           "format": "int64"
+        },
+        "password": {
+          "type": "string"
         }
       },
       "title": "patient payload"

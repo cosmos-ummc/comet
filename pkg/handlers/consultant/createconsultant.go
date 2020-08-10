@@ -30,13 +30,50 @@ func (s *CreateConsultantHandler) CreateConsultant(ctx context.Context, req *pb.
 		TakenSlots:  req.Data.TakenSlots,
 	}
 
-	rslt, err := s.Model.CreateConsultant(ctx, consultant)
+	// create user first then only can create consultant
+	user := &dto.User{
+		ID:          uuid.NewV4().String(),
+		Role:        constants.Consultant,
+		Name:        consultant.Name,
+		PhoneNumber: consultant.PhoneNumber,
+		Email:       consultant.Email,
+		Password:    utility.RemoveZeroWidth(req.Data.Password),
+	}
+
+	// check if phone number exist
+	count, _, err := s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
+		Item:  constants.PhoneNumber,
+		Value: user.PhoneNumber,
+	})
+	if count > 0 {
+		return nil, constants.PhoneNumberAlreadyExistError
+	}
+
+	// check if email exist
+	count, _, err = s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
+		Item:  constants.Email,
+		Value: user.Email,
+	})
+	if count > 0 {
+		return nil, constants.EmailAlreadyExistError
+	}
+
+	_, err = s.Model.CreateUser(ctx, user)
+	if err != nil {
+		if status.Code(err) == codes.AlreadyExists {
+			return nil, constants.UserAlreadyExistError
+		}
+		return nil, constants.InternalError
+	}
+
+	// create consultant after user has been created
+	rs, err := s.Model.CreateConsultant(ctx, consultant)
 	if err != nil {
 		if status.Code(err) == codes.AlreadyExists {
 			return nil, constants.ConsultantAlreadyExistError
 		}
 		return nil, constants.InternalError
 	}
-	resp := utility.ConsultantToResponse(rslt)
+	resp := utility.ConsultantToResponse(rs)
 	return resp, nil
 }

@@ -5,6 +5,14 @@ const (
 	Severe
 )
 
+const (
+	PUI = iota + 1
+	PUS
+	HCW
+	Patient
+	Others
+)
+
 // Registration Status
 const (
 	NotFound = iota

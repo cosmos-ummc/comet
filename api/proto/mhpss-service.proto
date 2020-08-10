@@ -597,6 +597,7 @@ message Patient {
     int64 registrationStatus = 16;
     string userId = 17;
     int64 DaySinceMonitoring = 18;
+    string password = 19;
 }
 
 // common patient request payload
@@ -936,6 +937,7 @@ message Consultant {
     string phoneNumber = 4;
     string email = 5;
     repeated string takenSlots = 6;
+    string password = 7;
 }
 
 message CommonConsultantRequest {
