@@ -27,6 +27,7 @@ func (s *CreateConsultantHandler) CreateConsultant(ctx context.Context, req *pb.
 		Name:        req.Data.Name,
 		PhoneNumber: utility.NormalizePhoneNumber(req.Data.PhoneNumber, ""),
 		Email:       req.Data.Email,
+		TakenSlots:  req.Data.TakenSlots,
 	}
 
 	rslt, err := s.Model.CreateConsultant(ctx, consultant)

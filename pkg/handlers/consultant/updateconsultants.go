@@ -45,6 +45,7 @@ func (s *UpdateConsultantsHandler) reqToConsultant(req *pb.CommonConsultantsRequ
 		Name:        req.Data.Name,
 		PhoneNumber: utility.NormalizePhoneNumber(req.Data.PhoneNumber, ""),
 		Email:       req.Data.Email,
+		TakenSlots:  req.Data.TakenSlots,
 	}
 	return consultant
 }

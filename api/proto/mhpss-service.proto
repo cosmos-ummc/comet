@@ -935,6 +935,7 @@ message Consultant {
     string name = 3;
     string phoneNumber = 4;
     string email = 5;
+    repeated string takenSlots = 6;
 }
 
 message CommonConsultantRequest {

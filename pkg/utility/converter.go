@@ -351,6 +351,7 @@ func ConsultantToResponse(consultant *dto.Consultant) *pb.CommonConsultantRespon
 			Name:        consultant.Name,
 			PhoneNumber: consultant.PhoneNumber,
 			Email:       consultant.Email,
+			TakenSlots:  consultant.TakenSlots,
 		},
 	}
 }
@@ -364,6 +365,7 @@ func ConsultantsToResponse(consultants []*dto.Consultant) *pb.CommonConsultantsR
 			Name:        consultant.Name,
 			PhoneNumber: consultant.PhoneNumber,
 			Email:       consultant.Email,
+			TakenSlots:  consultant.TakenSlots,
 		}
 		resps = append(resps, resp)
 	}

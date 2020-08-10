@@ -45,6 +45,7 @@ func (m *Model) UpdateConsultant(ctx context.Context, consultant *dto.Consultant
 	s.PhoneNumber = consultant.PhoneNumber
 	s.Email = consultant.Email
 	s.Name = consultant.Name
+	s.TakenSlots = consultant.TakenSlots
 
 	// update consultant
 	_, err = m.consultantDAO.Update(ctx, s)
