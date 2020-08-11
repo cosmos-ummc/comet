@@ -57,6 +57,7 @@ type IHandlers interface {
 	ClientGetMeditations(ctx context.Context, req *pb.ClientGetMeditationsRequest) (*pb.CommonMeditationsResponse, error)
 	ClientSetVisibility(ctx context.Context, req *pb.ClientSetVisibilityRequest) (*pb.ClientSetVisibilityResponse, error)
 	ClientVerifyPatientComplete(ctx context.Context, req *pb.ClientVerifyPatientCompleteRequest) (*pb.ClientVerifyPatientCompleteResponse, error)
+	ClientMessageEvent(ctx context.Context, req *pb.ClientMessageEventRequest) (*pb.ClientMessageEventResponse, error)
 
 	CreateQuestion(ctx context.Context, req *pb.CommonQuestionRequest) (*pb.CommonQuestionResponse, error)
 	GetQuestion(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonQuestionResponse, error)

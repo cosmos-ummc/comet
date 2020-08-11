@@ -651,6 +651,13 @@ service MhpssService {
             body: "*"
         };
     }
+    // Client Message Event
+    rpc ClientMessageEvent (ClientMessageEventRequest) returns (ClientMessageEventResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/patients/message"
+            body: "*"
+        };
+    }
 }
 
 // common gets request payload
@@ -1261,4 +1268,12 @@ message ClientVerifyPatientCompleteRequest {
 
 message ClientVerifyPatientCompleteResponse {
     bool hasCompleted = 1;
+}
+
+message ClientMessageEventRequest {
+    string id = 1;
+}
+
+message ClientMessageEventResponse {
+    bool ok = 1;
 }

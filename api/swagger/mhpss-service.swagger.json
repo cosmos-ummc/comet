@@ -794,6 +794,39 @@
         ]
       }
     },
+    "/v1/client/patients/message": {
+      "post": {
+        "summary": "Client Message Event",
+        "operationId": "ClientMessageEvent",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbClientMessageEventResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbClientMessageEventRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/patients/undeclared": {
       "get": {
         "summary": "Client Get Undeclared Patients",
@@ -4106,6 +4139,23 @@
         }
       },
       "title": "client get undeclared patients response payload"
+    },
+    "pbClientMessageEventRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "pbClientMessageEventResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
     },
     "pbClientSetVisibilityRequest": {
       "type": "object",

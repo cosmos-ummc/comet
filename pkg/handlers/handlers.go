@@ -260,6 +260,15 @@ func (s *Handlers) ClientVerifyPatientComplete(ctx context.Context, req *pb.Clie
 	return resp, nil
 }
 
+func (s *Handlers) ClientMessageEvent(ctx context.Context, req *pb.ClientMessageEventRequest) (*pb.ClientMessageEventResponse, error) {
+	handler := &patient.ClientMessageEventHandler{Model: s.Model}
+	resp, err := handler.ClientMessageEvent(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *Handlers) UpdateUsers(ctx context.Context, req *pb.CommonUsersRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {
