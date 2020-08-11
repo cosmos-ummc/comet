@@ -9,6 +9,8 @@ import (
 	"comet/pkg/handlers/consultant"
 	"comet/pkg/handlers/declaration"
 	"comet/pkg/handlers/feed"
+	"comet/pkg/handlers/game"
+	"comet/pkg/handlers/meditation"
 	"comet/pkg/handlers/meeting"
 	"comet/pkg/handlers/patient"
 	"comet/pkg/handlers/question"
@@ -498,6 +500,222 @@ func (s *Handlers) DeleteFeeds(ctx context.Context, req *pb.CommonDeletesRequest
 		return nil, err
 	}
 	logger.Log.Info("DeleteFeedsHandler", zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateGame(ctx context.Context, req *pb.CommonGameRequest) (*pb.CommonGameResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &game.CreateGameHandler{Model: s.Model}
+	resp, err := handler.CreateGame(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateGameHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateGameHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetGame(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonGameResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.GetGameHandler{Model: s.Model}
+	resp, err := handler.GetGame(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetGameHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("GameID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetGameHandler", zap.String("UserID", u.ID), zap.String("GameID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetGames(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonGamesResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.GetGamesHandler{Model: s.Model}
+	resp, err := handler.GetGames(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetGamesHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("GameIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetGamesHandler", zap.String("UserID", u.ID), zap.Strings("GameIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateGame(ctx context.Context, req *pb.CommonGameRequest) (*pb.CommonGameResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.UpdateGameHandler{Model: s.Model}
+	resp, err := handler.UpdateGame(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateGameHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("GameID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateGameHandler", zap.String("UserID", u.ID), zap.String("GameID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateGames(ctx context.Context, req *pb.CommonGamesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.UpdateGamesHandler{Model: s.Model}
+	resp, err := handler.UpdateGames(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateGamesHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("GameIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateGamesHandler", zap.String("UserID", u.ID), zap.Strings("GameIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteGame(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonGameResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.DeleteGameHandler{Model: s.Model}
+	resp, err := handler.DeleteGame(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteGameHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("GameID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteGameHandler", zap.String("UserID", u.ID), zap.String("GameID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteGames(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.DeleteGamesHandler{Model: s.Model}
+	resp, err := handler.DeleteGames(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteGamesHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("GameIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteGamesHandler", zap.String("UserID", u.ID), zap.Strings("GameIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateMeditation(ctx context.Context, req *pb.CommonMeditationRequest) (*pb.CommonMeditationResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &meditation.CreateMeditationHandler{Model: s.Model}
+	resp, err := handler.CreateMeditation(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateMeditationHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateMeditationHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetMeditation(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonMeditationResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.GetMeditationHandler{Model: s.Model}
+	resp, err := handler.GetMeditation(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetMeditationHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("MeditationID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetMeditationHandler", zap.String("UserID", u.ID), zap.String("MeditationID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetMeditations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonMeditationsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.GetMeditationsHandler{Model: s.Model}
+	resp, err := handler.GetMeditations(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetMeditationsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetMeditationsHandler", zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateMeditation(ctx context.Context, req *pb.CommonMeditationRequest) (*pb.CommonMeditationResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.UpdateMeditationHandler{Model: s.Model}
+	resp, err := handler.UpdateMeditation(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateMeditationHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("MeditationID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateMeditationHandler", zap.String("UserID", u.ID), zap.String("MeditationID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateMeditations(ctx context.Context, req *pb.CommonMeditationsRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.UpdateMeditationsHandler{Model: s.Model}
+	resp, err := handler.UpdateMeditations(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateMeditationsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateMeditationsHandler", zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteMeditation(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonMeditationResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.DeleteMeditationHandler{Model: s.Model}
+	resp, err := handler.DeleteMeditation(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteMeditationHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("MeditationID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteMeditationHandler", zap.String("UserID", u.ID), zap.String("MeditationID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteMeditations(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.DeleteMeditationsHandler{Model: s.Model}
+	resp, err := handler.DeleteMeditations(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteMeditationsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteMeditationsHandler", zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
 	return resp, nil
 }
 

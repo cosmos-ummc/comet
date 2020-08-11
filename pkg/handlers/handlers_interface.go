@@ -99,4 +99,20 @@ type IHandlers interface {
 	UpdateMeetings(ctx context.Context, req *pb.CommonMeetingsRequest) (*pb.CommonIdsResponse, error)
 	DeleteMeeting(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonMeetingResponse, error)
 	DeleteMeetings(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
+
+	CreateGame(ctx context.Context, req *pb.CommonGameRequest) (*pb.CommonGameResponse, error)
+	GetGame(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonGameResponse, error)
+	GetGames(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonGamesResponse, error)
+	UpdateGame(ctx context.Context, req *pb.CommonGameRequest) (*pb.CommonGameResponse, error)
+	UpdateGames(ctx context.Context, req *pb.CommonGamesRequest) (*pb.CommonIdsResponse, error)
+	DeleteGame(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonGameResponse, error)
+	DeleteGames(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
+
+	CreateMeditation(ctx context.Context, req *pb.CommonMeditationRequest) (*pb.CommonMeditationResponse, error)
+	GetMeditation(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonMeditationResponse, error)
+	GetMeditations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonMeditationsResponse, error)
+	UpdateMeditation(ctx context.Context, req *pb.CommonMeditationRequest) (*pb.CommonMeditationResponse, error)
+	UpdateMeditations(ctx context.Context, req *pb.CommonMeditationsRequest) (*pb.CommonIdsResponse, error)
+	DeleteMeditation(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonMeditationResponse, error)
+	DeleteMeditations(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
 }

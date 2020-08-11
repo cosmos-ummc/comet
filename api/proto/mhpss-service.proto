@@ -412,6 +412,51 @@ service MhpssService {
             get: "/v1/meetings"
         };
     }
+    // Create Game
+    rpc CreateGame (CommonGameRequest) returns (CommonGameResponse) {
+        option (google.api.http) = {
+            post: "/v1/games/{id}"
+            body: "*"
+        };
+    }
+    // Get Game
+    rpc GetGame (CommonGetRequest) returns (CommonGameResponse) {
+        option (google.api.http) = {
+            get: "/v1/games/{id}"
+        };
+    }
+    // Update Game
+    rpc UpdateGame (CommonGameRequest) returns (CommonGameResponse) {
+        option (google.api.http) = {
+            put: "/v1/games/{id}"
+            body: "*"
+        };
+    }
+    // Update Games
+    rpc UpdateGames (CommonGamesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/games"
+            body: "*"
+        };
+    }
+    // Delete Game
+    rpc DeleteGame (CommonDeleteRequest) returns (CommonGameResponse) {
+        option (google.api.http) = {
+            delete: "/v1/games/{id}"
+        };
+    }
+    // Delete Games
+    rpc DeleteGames (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/games"
+        };
+    }
+    // Get Games
+    rpc GetGames (CommonGetsRequest) returns (CommonGamesResponse) {
+        option (google.api.http) = {
+            get: "/v1/games"
+        };
+    }
     // Create Feed
     rpc CreateFeed (CommonFeedRequest) returns (CommonFeedResponse) {
         option (google.api.http) = {
@@ -455,6 +500,51 @@ service MhpssService {
     rpc GetFeeds (CommonGetsRequest) returns (CommonFeedsResponse) {
         option (google.api.http) = {
             get: "/v1/feeds"
+        };
+    }
+    // Create Meditation
+    rpc CreateMeditation (CommonMeditationRequest) returns (CommonMeditationResponse) {
+        option (google.api.http) = {
+            post: "/v1/meditations/{id}"
+            body: "*"
+        };
+    }
+    // Get Meditation
+    rpc GetMeditation (CommonGetRequest) returns (CommonMeditationResponse) {
+        option (google.api.http) = {
+            get: "/v1/meditations/{id}"
+        };
+    }
+    // Update Meditation
+    rpc UpdateMeditation (CommonMeditationRequest) returns (CommonMeditationResponse) {
+        option (google.api.http) = {
+            put: "/v1/meditations/{id}"
+            body: "*"
+        };
+    }
+    // Update Meditations
+    rpc UpdateMeditations (CommonMeditationsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/meditations"
+            body: "*"
+        };
+    }
+    // Delete Meditation
+    rpc DeleteMeditation (CommonDeleteRequest) returns (CommonMeditationResponse) {
+        option (google.api.http) = {
+            delete: "/v1/meditations/{id}"
+        };
+    }
+    // Delete Meditations
+    rpc DeleteMeditations (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/meditations"
+        };
+    }
+    // Get Meditations
+    rpc GetMeditations (CommonGetsRequest) returns (CommonMeditationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/meditations"
         };
     }
     // Get Password Reset
@@ -1057,5 +1147,55 @@ message CommonFeedResponse {
 
 message CommonFeedsResponse {
     repeated Feed data = 1;
+    int64 total = 2;
+}
+
+message Game {
+    string id = 1;
+    string link = 2;
+    string imgPath = 3;
+    string type = 4;
+}
+
+message CommonGameRequest {
+    string id = 1;
+    Game data = 2;
+}
+
+message CommonGamesRequest {
+    repeated string ids = 1;
+    Game data = 2;
+}
+
+message CommonGameResponse {
+    Game data = 1;
+}
+
+message CommonGamesResponse {
+    repeated Game data = 1;
+    int64 total = 2;
+}
+
+message Meditation {
+    string id = 1;
+    string link = 2;
+}
+
+message CommonMeditationRequest {
+    string id = 1;
+    Meditation data = 2;
+}
+
+message CommonMeditationsRequest {
+    repeated string ids = 1;
+    Meditation data = 2;
+}
+
+message CommonMeditationResponse {
+    Meditation data = 1;
+}
+
+message CommonMeditationsResponse {
+    repeated Meditation data = 1;
     int64 total = 2;
 }

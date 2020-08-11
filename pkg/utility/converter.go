@@ -458,3 +458,63 @@ func FeedsToResponse(feeds []*dto.Feed) *pb.CommonFeedsResponse {
 }
 
 // -------------- Feeds -----------------
+
+// -------------- Games -----------------
+
+func GameToResponse(game *dto.Game) *pb.CommonGameResponse {
+	return &pb.CommonGameResponse{
+		Data: &pb.Game{
+			Id:      game.ID,
+			Link:    game.Link,
+			ImgPath: game.ImgPath,
+			Type:    game.Type,
+		},
+	}
+}
+
+func GamesToResponse(games []*dto.Game) *pb.CommonGamesResponse {
+	var resps []*pb.Game
+	for _, game := range games {
+		resp := &pb.Game{
+			Id:      game.ID,
+			Link:    game.Link,
+			ImgPath: game.ImgPath,
+			Type:    game.Type,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonGamesResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- Games -----------------
+
+// -------------- Meditations -----------------
+
+func MeditationToResponse(meditation *dto.Meditation) *pb.CommonMeditationResponse {
+	return &pb.CommonMeditationResponse{
+		Data: &pb.Meditation{
+			Id:   meditation.ID,
+			Link: meditation.Link,
+		},
+	}
+}
+
+func MeditationsToResponse(meditations []*dto.Meditation) *pb.CommonMeditationsResponse {
+	var resps []*pb.Meditation
+	for _, meditation := range meditations {
+		resp := &pb.Meditation{
+			Id:   meditation.ID,
+			Link: meditation.Link,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonMeditationsResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- Meditations -----------------
