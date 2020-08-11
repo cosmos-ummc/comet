@@ -223,3 +223,37 @@ func (m *Model) ClientGetUndeclaredPatientsByTime(ctx context.Context, from int6
 func (m *Model) ClientGetPatientsByConsentTime(ctx context.Context, from int64, to int64) ([]*dto.Patient, error) {
 	return m.patientDAO.GetByConsentTime(ctx, from, to)
 }
+
+// VerifyPatientComplete verifies if patient has completed monitoring
+func (m *Model) VerifyPatientComplete(ctx context.Context, id string) (bool, error) {
+	p, err := m.patientDAO.Get(ctx, id)
+	if err != nil {
+		return false, err
+	}
+
+	// check if patient is PUI or PUS
+	if p.Type != constants.PUI && p.Type != constants.PUS {
+		return false, nil
+	}
+
+	// check if patient has negative swab
+	if p.SwabResult != constants.SwabNegative {
+		return false, nil
+	}
+
+	// check if days since monitoring > 14
+	if p.DaySinceMonitoring <= 14 {
+		return false, nil
+	}
+
+	// update patient completed
+	p.HasCompleted = true
+	_, err = m.patientDAO.Update(ctx, p)
+	if err != nil {
+		return false, err
+	}
+
+	// TODO: Send congratulation message
+
+	return true, nil
+}

@@ -644,6 +644,13 @@ service MhpssService {
             body: "*"
         };
     }
+    // Client Verify Patient Complete
+    rpc ClientVerifyPatientComplete (ClientVerifyPatientCompleteRequest) returns (ClientVerifyPatientCompleteResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/patients/complete"
+            body: "*"
+        };
+    }
 }
 
 // common gets request payload
@@ -1245,4 +1252,12 @@ message ClientSetVisibilityRequest {
 
 message ClientSetVisibilityResponse {
     bool ok = 1;
+}
+
+message ClientVerifyPatientCompleteRequest {
+    string id = 1;
+}
+
+message ClientVerifyPatientCompleteResponse {
+    bool hasCompleted = 1;
 }

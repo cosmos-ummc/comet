@@ -22,3 +22,11 @@ const (
 	Complete
 	Incomplete
 )
+
+// Swab Result
+const (
+	SwabNone = iota
+	SwabPending
+	SwabPositive
+	SwabNegative
+)
