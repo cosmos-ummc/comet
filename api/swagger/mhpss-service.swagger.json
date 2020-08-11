@@ -4167,6 +4167,10 @@
       "properties": {
         "id": {
           "type": "string"
+        },
+        "force": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },

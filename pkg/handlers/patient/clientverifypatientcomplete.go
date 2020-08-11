@@ -14,7 +14,7 @@ type ClientVerifyPatientCompleteHandler struct {
 }
 
 func (s *ClientVerifyPatientCompleteHandler) ClientVerifyPatientComplete(ctx context.Context, req *pb.ClientVerifyPatientCompleteRequest) (*pb.ClientVerifyPatientCompleteResponse, error) {
-	hasCompleted, err := s.Model.VerifyPatientComplete(ctx, req.Id)
+	hasCompleted, err := s.Model.VerifyPatientComplete(ctx, req.Id, req.Force)
 	if err != nil {
 		if status.Code(err) == codes.Unknown {
 			return nil, constants.PatientNotFoundError

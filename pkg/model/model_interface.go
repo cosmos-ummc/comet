@@ -59,7 +59,7 @@ type IModel interface {
 	// ClientGetUndeclaredPatientsByTime gets undeclared patients (with telegramID) given from timestamp
 	ClientGetUndeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	// VerifyPatientComplete verifies if patient has completed monitoring
-	VerifyPatientComplete(ctx context.Context, id string) (bool, error)
+	VerifyPatientComplete(ctx context.Context, id string, force bool) (bool, error)
 	/////////////
 
 	///////////// Question models
