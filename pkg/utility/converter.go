@@ -31,6 +31,7 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 		DaySinceMonitoring: patient.DaySinceMonitoring,
 		HasCompleted:       patient.HasCompleted,
 		MentalStatus:       patient.MentalStatus,
+		Type:               patient.Type,
 	}
 }
 
@@ -57,6 +58,7 @@ func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
 			DaySinceMonitoring: patient.DaySinceMonitoring,
 			HasCompleted:       patient.HasCompleted,
 			MentalStatus:       patient.MentalStatus,
+			Type:               patient.Type,
 		},
 	}
 }
@@ -85,6 +87,7 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			DaySinceMonitoring: patient.DaySinceMonitoring,
 			HasCompleted:       patient.HasCompleted,
 			MentalStatus:       patient.MentalStatus,
+			Type:               patient.Type,
 		}
 		resps = append(resps, resp)
 	}

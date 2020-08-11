@@ -22,4 +22,5 @@ type Patient struct {
 	DaySinceMonitoring int64  `json:"daySinceMonitoring" bson:"daySinceMonitoring"`
 	HasCompleted       bool   `json:"hasCompleted" bson:"hasCompleted"`
 	MentalStatus       int64  `json:"mentalStatus" bson:"mentalStatus"`
+	Type               int64  `json:"type" bson:"type"`
 }

@@ -63,6 +63,7 @@ func (s *UpdatePatientHandler) validateAndProcessReq(req *pb.CommonPatientReques
 		DaySinceMonitoring: req.Data.DaySinceMonitoring,
 		HasCompleted:       req.Data.HasCompleted,
 		MentalStatus:       req.Data.MentalStatus,
+		Type:               req.Data.Type,
 	}
 
 	patient.PhoneNumber = utility.NormalizePhoneNumber(patient.PhoneNumber, "")

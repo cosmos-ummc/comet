@@ -600,6 +600,7 @@ message Patient {
     string password = 19;
     bool hasCompleted = 20;
     int64 mentalStatus = 21;
+    int64 type = 22;
 }
 
 // common patient request payload

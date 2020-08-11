@@ -3829,6 +3829,10 @@
         "mentalStatus": {
           "type": "string",
           "format": "int64"
+        },
+        "type": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "patient payload"
