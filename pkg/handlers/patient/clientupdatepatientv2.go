@@ -40,10 +40,11 @@ func (s *ClientUpdatePatientV2Handler) ClientUpdatePatientV2(ctx context.Context
 
 func (s *ClientUpdatePatientV2Handler) processReq(req *pb.ClientUpdatePatientRequest) *dto.Patient {
 	patient := &dto.Patient{
-		ID:            utility.RemoveZeroWidth(req.Id),
-		TelegramID:    utility.RemoveZeroWidth(req.TelegramId),
-		Consent:       req.Consent,
-		PrivacyPolicy: req.PrivacyPolicy,
+		ID:                 utility.RemoveZeroWidth(req.Id),
+		TelegramID:         utility.RemoveZeroWidth(req.TelegramId),
+		Consent:            req.Consent,
+		PrivacyPolicy:      req.PrivacyPolicy,
+		DaySinceMonitoring: 1,
 	}
 	return patient
 }

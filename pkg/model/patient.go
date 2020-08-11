@@ -203,6 +203,7 @@ func (m *Model) ClientUpdatePatient(ctx context.Context, patient *dto.Patient) (
 	p.TelegramID = patient.TelegramID
 	p.PrivacyPolicy = patient.PrivacyPolicy
 	p.Consent = patient.Consent
+	p.DaySinceMonitoring = 1
 
 	// update patient
 	_, err = m.patientDAO.Update(ctx, p)
