@@ -640,7 +640,7 @@ service MhpssService {
     // Client Set Visibility
     rpc ClientSetVisibility (ClientSetVisibilityRequest) returns (ClientSetVisibilityResponse) {
         option (google.api.http) = {
-            post: "/v1/client/users/visibility"
+            put: "/v1/client/users/visibility"
             body: "*"
         };
     }

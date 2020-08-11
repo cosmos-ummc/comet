@@ -843,7 +843,7 @@
       }
     },
     "/v1/client/users/visibility": {
-      "post": {
+      "put": {
         "summary": "Client Set Visibility",
         "operationId": "ClientSetVisibility",
         "responses": {
