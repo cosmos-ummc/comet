@@ -968,7 +968,7 @@ message Meeting {
     string id = 1;
     string patientId = 2;
     string consultantId = 3;
-    int64 time = 4;
+    string time = 4;
     int64 status = 5;
 }
 

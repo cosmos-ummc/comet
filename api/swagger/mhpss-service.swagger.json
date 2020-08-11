@@ -3733,8 +3733,7 @@
           "type": "string"
         },
         "time": {
-          "type": "string",
-          "format": "int64"
+          "type": "string"
         },
         "status": {
           "type": "string",
