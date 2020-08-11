@@ -17,6 +17,7 @@ const (
 	ChatRooms    = "chatrooms"
 	Consultants  = "consultants"
 	Meetings     = "meetings"
+	Feeds        = "feeds"
 )
 
 // Documents
@@ -26,6 +27,9 @@ const (
 
 // Fields
 const (
+	// Feeds
+	Title = "title"
+
 	// Token
 	Token   = "token"
 	TTL     = "ttl"

@@ -1313,6 +1313,287 @@
         ]
       }
     },
+    "/v1/feeds": {
+      "get": {
+        "summary": "Get Feeds",
+        "operationId": "GetFeeds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "item",
+            "description": "item to sort.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "order",
+            "description": "item to order.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "from",
+            "description": "pagination from.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "to",
+            "description": "pagination to.",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "filterItem",
+            "description": "item to filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "filterValue",
+            "description": "value to filter.",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "ids",
+            "description": "patient ids.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Feeds",
+        "operationId": "DeleteFeeds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ids",
+            "description": "ids.",
+            "in": "query",
+            "required": false,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "collectionFormat": "multi"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "put": {
+        "summary": "Update Feeds",
+        "operationId": "UpdateFeeds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonIdsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedsRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
+    "/v1/feeds/{id}": {
+      "get": {
+        "summary": "Get Feed",
+        "operationId": "GetFeed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "patient IC / passport",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete Feed",
+        "operationId": "DeleteFeed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "description": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "post": {
+        "summary": "Create Feed",
+        "operationId": "CreateFeed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      },
+      "put": {
+        "summary": "Update Feed",
+        "operationId": "UpdateFeed",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/login": {
       "post": {
         "summary": "Login",
@@ -3342,6 +3623,54 @@
       },
       "title": "get declarations response payload"
     },
+    "pbCommonFeedRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "data": {
+          "$ref": "#/definitions/pbFeed"
+        }
+      }
+    },
+    "pbCommonFeedResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "$ref": "#/definitions/pbFeed"
+        }
+      }
+    },
+    "pbCommonFeedsRequest": {
+      "type": "object",
+      "properties": {
+        "ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "data": {
+          "$ref": "#/definitions/pbFeed"
+        }
+      }
+    },
+    "pbCommonFeedsResponse": {
+      "type": "object",
+      "properties": {
+        "data": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbFeed"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "pbCommonIdsResponse": {
       "type": "object",
       "properties": {
@@ -3670,6 +3999,30 @@
         }
       },
       "title": "declaration payload"
+    },
+    "pbFeed": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "link": {
+          "type": "string"
+        },
+        "imgPath": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
     "pbGetPasswordResetResponse": {
       "type": "object",

@@ -412,6 +412,51 @@ service MhpssService {
             get: "/v1/meetings"
         };
     }
+    // Create Feed
+    rpc CreateFeed (CommonFeedRequest) returns (CommonFeedResponse) {
+        option (google.api.http) = {
+            post: "/v1/feeds/{id}"
+            body: "*"
+        };
+    }
+    // Get Feed
+    rpc GetFeed (CommonGetRequest) returns (CommonFeedResponse) {
+        option (google.api.http) = {
+            get: "/v1/feeds/{id}"
+        };
+    }
+    // Update Feed
+    rpc UpdateFeed (CommonFeedRequest) returns (CommonFeedResponse) {
+        option (google.api.http) = {
+            put: "/v1/feeds/{id}"
+            body: "*"
+        };
+    }
+    // Update Feeds
+    rpc UpdateFeeds (CommonFeedsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/feeds"
+            body: "*"
+        };
+    }
+    // Delete Feed
+    rpc DeleteFeed (CommonDeleteRequest) returns (CommonFeedResponse) {
+        option (google.api.http) = {
+            delete: "/v1/feeds/{id}"
+        };
+    }
+    // Delete Feeds
+    rpc DeleteFeeds (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/feeds"
+        };
+    }
+    // Get Feeds
+    rpc GetFeeds (CommonGetsRequest) returns (CommonFeedsResponse) {
+        option (google.api.http) = {
+            get: "/v1/feeds"
+        };
+    }
     // Get Password Reset
     rpc GetPasswordReset (GetPasswordResetRequest) returns (GetPasswordResetResponse) {
         option (google.api.http) = {
@@ -984,5 +1029,33 @@ message CommonMeetingResponse {
 
 message CommonMeetingsResponse {
     repeated Meeting data = 1;
+    int64 total = 2;
+}
+
+message Feed {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string link = 4;
+    string imgPath = 5;
+    int64 type = 6;
+}
+
+message CommonFeedRequest {
+    string id = 1;
+    Feed data = 2;
+}
+
+message CommonFeedsRequest {
+    repeated string ids = 1;
+    Feed data = 2;
+}
+
+message CommonFeedResponse {
+    Feed data = 1;
+}
+
+message CommonFeedsResponse {
+    repeated Feed data = 1;
     int64 total = 2;
 }

@@ -50,6 +50,24 @@ type IQuestionDAO interface {
 	BatchDelete(ctx context.Context, ids []string) ([]string, error)
 }
 
+// IFeedDAO ...
+type IFeedDAO interface {
+	// Create creates new feed
+	Create(ctx context.Context, feed *dto.Feed) (*dto.Feed, error)
+	// Update updates feed
+	Update(ctx context.Context, feed *dto.Feed) (*dto.Feed, error)
+	// Get gets feed by ID
+	Get(ctx context.Context, id string) (*dto.Feed, error)
+	// BatchGet gets feeds by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.Feed, error)
+	// Query queries feeds by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Feed, error)
+	// Delete deletes feed by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes feeds by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
 // IDeclarationDAO ...
 type IDeclarationDAO interface {
 	// Create creates new declaration

@@ -79,6 +79,25 @@ type IModel interface {
 	DeleteQuestions(ctx context.Context, ids []string) ([]string, error)
 	/////////////
 
+	///////////// Feed models
+	// CreateFeed creates new feed
+	CreateFeed(ctx context.Context, feed *dto.Feed) (*dto.Feed, error)
+	// UpdateFeed updates feed
+	UpdateFeed(ctx context.Context, feed *dto.Feed) (*dto.Feed, error)
+	// UpdateFeeds update feeds
+	UpdateFeeds(ctx context.Context, feed *dto.Feed, ids []string) ([]string, error)
+	// GetFeed gets feed by ID
+	GetFeed(ctx context.Context, id string) (*dto.Feed, error)
+	// BatchGetFeeds get feeds by slice of IDs
+	BatchGetFeeds(ctx context.Context, ids []string) ([]*dto.Feed, error)
+	// QueryFeeds queries feeds by sort, range, filter
+	QueryFeeds(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Feed, error)
+	// DeleteFeed deletes feed by ID
+	DeleteFeed(ctx context.Context, id string) (*dto.Feed, error)
+	// DeleteFeeds delete feeds by IDs
+	DeleteFeeds(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
 	///////////// ChatMessage models
 	// CreateChatMessage creates new chatMessage
 	CreateChatMessage(ctx context.Context, chatMessage *dto.ChatMessage) (*dto.ChatMessage, error)

@@ -8,6 +8,7 @@ import (
 	chatRoom "comet/pkg/handlers/chatroom"
 	"comet/pkg/handlers/consultant"
 	"comet/pkg/handlers/declaration"
+	"comet/pkg/handlers/feed"
 	"comet/pkg/handlers/meeting"
 	"comet/pkg/handlers/patient"
 	"comet/pkg/handlers/question"
@@ -389,6 +390,114 @@ func (s *Handlers) DeleteQuestions(ctx context.Context, req *pb.CommonDeletesReq
 		return nil, err
 	}
 	logger.Log.Info("DeleteQuestionsHandler", zap.String("UserID", u.ID), zap.Strings("QuestionIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateFeed(ctx context.Context, req *pb.CommonFeedRequest) (*pb.CommonFeedResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &feed.CreateFeedHandler{Model: s.Model}
+	resp, err := handler.CreateFeed(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateFeedHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateFeedHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetFeed(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonFeedResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.GetFeedHandler{Model: s.Model}
+	resp, err := handler.GetFeed(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetFeedHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("FeedID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetFeedHandler", zap.String("UserID", u.ID), zap.String("FeedID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetFeeds(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonFeedsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.GetFeedsHandler{Model: s.Model}
+	resp, err := handler.GetFeeds(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetFeedsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetFeedsHandler", zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateFeed(ctx context.Context, req *pb.CommonFeedRequest) (*pb.CommonFeedResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.UpdateFeedHandler{Model: s.Model}
+	resp, err := handler.UpdateFeed(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateFeedHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("FeedID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateFeedHandler", zap.String("UserID", u.ID), zap.String("FeedID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateFeeds(ctx context.Context, req *pb.CommonFeedsRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.UpdateFeedsHandler{Model: s.Model}
+	resp, err := handler.UpdateFeeds(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateFeedsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateFeedsHandler", zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteFeed(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonFeedResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.DeleteFeedHandler{Model: s.Model}
+	resp, err := handler.DeleteFeed(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteFeedHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("FeedID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteFeedHandler", zap.String("UserID", u.ID), zap.String("FeedID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteFeeds(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.DeleteFeedsHandler{Model: s.Model}
+	resp, err := handler.DeleteFeeds(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteFeedsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteFeedsHandler", zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
 	return resp, nil
 }
 

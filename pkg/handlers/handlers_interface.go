@@ -60,6 +60,14 @@ type IHandlers interface {
 	DeleteQuestion(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonQuestionResponse, error)
 	DeleteQuestions(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
 
+	CreateFeed(ctx context.Context, req *pb.CommonFeedRequest) (*pb.CommonFeedResponse, error)
+	GetFeed(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonFeedResponse, error)
+	GetFeeds(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonFeedsResponse, error)
+	UpdateFeed(ctx context.Context, req *pb.CommonFeedRequest) (*pb.CommonFeedResponse, error)
+	UpdateFeeds(ctx context.Context, req *pb.CommonFeedsRequest) (*pb.CommonIdsResponse, error)
+	DeleteFeed(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonFeedResponse, error)
+	DeleteFeeds(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
+
 	CreateChatMessage(ctx context.Context, req *pb.CommonChatMessageRequest) (*pb.CommonChatMessageResponse, error)
 	GetChatMessage(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonChatMessageResponse, error)
 	GetChatMessages(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonChatMessagesResponse, error)

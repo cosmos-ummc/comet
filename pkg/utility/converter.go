@@ -176,28 +176,28 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 func DeclarationToResponse(declaration *dto.Declaration) *pb.CommonDeclarationResponse {
 	return &pb.CommonDeclarationResponse{
 		Data: &pb.Declaration{
-			Id:                 declaration.ID,
-			PatientId:          declaration.PatientID,
-			Result:             QuestionsToPb(declaration.Result),
-			Category:           declaration.Category,
-			Score:              declaration.Score,
-			Status:             declaration.Status,
-			SubmittedAt:        declaration.SubmittedAt,
-			DoctorRemarks:      declaration.DoctorRemarks,
+			Id:            declaration.ID,
+			PatientId:     declaration.PatientID,
+			Result:        QuestionsToPb(declaration.Result),
+			Category:      declaration.Category,
+			Score:         declaration.Score,
+			Status:        declaration.Status,
+			SubmittedAt:   declaration.SubmittedAt,
+			DoctorRemarks: declaration.DoctorRemarks,
 		},
 	}
 }
 
 func PbToDeclaration(declaration *pb.Declaration) *dto.Declaration {
 	return &dto.Declaration{
-		ID:                 declaration.Id,
-		PatientID:          declaration.PatientId,
-		Result:             PbToQuestions(declaration.Result),
-		Category:           declaration.Category,
-		Score:              declaration.Score,
-		Status:             declaration.Status,
-		SubmittedAt:        declaration.SubmittedAt,
-		DoctorRemarks:      declaration.DoctorRemarks,
+		ID:            declaration.Id,
+		PatientID:     declaration.PatientId,
+		Result:        PbToQuestions(declaration.Result),
+		Category:      declaration.Category,
+		Score:         declaration.Score,
+		Status:        declaration.Status,
+		SubmittedAt:   declaration.SubmittedAt,
+		DoctorRemarks: declaration.DoctorRemarks,
 	}
 }
 
@@ -205,14 +205,14 @@ func DeclarationsToResponse(declarations []*dto.Declaration) *pb.CommonDeclarati
 	var resps []*pb.Declaration
 	for _, declaration := range declarations {
 		resp := &pb.Declaration{
-			Id:                 declaration.ID,
-			PatientId:          declaration.PatientID,
-			Result:             QuestionsToPb(declaration.Result),
-			Category:           declaration.Category,
-			Score:              declaration.Score,
-			Status:             declaration.Status,
-			SubmittedAt:        declaration.SubmittedAt,
-			DoctorRemarks:      declaration.DoctorRemarks,
+			Id:            declaration.ID,
+			PatientId:     declaration.PatientID,
+			Result:        QuestionsToPb(declaration.Result),
+			Category:      declaration.Category,
+			Score:         declaration.Score,
+			Status:        declaration.Status,
+			SubmittedAt:   declaration.SubmittedAt,
+			DoctorRemarks: declaration.DoctorRemarks,
 		}
 		resps = append(resps, resp)
 	}
@@ -422,3 +422,39 @@ func MeetingsToResponse(meetings []*dto.Meeting) *pb.CommonMeetingsResponse {
 }
 
 // -------------- Meetings -----------------
+
+// -------------- Feeds -----------------
+
+func FeedToResponse(feed *dto.Feed) *pb.CommonFeedResponse {
+	return &pb.CommonFeedResponse{
+		Data: &pb.Feed{
+			Id:          feed.ID,
+			Title:       feed.Title,
+			Description: feed.Description,
+			Link:        feed.Link,
+			ImgPath:     feed.ImgPath,
+			Type:        feed.Type,
+		},
+	}
+}
+
+func FeedsToResponse(feeds []*dto.Feed) *pb.CommonFeedsResponse {
+	var resps []*pb.Feed
+	for _, feed := range feeds {
+		resp := &pb.Feed{
+			Id:          feed.ID,
+			Title:       feed.Title,
+			Description: feed.Description,
+			Link:        feed.Link,
+			ImgPath:     feed.ImgPath,
+			Type:        feed.Type,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonFeedsResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- Feeds -----------------
