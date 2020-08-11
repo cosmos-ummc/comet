@@ -23,4 +23,6 @@ type Patient struct {
 	HasCompleted       bool   `json:"hasCompleted" bson:"hasCompleted"`
 	MentalStatus       int64  `json:"mentalStatus" bson:"mentalStatus"`
 	Type               int64  `json:"type" bson:"type"`
+	SwabDate           string `json:"swabDate" bson:"swabDate"`
+	SwabResult         int64  `json:"swabResult" bson:"swabResult"`
 }

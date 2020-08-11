@@ -3833,6 +3833,13 @@
         "type": {
           "type": "string",
           "format": "int64"
+        },
+        "swabDate": {
+          "type": "string"
+        },
+        "swabResult": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "patient payload"

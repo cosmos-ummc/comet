@@ -601,6 +601,8 @@ message Patient {
     bool hasCompleted = 20;
     int64 mentalStatus = 21;
     int64 type = 22;
+    string swabDate = 23;
+    int64 swabResult = 24;
 }
 
 // common patient request payload
