@@ -228,21 +228,41 @@ func (m *Model) ClientGetPatientsByConsentTime(ctx context.Context, from int64, 
 func (m *Model) VerifyPatientComplete(ctx context.Context, id string, force bool) (bool, error) {
 	p, err := m.patientDAO.Get(ctx, id)
 	if err != nil {
+		_, err = m.patientDAO.Update(ctx, p)
+		if err != nil {
+			return false, err
+		}
+
 		return false, err
 	}
 
 	// check if patient is PUI or PUS
 	if p.Type != constants.PUI && p.Type != constants.PUS && !force{
+		_, err = m.patientDAO.Update(ctx, p)
+		if err != nil {
+			return false, err
+		}
+
 		return false, nil
 	}
 
 	// check if patient has negative swab
 	if p.SwabResult != constants.SwabNegative && !force {
+		_, err = m.patientDAO.Update(ctx, p)
+		if err != nil {
+			return false, err
+		}
+
 		return false, nil
 	}
 
 	// check if days since monitoring > 14
 	if p.DaySinceMonitoring <= 14 && !force {
+		_, err = m.patientDAO.Update(ctx, p)
+		if err != nil {
+			return false, err
+		}
+
 		return false, nil
 	}
 
