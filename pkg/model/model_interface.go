@@ -98,6 +98,44 @@ type IModel interface {
 	DeleteFeeds(ctx context.Context, ids []string) ([]string, error)
 	/////////////
 
+	///////////// Game models
+	// CreateGame creates new game
+	CreateGame(ctx context.Context, game *dto.Game) (*dto.Game, error)
+	// UpdateGame updates game
+	UpdateGame(ctx context.Context, game *dto.Game) (*dto.Game, error)
+	// UpdateGames update games
+	UpdateGames(ctx context.Context, game *dto.Game, ids []string) ([]string, error)
+	// GetGame gets game by ID
+	GetGame(ctx context.Context, id string) (*dto.Game, error)
+	// BatchGetGames get games by slice of IDs
+	BatchGetGames(ctx context.Context, ids []string) ([]*dto.Game, error)
+	// QueryGames queries games by sort, range, filter
+	QueryGames(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Game, error)
+	// DeleteGame deletes game by ID
+	DeleteGame(ctx context.Context, id string) (*dto.Game, error)
+	// DeleteGames delete games by IDs
+	DeleteGames(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
+	///////////// Meditation models
+	// CreateMeditation creates new meditation
+	CreateMeditation(ctx context.Context, meditation *dto.Meditation) (*dto.Meditation, error)
+	// UpdateMeditation updates meditation
+	UpdateMeditation(ctx context.Context, meditation *dto.Meditation) (*dto.Meditation, error)
+	// UpdateMeditations update meditations
+	UpdateMeditations(ctx context.Context, meditation *dto.Meditation, ids []string) ([]string, error)
+	// GetMeditation gets meditation by ID
+	GetMeditation(ctx context.Context, id string) (*dto.Meditation, error)
+	// BatchGetMeditations get meditations by slice of IDs
+	BatchGetMeditations(ctx context.Context, ids []string) ([]*dto.Meditation, error)
+	// QueryMeditations queries meditations by sort, range, filter
+	QueryMeditations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Meditation, error)
+	// DeleteMeditation deletes meditation by ID
+	DeleteMeditation(ctx context.Context, id string) (*dto.Meditation, error)
+	// DeleteMeditations delete meditations by IDs
+	DeleteMeditations(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
 	///////////// ChatMessage models
 	// CreateChatMessage creates new chatMessage
 	CreateChatMessage(ctx context.Context, chatMessage *dto.ChatMessage) (*dto.ChatMessage, error)

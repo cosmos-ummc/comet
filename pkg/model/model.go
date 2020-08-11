@@ -19,6 +19,8 @@ type Model struct {
 	consultantDAO  dao.IConsultantDAO
 	meetingDAO     dao.IMeetingDAO
 	feedDAO        dao.IFeedDAO
+	gameDAO        dao.IGameDAO
+	meditationDAO  dao.IMeditationDAO
 }
 
 // InitModel ...
@@ -35,5 +37,7 @@ func InitModel(client *mongo.Client) IModel {
 		consultantDAO:  dao.InitConsultantDAO(client),
 		meetingDAO:     dao.InitMeetingDAO(client),
 		feedDAO:        dao.InitFeedDAO(client),
+		gameDAO:        dao.InitGameDAO(client),
+		meditationDAO:  dao.InitMeditationDAO(client),
 	}
 }

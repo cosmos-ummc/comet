@@ -32,6 +32,8 @@ var (
 	ConsultantAlreadyExistError  = status.Error(codes.AlreadyExists, "Consultant already exist!")
 	MeetingAlreadyExistError     = status.Error(codes.AlreadyExists, "Meeting already exist!")
 	FeedAlreadyExistError        = status.Error(codes.AlreadyExists, "Feed already exist!")
+	GameAlreadyExistError        = status.Error(codes.AlreadyExists, "Game already exist!")
+	MeditationAlreadyExistError  = status.Error(codes.AlreadyExists, "Meditation already exist!")
 
 	UserNotFoundError        = status.Error(codes.NotFound, "User not found!")
 	PatientNotFoundError     = status.Error(codes.NotFound, "Patient not found!")
@@ -44,6 +46,8 @@ var (
 	ConsultantNotFoundError  = status.Error(codes.NotFound, "Consultant not found!")
 	MeetingNotFoundError     = status.Error(codes.NotFound, "Meeting not found!")
 	FeedNotFoundError        = status.Error(codes.NotFound, "Feed not found!")
+	GameNotFoundError        = status.Error(codes.NotFound, "Game not found!")
+	MeditationNotFoundError  = status.Error(codes.NotFound, "Meditation not found!")
 
 	UserOperationError         = status.Error(codes.Internal, "Authentication Service failed. Might be due to invalid input.")
 	UnauthorizedAccessError    = status.Error(codes.Unauthenticated, "User is not authorized to perform this action!")
