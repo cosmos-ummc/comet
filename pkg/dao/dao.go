@@ -68,6 +68,42 @@ type IFeedDAO interface {
 	BatchDelete(ctx context.Context, ids []string) ([]string, error)
 }
 
+// IGameDAO ...
+type IGameDAO interface {
+	// Create creates new game
+	Create(ctx context.Context, game *dto.Game) (*dto.Game, error)
+	// Update updates game
+	Update(ctx context.Context, game *dto.Game) (*dto.Game, error)
+	// Get gets game by ID
+	Get(ctx context.Context, id string) (*dto.Game, error)
+	// BatchGet gets games by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.Game, error)
+	// Query queries games by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Game, error)
+	// Delete deletes game by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes games by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
+// IMeditationDAO ...
+type IMeditationDAO interface {
+	// Create creates new meditation
+	Create(ctx context.Context, meditation *dto.Meditation) (*dto.Meditation, error)
+	// Update updates meditation
+	Update(ctx context.Context, meditation *dto.Meditation) (*dto.Meditation, error)
+	// Get gets meditation by ID
+	Get(ctx context.Context, id string) (*dto.Meditation, error)
+	// BatchGet gets meditations by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.Meditation, error)
+	// Query queries meditations by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Meditation, error)
+	// Delete deletes meditation by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes meditations by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
 // IDeclarationDAO ...
 type IDeclarationDAO interface {
 	// Create creates new declaration

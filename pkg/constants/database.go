@@ -18,6 +18,8 @@ const (
 	Consultants  = "consultants"
 	Meetings     = "meetings"
 	Feeds        = "feeds"
+	Games        = "games"
+	Meditations  = "meditations"
 )
 
 // Documents
@@ -27,6 +29,9 @@ const (
 
 // Fields
 const (
+	// Games
+	Link = "link"
+
 	// Feeds
 	Title = "title"
 
