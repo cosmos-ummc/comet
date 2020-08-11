@@ -20,6 +20,6 @@ type Patient struct {
 	IsolationAddress   string `json:"isolationAddress" bson:"isolationAddress"`
 	RegistrationStatus int64  `json:"registrationStatus" bson:"registrationStatus"`
 	DaySinceMonitoring int64  `json:"daySinceMonitoring" bson:"daySinceMonitoring"`
-	HasCompleted       int64  `json:"hasCompleted" bson:"hasCompleted"`
+	HasCompleted       bool   `json:"hasCompleted" bson:"hasCompleted"`
 	MentalStatus       int64  `json:"mentalStatus" bson:"mentalStatus"`
 }

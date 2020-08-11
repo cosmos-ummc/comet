@@ -598,6 +598,8 @@ message Patient {
     string userId = 17;
     int64 DaySinceMonitoring = 18;
     string password = 19;
+    bool hasCompleted = 20;
+    int64 mentalStatus = 21;
 }
 
 // common patient request payload

@@ -61,12 +61,12 @@ func (m *Model) SyncDays(ctx context.Context) error {
 	}
 
 	for _, p := range patients {
-		if p.Consent == 0 {
-			p.Consent = 0
-		} else {
-			t := utility.MilliToTime(p.Consent)
-			p.DaySinceMonitoring = utility.DaysElapsed(t, utility.MalaysiaTime(time.Now())) + 1
-		}
+		//if p.Consent == 0 {
+		//	p.Consent = 0
+		//} else {
+		//	t := utility.MilliToTime(p.Consent)
+		//	p.DaySinceMonitoring = utility.DaysElapsed(t, utility.MalaysiaTime(time.Now())) + 1
+		//}
 
 		// update patient
 		_, err = m.patientDAO.Update(ctx, p)

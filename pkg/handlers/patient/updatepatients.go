@@ -45,15 +45,18 @@ func (s *UpdatePatientsHandler) validateAndProcessReq(req *pb.CommonPatientsRequ
 	}
 
 	patient := &dto.Patient{
-		ID:               req.Ids[0],
-		Name:             utility.RemoveZeroWidth(req.Data.Name),
-		TelegramID:       utility.RemoveZeroWidth(req.Data.TelegramId),
-		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),
-		Email:            utility.RemoveZeroWidth(req.Data.Email),
-		Status:           req.Data.Status,
-		Remarks:          utility.RemoveZeroWidth(req.Data.Remarks),
-		HomeAddress:      req.Data.HomeAddress,
-		IsolationAddress: utility.RemoveZeroWidth(req.Data.IsolationAddress),
+		ID:                 req.Ids[0],
+		Name:               utility.RemoveZeroWidth(req.Data.Name),
+		TelegramID:         utility.RemoveZeroWidth(req.Data.TelegramId),
+		PhoneNumber:        utility.RemoveZeroWidth(req.Data.PhoneNumber),
+		Email:              utility.RemoveZeroWidth(req.Data.Email),
+		Status:             req.Data.Status,
+		Remarks:            utility.RemoveZeroWidth(req.Data.Remarks),
+		HomeAddress:        req.Data.HomeAddress,
+		IsolationAddress:   utility.RemoveZeroWidth(req.Data.IsolationAddress),
+		DaySinceMonitoring: req.Data.DaySinceMonitoring,
+		HasCompleted:       req.Data.HasCompleted,
+		MentalStatus:       req.Data.MentalStatus,
 	}
 
 	patient.PhoneNumber = utility.NormalizePhoneNumber(patient.PhoneNumber, "")

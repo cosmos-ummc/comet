@@ -27,7 +27,10 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 		LastDassResult:     patient.LastDassResult,
 		LastIesrResult:     patient.LastIesrResult,
 		RegistrationStatus: patient.RegistrationStatus,
+		UserId:             patient.UserID,
 		DaySinceMonitoring: patient.DaySinceMonitoring,
+		HasCompleted:       patient.HasCompleted,
+		MentalStatus:       patient.MentalStatus,
 	}
 }
 
@@ -50,7 +53,10 @@ func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
 			LastDassResult:     patient.LastDassResult,
 			LastIesrResult:     patient.LastIesrResult,
 			RegistrationStatus: patient.RegistrationStatus,
+			UserId:             patient.UserID,
 			DaySinceMonitoring: patient.DaySinceMonitoring,
+			HasCompleted:       patient.HasCompleted,
+			MentalStatus:       patient.MentalStatus,
 		},
 	}
 }
@@ -75,7 +81,10 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			LastDassResult:     patient.LastDassResult,
 			LastIesrResult:     patient.LastIesrResult,
 			RegistrationStatus: patient.RegistrationStatus,
+			UserId:             patient.UserID,
 			DaySinceMonitoring: patient.DaySinceMonitoring,
+			HasCompleted:       patient.HasCompleted,
+			MentalStatus:       patient.MentalStatus,
 		}
 		resps = append(resps, resp)
 	}

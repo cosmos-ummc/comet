@@ -3821,6 +3821,14 @@
         },
         "password": {
           "type": "string"
+        },
+        "hasCompleted": {
+          "type": "boolean",
+          "format": "boolean"
+        },
+        "mentalStatus": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "patient payload"

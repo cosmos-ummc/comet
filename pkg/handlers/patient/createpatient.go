@@ -76,20 +76,23 @@ func (s *CreatePatientHandler) CreatePatient(ctx context.Context, req *pb.Common
 
 func (s *CreatePatientHandler) validateAndProcessReq(req *pb.CommonPatientRequest) (*dto.Patient, error) {
 	patient := &dto.Patient{
-		ID:               utility.RemoveZeroWidth(req.Id),
-		UserID:           uuid.NewV4().String(),
-		Name:             utility.RemoveZeroWidth(req.Data.Name),
-		TelegramID:       utility.RemoveZeroWidth(req.Data.TelegramId),
-		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),
-		Email:            utility.RemoveZeroWidth(req.Data.Email),
-		Status:           req.Data.Status,
-		LastDassTime:     req.Data.LastDassTime,
-		LastIesrTime:     req.Data.LastIesrTime,
-		LastDassResult:   req.Data.LastDassResult,
-		LastIesrResult:   req.Data.LastIesrResult,
-		Remarks:          req.Data.Remarks,
-		HomeAddress:      req.Data.HomeAddress,
-		IsolationAddress: utility.RemoveZeroWidth(req.Data.IsolationAddress),
+		ID:                 utility.RemoveZeroWidth(req.Id),
+		UserID:             uuid.NewV4().String(),
+		Name:               utility.RemoveZeroWidth(req.Data.Name),
+		TelegramID:         utility.RemoveZeroWidth(req.Data.TelegramId),
+		PhoneNumber:        utility.RemoveZeroWidth(req.Data.PhoneNumber),
+		Email:              utility.RemoveZeroWidth(req.Data.Email),
+		Status:             req.Data.Status,
+		LastDassTime:       req.Data.LastDassTime,
+		LastIesrTime:       req.Data.LastIesrTime,
+		LastDassResult:     req.Data.LastDassResult,
+		LastIesrResult:     req.Data.LastIesrResult,
+		Remarks:            req.Data.Remarks,
+		HomeAddress:        req.Data.HomeAddress,
+		IsolationAddress:   utility.RemoveZeroWidth(req.Data.IsolationAddress),
+		DaySinceMonitoring: req.Data.DaySinceMonitoring,
+		HasCompleted:       req.Data.HasCompleted,
+		MentalStatus:       req.Data.MentalStatus,
 	}
 
 	patient.PhoneNumber = utility.NormalizePhoneNumber(patient.PhoneNumber, "")
@@ -103,9 +106,6 @@ func (s *CreatePatientHandler) validateAndProcessReq(req *pb.CommonPatientReques
 	}
 	if patient.Name == "" {
 		return nil, constants.InvalidPatientNameError
-	}
-	if patient.Status < 1 || patient.Status > 6 {
-		return nil, constants.InvalidPatientStatusError
 	}
 	return patient, nil
 }
