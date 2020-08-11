@@ -28,8 +28,6 @@ func (s *DeleteConsultantsHandler) DeleteConsultants(ctx context.Context, req *p
 }
 
 func (s *DeleteConsultantsHandler) processReq(ids []string) []string {
-	// Ids is actually just ONE long string stored in a slice. The length of ids will always be 1
-	// Protobuf doesn't know to split and what delimiter you use. So, split manually
 	split := strings.Split(ids[0], ",")
 	return split
 }
