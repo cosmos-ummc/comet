@@ -31,7 +31,7 @@ func (s *CreatePatientHandler) CreatePatient(ctx context.Context, req *pb.Common
 	// create user first then only can create patient
 	user := &dto.User{
 		ID:          patient.UserID,
-		Role:        constants.Consultant,
+		Role:        constants.PatientUser,
 		Name:        patient.Name,
 		PhoneNumber: patient.PhoneNumber,
 		Email:       patient.Email,

@@ -8,11 +8,12 @@ const (
 )
 
 const (
-	Superuser  = "superuser"
-	Consultant = "consultant"
-	ChatBot    = "chatbot"
+	Superuser   = "superuser"
+	Consultant  = "consultant"
+	PatientUser = "patient"
+	ChatBot     = "chatbot"
 )
 
 var SuperUserOnly = []string{Superuser}
-var AllCanAccess = []string{Superuser, Consultant}
+var AllCanAccess = []string{Superuser, Consultant, PatientUser}
 var ChatBotOnly = []string{ChatBot}
