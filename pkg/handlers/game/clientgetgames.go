@@ -20,7 +20,9 @@ func (s *ClientGetGamesHandler) GetGames(ctx context.Context, req *pb.ClientGetG
 
 	// shuffle games and select 3
 	utility.ShuffleGames(games)
-	games = games[0:3]
+	if len(games) > 3 {
+		games = games[0:3]
+	}
 
 	resp := utility.GamesToResponse(games)
 	resp.Total = int64(len(games))

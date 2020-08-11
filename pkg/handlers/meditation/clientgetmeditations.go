@@ -20,7 +20,9 @@ func (s *ClientGetMeditationsHandler) GetMeditations(ctx context.Context, req *p
 
 	// shuffle meditations and select 2
 	utility.ShuffleMeditations(meditations)
-	meditations = meditations[0:2]
+	if len(meditations) > 2 {
+		meditations = meditations[0:2]
+	}
 
 	resp := utility.MeditationsToResponse(meditations)
 	resp.Total = int64(len(meditations))

@@ -41,9 +41,11 @@ func (s *ClientGetFeedsHandler) GetFeeds(ctx context.Context, req *pb.ClientGetF
 
 	// shuffle feeds
 	utility.ShuffleFeeds(feeds)
-	slice := feeds[0:3]
+	if len(feeds) > 3 {
+		feeds = feeds[0:3]
+	}
 
-	resp := utility.FeedsToResponse(slice)
-	resp.Total = int64(len(slice))
+	resp := utility.FeedsToResponse(feeds)
+	resp.Total = int64(len(feeds))
 	return resp, nil
 }
