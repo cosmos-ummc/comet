@@ -17,7 +17,7 @@ func (m *Model) CreateMeeting(ctx context.Context, meeting *dto.Meeting) (*dto.M
 	// only can create meeting if not found
 	if err != nil && status.Code(err) == codes.Unknown {
 		// add takenSlots into consultant
-		c, err := m.consultantDAO.Get(ctx, meeting.ID)
+		c, err := m.consultantDAO.Get(ctx, meeting.ConsultantID)
 		if err != nil {
 			return nil, err
 		}
