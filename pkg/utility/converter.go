@@ -464,10 +464,11 @@ func FeedsToResponse(feeds []*dto.Feed) *pb.CommonFeedsResponse {
 func GameToResponse(game *dto.Game) *pb.CommonGameResponse {
 	return &pb.CommonGameResponse{
 		Data: &pb.Game{
-			Id:      game.ID,
-			Link:    game.Link,
-			ImgPath: game.ImgPath,
-			Type:    game.Type,
+			Id:         game.ID,
+			LinkAdr:    game.LinkAdr,
+			LinkIos:    game.LinkIos,
+			ImgPathAdr: game.ImgPathAdr,
+			ImgPathIos: game.ImgPathIos,
 		},
 	}
 }
@@ -476,10 +477,11 @@ func GamesToResponse(games []*dto.Game) *pb.CommonGamesResponse {
 	var resps []*pb.Game
 	for _, game := range games {
 		resp := &pb.Game{
-			Id:      game.ID,
-			Link:    game.Link,
-			ImgPath: game.ImgPath,
-			Type:    game.Type,
+			Id:         game.ID,
+			LinkAdr:    game.LinkAdr,
+			LinkIos:    game.LinkIos,
+			ImgPathAdr: game.ImgPathAdr,
+			ImgPathIos: game.ImgPathIos,
 		}
 		resps = append(resps, resp)
 	}

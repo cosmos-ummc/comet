@@ -22,10 +22,11 @@ func (s *CreateGameHandler) CreateGame(ctx context.Context, req *pb.CommonGameRe
 		return nil, constants.InvalidArgumentError
 	}
 	game := &dto.Game{
-		ID:      uuid.NewV4().String(),
-		Link:    req.Data.Link,
-		ImgPath: req.Data.ImgPath,
-		Type:    req.Data.Type,
+		ID:         uuid.NewV4().String(),
+		LinkAdr:    req.Data.LinkAdr,
+		LinkIos:    req.Data.LinkIos,
+		ImgPathAdr: req.Data.ImgPathAdr,
+		ImgPathIos: req.Data.ImgPathIos,
 	}
 
 	rslt, err := s.Model.CreateGame(ctx, game)

@@ -619,6 +619,24 @@ service MhpssService {
             body: "*"
         };
     }
+    // Client Get Feeds
+    rpc ClientGetFeeds(ClientGetFeedsRequest) returns (CommonFeedsResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/feeds/{id}"
+        };
+    }
+    // Client Get Games
+    rpc ClientGetGames(ClientGetGamesRequest) returns (CommonGamesResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/games/{id}"
+        };
+    }
+    // Client Get Meditations
+    rpc ClientGetMeditations(ClientGetMeditationsRequest) returns (CommonMeditationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/meditations/{id}"
+        };
+    }
 }
 
 // common gets request payload
@@ -1152,9 +1170,10 @@ message CommonFeedsResponse {
 
 message Game {
     string id = 1;
-    string link = 2;
-    string imgPath = 3;
-    string type = 4;
+    string linkAdr = 2;
+    string linkIos = 3;
+    string imgPathAdr = 4;
+    string imgPathIos = 5;
 }
 
 message CommonGameRequest {
@@ -1198,4 +1217,16 @@ message CommonMeditationResponse {
 message CommonMeditationsResponse {
     repeated Meditation data = 1;
     int64 total = 2;
+}
+
+message ClientGetFeedsRequest {
+    string id = 1;
+}
+
+message ClientGetGamesRequest {
+    string id = 1;
+}
+
+message ClientGetMeditationsRequest {
+    string id = 1;
 }

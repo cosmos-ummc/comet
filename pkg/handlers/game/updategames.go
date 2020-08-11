@@ -39,9 +39,10 @@ func (s *UpdateGamesHandler) UpdateGames(ctx context.Context, req *pb.CommonGame
 
 func (s *UpdateGamesHandler) reqToGame(req *pb.CommonGamesRequest) *dto.Game {
 	game := &dto.Game{
-		Link:    req.Data.Link,
-		ImgPath: req.Data.ImgPath,
-		Type:    req.Data.Type,
+		LinkAdr:    req.Data.LinkAdr,
+		LinkIos:    req.Data.LinkIos,
+		ImgPathAdr: req.Data.ImgPathAdr,
+		ImgPathIos: req.Data.ImgPathIos,
 	}
 	return game
 }

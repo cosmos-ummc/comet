@@ -443,6 +443,21 @@ func (s *Handlers) GetFeeds(ctx context.Context, req *pb.CommonGetsRequest) (*pb
 	return resp, nil
 }
 
+func (s *Handlers) ClientGetFeeds(ctx context.Context, req *pb.ClientGetFeedsRequest) (*pb.CommonFeedsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &feed.ClientGetFeedsHandler{Model: s.Model}
+	resp, err := handler.GetFeeds(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetFeedsHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetFeedsHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
 func (s *Handlers) UpdateFeed(ctx context.Context, req *pb.CommonFeedRequest) (*pb.CommonFeedResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
@@ -551,6 +566,21 @@ func (s *Handlers) GetGames(ctx context.Context, req *pb.CommonGetsRequest) (*pb
 	return resp, nil
 }
 
+func (s *Handlers) ClientGetGames(ctx context.Context, req *pb.ClientGetGamesRequest) (*pb.CommonGamesResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &game.ClientGetGamesHandler{Model: s.Model}
+	resp, err := handler.GetGames(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetGamesHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetGamesHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
 func (s *Handlers) UpdateGame(ctx context.Context, req *pb.CommonGameRequest) (*pb.CommonGameResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {
@@ -656,6 +686,21 @@ func (s *Handlers) GetMeditations(ctx context.Context, req *pb.CommonGetsRequest
 		return nil, err
 	}
 	logger.Log.Info("GetMeditationsHandler", zap.String("UserID", u.ID), zap.Strings("MeditationIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) ClientGetMeditations(ctx context.Context, req *pb.ClientGetMeditationsRequest) (*pb.CommonMeditationsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &meditation.ClientGetMeditationsHandler{Model: s.Model}
+	resp, err := handler.GetMeditations(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetMeditationsHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetMeditationsHandler", zap.String("UserID", u.ID))
 	return resp, nil
 }
 

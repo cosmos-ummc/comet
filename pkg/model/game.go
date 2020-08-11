@@ -42,9 +42,10 @@ func (m *Model) UpdateGame(ctx context.Context, game *dto.Game) (*dto.Game, erro
 	}
 
 	// patch game
-	s.Type = game.Type
-	s.ImgPath = game.ImgPath
-	s.Link = game.Link
+	s.ImgPathIos = game.ImgPathIos
+	s.ImgPathAdr = game.ImgPathAdr
+	s.LinkIos = game.LinkIos
+	s.LinkAdr = game.LinkAdr
 
 	// update game
 	_, err = m.gameDAO.Update(ctx, s)

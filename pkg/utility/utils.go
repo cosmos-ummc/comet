@@ -3,7 +3,9 @@ package utility
 import (
 	"bytes"
 	"comet/pkg/constants"
+	"comet/pkg/dto"
 	"html/template"
+	"math/rand"
 	"regexp"
 	"strconv"
 	"strings"
@@ -13,6 +15,21 @@ import (
 
 	"github.com/dongri/phonenumber"
 )
+
+func ShuffleFeeds(a []*dto.Feed) {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+}
+
+func ShuffleGames(a []*dto.Game) {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+}
+
+func ShuffleMeditations(a []*dto.Meditation) {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+}
 
 func NormalizePhoneNumber(phoneNum string, countryCode string) string {
 	code := countryCode

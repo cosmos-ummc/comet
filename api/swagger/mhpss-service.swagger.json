@@ -614,6 +614,99 @@
         ]
       }
     },
+    "/v1/client/feeds/{id}": {
+      "get": {
+        "summary": "Client Get Feeds",
+        "operationId": "ClientGetFeeds",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonFeedsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
+    "/v1/client/games/{id}": {
+      "get": {
+        "summary": "Client Get Games",
+        "operationId": "ClientGetGames",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonGamesResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
+    "/v1/client/meditations/{id}": {
+      "get": {
+        "summary": "Client Get Meditations",
+        "operationId": "ClientGetMeditations",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonMeditationsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/patients": {
       "get": {
         "summary": "Client Get Patients",
@@ -4688,13 +4781,16 @@
         "id": {
           "type": "string"
         },
-        "link": {
+        "linkAdr": {
           "type": "string"
         },
-        "imgPath": {
+        "linkIos": {
           "type": "string"
         },
-        "type": {
+        "imgPathAdr": {
+          "type": "string"
+        },
+        "imgPathIos": {
           "type": "string"
         }
       }

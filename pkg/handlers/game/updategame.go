@@ -35,10 +35,11 @@ func (s *UpdateGameHandler) UpdateGame(ctx context.Context, req *pb.CommonGameRe
 
 func (s *UpdateGameHandler) reqToGame(req *pb.CommonGameRequest) *dto.Game {
 	game := &dto.Game{
-		ID:      utility.RemoveZeroWidth(req.Id),
-		Link:    req.Data.Link,
-		ImgPath: req.Data.ImgPath,
-		Type:    req.Data.Type,
+		ID:         utility.RemoveZeroWidth(req.Id),
+		LinkAdr:    req.Data.LinkAdr,
+		LinkIos:    req.Data.LinkIos,
+		ImgPathAdr: req.Data.ImgPathAdr,
+		ImgPathIos: req.Data.ImgPathIos,
 	}
 	return game
 }
