@@ -36,7 +36,7 @@ func (s *UpdateUserHandler) UpdateUser(ctx context.Context, req *pb.CommonUserRe
 		count, _, err := s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
 			Item:  constants.PhoneNumber,
 			Value: user.PhoneNumber,
-		})
+		}, false)
 		if err != nil {
 			return nil, err
 		}
@@ -50,7 +50,7 @@ func (s *UpdateUserHandler) UpdateUser(ctx context.Context, req *pb.CommonUserRe
 		count, _, err := s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
 			Item:  constants.Email,
 			Value: user.Email,
-		})
+		}, false)
 		if err != nil {
 			return nil, err
 		}

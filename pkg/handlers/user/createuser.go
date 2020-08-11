@@ -23,7 +23,7 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 	}
 	user := &dto.User{
 		ID:               uuid.NewV4().String(),
-		Role:             utility.RemoveZeroWidth(req.Data.Role),
+		Role:             constants.Superuser,
 		Name:             req.Data.Name,
 		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),
 		Email:            utility.RemoveZeroWidth(req.Data.Email),
@@ -42,7 +42,7 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 	count, _, err := s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
 		Item:  constants.PhoneNumber,
 		Value: user.PhoneNumber,
-	})
+	}, false)
 	if count > 0 {
 		return nil, constants.PhoneNumberAlreadyExistError
 	}
@@ -51,7 +51,7 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 	count, _, err = s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
 		Item:  constants.Email,
 		Value: user.Email,
-	})
+	}, false)
 	if count > 0 {
 		return nil, constants.EmailAlreadyExistError
 	}

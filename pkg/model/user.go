@@ -164,8 +164,8 @@ func (m *Model) BatchGetUsers(ctx context.Context, ids []string) ([]*dto.User, e
 }
 
 // QueryUsers queries users by sort, range, filter
-func (m *Model) QueryUsers(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error) {
-	return m.userDAO.Query(ctx, sort, itemsRange, filter)
+func (m *Model) QueryUsers(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData, superuserOnly bool) (int64, []*dto.User, error) {
+	return m.userDAO.Query(ctx, sort, itemsRange, filter, superuserOnly)
 }
 
 // DeleteUser deletes user by ID
@@ -193,7 +193,7 @@ func (m *Model) DeleteUser(ctx context.Context, id string) (*dto.User, error) {
 // RevokeUserTokens revoke all user tokens
 func (m *Model) RevokeUserTokens(ctx context.Context) error {
 	// force revoke all user tokens
-	_, users, err := m.QueryUsers(ctx, nil, nil, nil)
+	_, users, err := m.QueryUsers(ctx, nil, nil, nil, false)
 	for _, user := range users {
 		err = m.authDAO.DeleteByID(ctx, user.ID)
 		if err != nil {
@@ -223,7 +223,7 @@ func (m *Model) Login(ctx context.Context, email string, password string) (*dto.
 	_, users, err := m.userDAO.Query(ctx, nil, nil, &dto.FilterData{
 		Item:  constants.Email,
 		Value: email,
-	})
+	}, false)
 	if err != nil {
 		return nil, err
 	}

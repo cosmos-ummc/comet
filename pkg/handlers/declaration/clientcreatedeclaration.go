@@ -25,7 +25,7 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		return nil, err
 	}
 	resp := &pb.ClientCreateDeclarationResponse{
-		HasSymptom: constants.Severe,
+		HasSymptom: constants.DeclarationSevere,
 	}
 	return resp, nil
 }

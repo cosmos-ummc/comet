@@ -8,6 +8,7 @@ import (
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
+	"github.com/twinj/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -27,6 +28,39 @@ func (s *CreatePatientHandler) CreatePatient(ctx context.Context, req *pb.Common
 		return nil, err
 	}
 
+	// create user first then only can create patient
+	user := &dto.User{
+		ID:          patient.UserID,
+		Role:        constants.Consultant,
+		Name:        patient.Name,
+		PhoneNumber: patient.PhoneNumber,
+		Email:       patient.Email,
+		Password:    utility.RemoveZeroWidth(req.Data.Password),
+	}
+
+	// check if phone number exist
+	count, _, err := s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
+		Item:  constants.PhoneNumber,
+		Value: user.PhoneNumber,
+	}, false)
+	if count > 0 {
+		return nil, constants.PhoneNumberAlreadyExistError
+	}
+
+	// check if email exist
+	count, _, err = s.Model.QueryUsers(ctx, nil, nil, &dto.FilterData{
+		Item:  constants.Email,
+		Value: user.Email,
+	}, false)
+	if count > 0 {
+		return nil, constants.EmailAlreadyExistError
+	}
+
+	_, err = s.Model.CreateUser(ctx, user)
+	if err != nil {
+		return nil, err
+	}
+
 	v, err := s.Model.CreatePatient(ctx, patient)
 	if err != nil {
 		logger.Log.Error("CreatePatientHandler: " + err.Error())
@@ -43,7 +77,7 @@ func (s *CreatePatientHandler) CreatePatient(ctx context.Context, req *pb.Common
 func (s *CreatePatientHandler) validateAndProcessReq(req *pb.CommonPatientRequest) (*dto.Patient, error) {
 	patient := &dto.Patient{
 		ID:               utility.RemoveZeroWidth(req.Id),
-		UserID:           req.Data.UserId,
+		UserID:           uuid.NewV4().String(),
 		Name:             utility.RemoveZeroWidth(req.Data.Name),
 		TelegramID:       utility.RemoveZeroWidth(req.Data.TelegramId),
 		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),

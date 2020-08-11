@@ -1,16 +1,19 @@
 package constants
 
 const (
-	Mild = iota + 1
-	Severe
-)
-
-const (
 	PUI = iota + 1
 	PUS
 	HCW
 	Patient
 	Others
+)
+
+const (
+	NoMentalIssue = iota
+	Depression
+	Anxiety
+	Stress
+	PTSD
 )
 
 // Registration Status

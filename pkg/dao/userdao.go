@@ -64,7 +64,7 @@ func (v *UserDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.User, erro
 }
 
 // Query queries users by sort, range, filter
-func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error) {
+func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData, superuserOnly bool) (int64, []*dto.User, error) {
 	collection := v.client.Database(constants.Mhpss).Collection(constants.Users)
 
 	var cursor *mongo.Cursor
@@ -123,53 +123,104 @@ func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto
 					},
 				},
 			}
-			cursor, err = collection.Find(ctx, query, findOptions)
+
+			// if superuser only
+			if superuserOnly {
+				newQuery := bson.D{{
+					"$and",
+					bson.A{
+						bson.D{{
+							constants.Role, constants.Superuser,
+						}},
+						query,
+					},
+				}}
+				cursor, err = collection.Find(ctx, newQuery, findOptions)
+				if err != nil {
+					return 0, nil, err
+				}
+				count, err = collection.CountDocuments(ctx, newQuery)
+				if err != nil {
+					return 0, nil, err
+				}
+			} else {
+				cursor, err = collection.Find(ctx, query, findOptions)
+				if err != nil {
+					return 0, nil, err
+				}
+				count, err = collection.CountDocuments(ctx, query)
+				if err != nil {
+					return 0, nil, err
+				}
+			}
+		} else {
+			// if superuser only
+			if superuserOnly {
+				newQuery := bson.D{{
+					"$and",
+					bson.A{
+						bson.D{{
+							constants.Role, constants.Superuser,
+						}},
+						bson.D{
+							{filter.Item, filter.Value},
+						},
+					},
+				}}
+				cursor, err = collection.Find(ctx, newQuery, findOptions)
+				if err != nil {
+					return 0, nil, err
+				}
+				count, err = collection.CountDocuments(ctx, newQuery)
+				if err != nil {
+					return 0, nil, err
+				}
+			} else {
+				cursor, err = collection.Find(ctx, bson.D{
+					{filter.Item, filter.Value},
+				}, findOptions)
+				if err != nil {
+					return 0, nil, err
+				}
+				count, err = collection.CountDocuments(ctx, bson.D{
+					{filter.Item, filter.Value},
+				})
+				if err != nil {
+					return 0, nil, err
+				}
+			}
+		}
+	} else {
+		// if superuser only
+		if superuserOnly {
+			newQuery := bson.D{{
+				"$and",
+				bson.A{
+					bson.D{{
+						constants.Role, constants.Superuser,
+					}},
+					bson.D{
+						{},
+					},
+				},
+			}}
+			cursor, err = collection.Find(ctx, newQuery, findOptions)
 			if err != nil {
 				return 0, nil, err
 			}
-			count, err = collection.CountDocuments(ctx, query)
-			if err != nil {
-				return 0, nil, err
-			}
-		} else if filter.Item == constants.Disabled {
-			cursor, err = collection.Find(
-				ctx, bson.D{
-					{filter.Item, len(filter.Value) == 4},
-				}, findOptions,
-			)
-			if err != nil {
-				return 0, nil, err
-			}
-			count, err = collection.CountDocuments(ctx, bson.D{
-				{filter.Item, len(filter.Value) == 4},
-			})
+			count, err = collection.CountDocuments(ctx, newQuery)
 			if err != nil {
 				return 0, nil, err
 			}
 		} else {
-			cursor, err = collection.Find(
-				ctx, bson.D{
-					{filter.Item, filter.Value},
-				}, findOptions,
-			)
+			cursor, err = collection.Find(ctx, bson.D{{}}, findOptions)
 			if err != nil {
 				return 0, nil, err
 			}
-			count, err = collection.CountDocuments(ctx, bson.D{
-				{filter.Item, filter.Value},
-			})
+			count, err = collection.CountDocuments(ctx, bson.D{{}})
 			if err != nil {
 				return 0, nil, err
 			}
-		}
-	} else {
-		cursor, err = collection.Find(ctx, bson.D{{}}, findOptions)
-		if err != nil {
-			return 0, nil, err
-		}
-		count, err = collection.CountDocuments(ctx, bson.D{{}})
-		if err != nil {
-			return 0, nil, err
 		}
 	}
 

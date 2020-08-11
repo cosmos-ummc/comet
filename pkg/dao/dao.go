@@ -79,7 +79,7 @@ type IUserDAO interface {
 	// BatchGet gets users by slice of IDs
 	BatchGet(ctx context.Context, ids []string) ([]*dto.User, error)
 	// Query queries users by sort, range, filter
-	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error)
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData, superuserOnly bool) (int64, []*dto.User, error)
 	// Delete deletes user by ID
 	Delete(ctx context.Context, id string) error
 	// BatchDelete deletes users by IDs

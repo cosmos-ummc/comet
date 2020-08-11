@@ -20,7 +20,7 @@ func (m *Model) ClientCreateDeclaration(ctx context.Context, declaration *dto.De
 	declaration.PatientPhoneNumber = p.PhoneNumber
 
 	// TODO: compute declaration result
-	declaration.Status = constants.Mild
+	declaration.Status = constants.DeclarationMild
 	declaration.Score = 100
 	p.LastDassTime = declaration.SubmittedAt
 	p.LastDassResult = declaration.Score

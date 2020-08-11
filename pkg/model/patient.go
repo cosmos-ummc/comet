@@ -77,7 +77,7 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	if err != nil {
 		return nil, err
 	}
-	
+
 	phoneNumberChanged := false
 	nameChanged := false
 	if p.PhoneNumber != patient.PhoneNumber {
@@ -179,6 +179,12 @@ func (m *Model) DeletePatient(ctx context.Context, id string) (*dto.Patient, err
 
 	// delete patients
 	err = m.patientDAO.Delete(ctx, id)
+	if err != nil {
+		return nil, err
+	}
+
+	// delete user
+	_, err = m.DeleteUser(ctx, p.UserID)
 	if err != nil {
 		return nil, err
 	}

@@ -60,7 +60,7 @@ func (s *GetUsersHandler) GetUsers(ctx context.Context, req *pb.CommonGetsReques
 		}
 	}
 
-	total, users, err := s.Model.QueryUsers(ctx, sort, itemsRange, filter)
+	total, users, err := s.Model.QueryUsers(ctx, sort, itemsRange, filter, true)
 	if err != nil {
 		logger.Log.Error("GetUsersHandler: " + err.Error())
 		if status.Code(err) == codes.Unknown {

@@ -175,7 +175,7 @@ type IModel interface {
 	// BatchGetUsers get users by slice of IDs
 	BatchGetUsers(ctx context.Context, ids []string) ([]*dto.User, error)
 	// QueryUsers queries users by sort, range, filter
-	QueryUsers(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData) (int64, []*dto.User, error)
+	QueryUsers(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter *dto.FilterData, superuserOnly bool) (int64, []*dto.User, error)
 	// DeleteUser deletes user by ID
 	DeleteUser(ctx context.Context, id string) (*dto.User, error)
 	// RevokeUserTokens revoke all user tokens
