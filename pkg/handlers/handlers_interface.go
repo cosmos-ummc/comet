@@ -55,6 +55,7 @@ type IHandlers interface {
 	ClientGetFeeds(ctx context.Context, req *pb.ClientGetFeedsRequest) (*pb.CommonFeedsResponse, error)
 	ClientGetGames(ctx context.Context, req *pb.ClientGetGamesRequest) (*pb.CommonGamesResponse, error)
 	ClientGetMeditations(ctx context.Context, req *pb.ClientGetMeditationsRequest) (*pb.CommonMeditationsResponse, error)
+	ClientSetVisibility(ctx context.Context, req *pb.ClientSetVisibilityRequest) (*pb.ClientSetVisibilityResponse, error)
 
 	CreateQuestion(ctx context.Context, req *pb.CommonQuestionRequest) (*pb.CommonQuestionResponse, error)
 	GetQuestion(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonQuestionResponse, error)

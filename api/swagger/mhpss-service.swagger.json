@@ -842,6 +842,39 @@
         ]
       }
     },
+    "/v1/client/users/visibility": {
+      "post": {
+        "summary": "Client Set Visibility",
+        "operationId": "ClientSetVisibility",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbClientSetVisibilityResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbClientSetVisibilityRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/consultants": {
       "get": {
         "summary": "Get Consultants",
@@ -4040,6 +4073,27 @@
         }
       },
       "title": "client get undeclared patients response payload"
+    },
+    "pbClientSetVisibilityRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "visible": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
+    },
+    "pbClientSetVisibilityResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "format": "boolean"
+        }
+      }
     },
     "pbClientUpdatePatientRequest": {
       "type": "object",

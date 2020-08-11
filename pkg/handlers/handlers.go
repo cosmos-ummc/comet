@@ -242,6 +242,15 @@ func (s *Handlers) UpdateUser(ctx context.Context, req *pb.CommonUserRequest) (*
 	return resp, nil
 }
 
+func (s *Handlers) ClientSetVisibility(ctx context.Context, req *pb.ClientSetVisibilityRequest) (*pb.ClientSetVisibilityResponse, error) {
+	handler := &user.ClientSetVisibilityHandler{Model: s.Model}
+	resp, err := handler.ClientSetVisibility(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *Handlers) UpdateUsers(ctx context.Context, req *pb.CommonUsersRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {

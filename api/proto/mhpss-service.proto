@@ -637,6 +637,13 @@ service MhpssService {
             get: "/v1/client/meditations/{id}"
         };
     }
+    // Client Set Visibility
+    rpc ClientSetVisibility (ClientSetVisibilityRequest) returns (ClientSetVisibilityResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/users/visibility"
+            body: "*"
+        };
+    }
 }
 
 // common gets request payload
@@ -1229,4 +1236,13 @@ message ClientGetGamesRequest {
 
 message ClientGetMeditationsRequest {
     string id = 1;
+}
+
+message ClientSetVisibilityRequest {
+    string id = 1;
+    bool visible = 2;
+}
+
+message ClientSetVisibilityResponse {
+    bool ok = 1;
 }
