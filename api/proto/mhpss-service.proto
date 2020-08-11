@@ -596,7 +596,7 @@ message Patient {
     int64 lastIesrResult = 15;
     int64 registrationStatus = 16;
     string userId = 17;
-    int64 DaySinceMonitoring = 18;
+    int64 daySinceMonitoring = 18;
     string password = 19;
     bool hasCompleted = 20;
     int64 mentalStatus = 21;

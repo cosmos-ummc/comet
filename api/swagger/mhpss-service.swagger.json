@@ -3815,7 +3815,7 @@
         "userId": {
           "type": "string"
         },
-        "DaySinceMonitoring": {
+        "daySinceMonitoring": {
           "type": "string",
           "format": "int64"
         },
