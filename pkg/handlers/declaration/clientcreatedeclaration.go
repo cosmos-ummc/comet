@@ -20,6 +20,7 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 	}
 	req.Data.Id = uuid.NewV4().String()
 	req.Data.SubmittedAt = utility.TimeToMilli(utility.MalaysiaTime(time.Now()))
+	req.Data.PatientId = req.PatientId
 	declaration := utility.PbToDeclaration(req.Data)
 
 	_, err := s.Model.ClientCreateDeclaration(ctx, declaration)
