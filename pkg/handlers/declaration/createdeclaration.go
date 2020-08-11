@@ -26,6 +26,9 @@ func (s *CreateDeclarationHandler) CreateDeclaration(ctx context.Context, req *p
 		Status:        req.Data.Status,
 		SubmittedAt:   req.Data.SubmittedAt,
 		DoctorRemarks: utility.RemoveZeroWidth(req.Data.DoctorRemarks),
+		Stress:        req.Data.Stress,
+		Depression:    req.Data.Depression,
+		Anxiety:       req.Data.Anxiety,
 	}
 
 	// create new declaration

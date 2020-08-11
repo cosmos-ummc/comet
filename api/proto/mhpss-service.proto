@@ -872,6 +872,9 @@ message Declaration {
     int64 submittedAt = 9;
     // doctor remarks on the report
     string doctorRemarks = 10;
+    int64 depression = 11;
+    int64 anxiety = 12;
+    int64 stress = 13;
 }
 
 // common declaration request payload

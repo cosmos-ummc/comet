@@ -184,6 +184,9 @@ func DeclarationToResponse(declaration *dto.Declaration) *pb.CommonDeclarationRe
 			Status:        declaration.Status,
 			SubmittedAt:   declaration.SubmittedAt,
 			DoctorRemarks: declaration.DoctorRemarks,
+			Stress:        declaration.Stress,
+			Depression:    declaration.Depression,
+			Anxiety:       declaration.Anxiety,
 		},
 	}
 }
@@ -198,6 +201,9 @@ func PbToDeclaration(declaration *pb.Declaration) *dto.Declaration {
 		Status:        declaration.Status,
 		SubmittedAt:   declaration.SubmittedAt,
 		DoctorRemarks: declaration.DoctorRemarks,
+		Stress:        declaration.Stress,
+		Depression:    declaration.Depression,
+		Anxiety:       declaration.Anxiety,
 	}
 }
 
@@ -213,6 +219,9 @@ func DeclarationsToResponse(declarations []*dto.Declaration) *pb.CommonDeclarati
 			Status:        declaration.Status,
 			SubmittedAt:   declaration.SubmittedAt,
 			DoctorRemarks: declaration.DoctorRemarks,
+			Stress:        declaration.Stress,
+			Depression:    declaration.Depression,
+			Anxiety:       declaration.Anxiety,
 		}
 		resps = append(resps, resp)
 	}

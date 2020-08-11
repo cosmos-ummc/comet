@@ -4905,6 +4905,18 @@
         "doctorRemarks": {
           "type": "string",
           "title": "doctor remarks on the report"
+        },
+        "depression": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxiety": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stress": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "declaration payload"

@@ -151,7 +151,6 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 	counts := []int64{0, 0, 0}
 
 	if declaration.Category == constants.DASS {
-		score := int64(0)
 		for _, result := range declaration.Result {
 			q, err := m.questionDAO.Get(ctx, result.ID)
 			if err != nil {
@@ -159,29 +158,31 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 			}
 			switch q.Type {
 			case "stress":
-				counts[0] += result.Score
+				declaration.Stress += result.Score
 			case "anxiety":
-				counts[1] += result.Score
+				declaration.Anxiety += result.Score
 			case "depression":
-				counts[2] += result.Score
+				declaration.Depression += result.Score
 			}
-			score += result.Score
+			declaration.Score += result.Score
 		}
-		score *= 2
-		declaration.Score = score
-		if score >= 28 {
+		declaration.Score *= 2
+		declaration.Stress *= 2
+		declaration.Anxiety *= 2
+		declaration.Depression *= 2
+		if declaration.Score >= 28 {
 			declaration.Status = constants.DeclarationExremelySevere
-		} else if score >= 21 {
+		} else if declaration.Score >= 21 {
 			declaration.Status = constants.DeclarationSevere
-		} else if score >= 14 {
+		} else if declaration.Score >= 14 {
 			declaration.Status = constants.DeclarationModerate
-		} else if score >= 10 {
+		} else if declaration.Score >= 10 {
 			declaration.Status = constants.DeclarationMild
 		} else {
 			declaration.Status = constants.DeclarationNormal
 		}
 		patient.LastDassTime = declaration.SubmittedAt
-		patient.LastDassResult = score
+		patient.LastDassResult = declaration.Score
 		// comparison for the counts
 		if counts[0] > counts[1] && counts[0] > counts[2] {
 			patient.MentalStatus = constants.Stress
