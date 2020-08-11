@@ -3642,14 +3642,6 @@
           "type": "string",
           "title": "patient IC / passport"
         },
-        "patientName": {
-          "type": "string",
-          "title": "patient name"
-        },
-        "patientPhoneNumber": {
-          "type": "string",
-          "title": "patient phone number"
-        },
         "result": {
           "type": "array",
           "items": {

@@ -7,6 +7,7 @@ import (
 	"comet/pkg/utility"
 	"context"
 	"github.com/twinj/uuid"
+	"time"
 )
 
 type ClientCreateDeclarationHandler struct {
@@ -18,6 +19,7 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		return nil, constants.InvalidArgumentError
 	}
 	req.Data.Id = uuid.NewV4().String()
+	req.Data.SubmittedAt = utility.TimeToMilli(utility.MalaysiaTime(time.Now()))
 	declaration := utility.PbToDeclaration(req.Data)
 
 	_, err := s.Model.ClientCreateDeclaration(ctx, declaration)

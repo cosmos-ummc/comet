@@ -79,12 +79,8 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	}
 
 	phoneNumberChanged := false
-	nameChanged := false
 	if p.PhoneNumber != patient.PhoneNumber {
 		phoneNumberChanged = true
-	}
-	if p.Name != patient.Name {
-		nameChanged = true
 	}
 
 	// patch patient
@@ -125,24 +121,6 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	_, err = m.patientDAO.Update(ctx, p)
 	if err != nil {
 		return nil, err
-	}
-
-	// update declarations and swabs if patient name or phone number changed
-	if nameChanged || phoneNumberChanged {
-		// update declarations
-		_, declarations, err := m.QueryDeclarationsByPatientID(ctx, patient.ID)
-		for _, declaration := range declarations {
-			if nameChanged {
-				declaration.PatientName = patient.Name
-			}
-			if phoneNumberChanged {
-				declaration.PatientPhoneNumber = patient.PhoneNumber
-			}
-			_, err = m.declarationDAO.Update(ctx, declaration)
-			if err != nil {
-				return nil, err
-			}
-		}
 	}
 
 	return p, nil

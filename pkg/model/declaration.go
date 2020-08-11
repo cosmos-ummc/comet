@@ -16,17 +16,17 @@ func (m *Model) ClientCreateDeclaration(ctx context.Context, declaration *dto.De
 	if err != nil {
 		return nil, constants.PatientNotFoundError
 	}
-	declaration.PatientName = p.Name
-	declaration.PatientPhoneNumber = p.PhoneNumber
 
-	// TODO: compute declaration result
-	declaration.Status = constants.DeclarationMild
-	declaration.Score = 100
-	p.LastDassTime = declaration.SubmittedAt
-	p.LastDassResult = declaration.Score
+	m.computeResult(ctx, declaration, p)
 
 	// create declaration
 	resp, err := m.declarationDAO.Create(ctx, declaration)
+	if err != nil {
+		return nil, err
+	}
+
+	// update patient
+	_, err = m.patientDAO.Update(ctx, p)
 	if err != nil {
 		return nil, err
 	}
@@ -42,14 +42,6 @@ func (m *Model) CreateDeclaration(ctx context.Context, declaration *dto.Declarat
 
 	// only can create declaration if not found
 	if err != nil && status.Code(err) == codes.Unknown {
-
-		// check if patient exist, put patient name
-		p, err := m.GetPatient(ctx, declaration.PatientID)
-		if err != nil {
-			return nil, constants.PatientNotFoundError
-		}
-		declaration.PatientName = p.Name
-		declaration.PatientPhoneNumber = p.PhoneNumber
 
 		// create declaration
 		resp, err := m.declarationDAO.Create(ctx, declaration)
@@ -153,4 +145,66 @@ func (m *Model) QueryDeclarationsByPatientID(ctx context.Context, id string) (in
 	filter := map[string]interface{}{constants.PatientID: id}
 	total, declarations, err := m.declarationDAO.Query(ctx, nil, nil, filter)
 	return total, declarations, err
+}
+
+func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration, patient *dto.Patient) {
+	counts := []int64{0, 0, 0}
+
+	if declaration.Category == constants.DASS {
+		score := int64(0)
+		for _, result := range declaration.Result {
+			q, err := m.questionDAO.Get(ctx, result.ID)
+			if err != nil {
+				continue
+			}
+			switch q.Type {
+			case "stress":
+				counts[0] += result.Score
+			case "anxiety":
+				counts[1] += result.Score
+			case "depression":
+				counts[2] += result.Score
+			}
+			score += result.Score
+		}
+		score *= 2
+		declaration.Score = score
+		if score >= 28 {
+			declaration.Status = constants.DeclarationExremelySevere
+		} else if score >= 21 {
+			declaration.Status = constants.DeclarationSevere
+		} else if score >= 14 {
+			declaration.Status = constants.DeclarationModerate
+		} else if score >= 10 {
+			declaration.Status = constants.DeclarationMild
+		} else {
+			declaration.Status = constants.DeclarationNormal
+		}
+		patient.LastDassTime = declaration.SubmittedAt
+		patient.LastDassResult = score
+		// comparison for the counts
+		if counts[0] > counts[1] && counts[0] > counts[2] {
+			patient.MentalStatus = constants.Stress
+		} else if counts[1] > counts[0] && counts[1] > counts[2] {
+			patient.MentalStatus = constants.Anxiety
+		} else {
+			patient.MentalStatus = constants.Depression
+		}
+	} else {
+		score := int64(0)
+		for _, result := range declaration.Result {
+			score += result.Score
+		}
+		declaration.Score = score
+		if score >= 37 {
+			declaration.Status = constants.DeclarationSevere
+			patient.MentalStatus = constants.PTSD
+		} else {
+			declaration.Status = constants.DeclarationNormal
+		}
+		patient.LastIesrTime = declaration.SubmittedAt
+		patient.LastIesrResult = score
+	}
+
+	patient.Status = declaration.Status
 }

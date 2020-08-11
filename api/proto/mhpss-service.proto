@@ -690,10 +690,6 @@ message Declaration {
     string id = 1;
     // patient IC / passport
     string patientId = 2;
-    // patient name
-    string patientName = 3;
-    // patient phone number
-    string patientPhoneNumber = 4;
     repeated Question result = 5;
     string category = 6;
     int64 score = 7;

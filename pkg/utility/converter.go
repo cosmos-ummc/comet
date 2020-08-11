@@ -178,8 +178,6 @@ func DeclarationToResponse(declaration *dto.Declaration) *pb.CommonDeclarationRe
 		Data: &pb.Declaration{
 			Id:                 declaration.ID,
 			PatientId:          declaration.PatientID,
-			PatientName:        declaration.PatientName,
-			PatientPhoneNumber: declaration.PatientPhoneNumber,
 			Result:             QuestionsToPb(declaration.Result),
 			Category:           declaration.Category,
 			Score:              declaration.Score,
@@ -194,8 +192,6 @@ func PbToDeclaration(declaration *pb.Declaration) *dto.Declaration {
 	return &dto.Declaration{
 		ID:                 declaration.Id,
 		PatientID:          declaration.PatientId,
-		PatientName:        declaration.PatientName,
-		PatientPhoneNumber: declaration.PatientPhoneNumber,
 		Result:             PbToQuestions(declaration.Result),
 		Category:           declaration.Category,
 		Score:              declaration.Score,
@@ -211,8 +207,6 @@ func DeclarationsToResponse(declarations []*dto.Declaration) *pb.CommonDeclarati
 		resp := &pb.Declaration{
 			Id:                 declaration.ID,
 			PatientId:          declaration.PatientID,
-			PatientName:        declaration.PatientName,
-			PatientPhoneNumber: declaration.PatientPhoneNumber,
 			Result:             QuestionsToPb(declaration.Result),
 			Category:           declaration.Category,
 			Score:              declaration.Score,
