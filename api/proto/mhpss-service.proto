@@ -1011,6 +1011,14 @@ message Report {
     int64 stressCount2 = 23;
     int64 ptsdCount1 = 24;
     int64 ptsdCount2 = 25;
+    int64 depressionStatus1 = 26;
+    int64 depressionStatus2 = 27;
+    int64 anxietyStatus1 = 28;
+    int64 anxietyStatus2 = 29;
+    int64 stressStatus1 = 30;
+    int64 stressStatus2 = 31;
+    int64 ptsdStatus1 = 32;
+    int64 ptsdStatus2 = 33;
 }
 
 // get report request payload

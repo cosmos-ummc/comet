@@ -26,4 +26,12 @@ type Report struct {
 	StressCount2       int64 `json:"stressCount2" bson:"stressCount2"`
 	PtsdCount1         int64 `json:"ptsdCount1" bson:"ptsdCount1"`
 	PtsdCount2         int64 `json:"ptsdCount2" bson:"ptsdCount2"`
+	DepressionStatus1  int64 `json:"depressionStatus1" bson:"depressionStatus1"`
+	DepressionStatus2  int64 `json:"depressionStatus2" bson:"depressionStatus2"`
+	AnxietyStatus1     int64 `json:"anxietyStatus1" bson:"anxietyStatus1"`
+	AnxietyStatus2     int64 `json:"anxietyStatus2" bson:"anxietyStatus2"`
+	StressStatus1      int64 `json:"stressStatus1" bson:"stressStatus1"`
+	StressStatus2      int64 `json:"stressStatus2" bson:"stressStatus2"`
+	PtsdStatus1        int64 `json:"ptsdStatus1" bson:"ptsdStatus1"`
+	PtsdStatus2        int64 `json:"ptsdStatus2" bson:"ptsdStatus2"`
 }

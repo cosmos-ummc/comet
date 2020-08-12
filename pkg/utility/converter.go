@@ -144,6 +144,14 @@ func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 			StressCount2:       report.StressCount2,
 			PtsdCount1:         report.PtsdCount1,
 			PtsdCount2:         report.PtsdCount2,
+			DepressionStatus1:  DepressionScoreToStatus(report.DepressionCount1),
+			DepressionStatus2:  DepressionScoreToStatus(report.DepressionCount2),
+			AnxietyStatus1:     AnxietyScoreToStatus(report.AnxietyCount1),
+			AnxietyStatus2:     AnxietyScoreToStatus(report.AnxietyCount2),
+			StressStatus1:      StressScoreToStatus(report.StressCount1),
+			StressStatus2:      StressScoreToStatus(report.StressCount2),
+			PtsdStatus1:        PstdScoreToStatus(report.PtsdCount1),
+			PtsdStatus2:        PstdScoreToStatus(report.PtsdCount2),
 		},
 	}
 	return resp

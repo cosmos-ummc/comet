@@ -5244,6 +5244,38 @@
         "ptsdCount2": {
           "type": "string",
           "format": "int64"
+        },
+        "depressionStatus1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionStatus2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyStatus1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyStatus2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressStatus1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressStatus2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdStatus1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdStatus2": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "report payload"

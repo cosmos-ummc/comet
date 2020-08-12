@@ -16,6 +16,56 @@ import (
 	"github.com/dongri/phonenumber"
 )
 
+func DepressionScoreToStatus(score int64) int64 {
+	if score >= 28 {
+		return constants.DeclarationExtremelySevere
+	} else if score >= 21 {
+		return constants.DeclarationSevere
+	} else if score >= 14 {
+		return constants.DeclarationModerate
+	} else if score >= 10 {
+		return constants.DeclarationMild
+	} else {
+		return constants.DeclarationNormal
+	}
+}
+
+func AnxietyScoreToStatus(score int64) int64 {
+	if score >= 20 {
+		return constants.DeclarationExtremelySevere
+	} else if score >= 15 {
+		return constants.DeclarationSevere
+	} else if score >= 10 {
+		return constants.DeclarationModerate
+	} else if score >= 8 {
+		return constants.DeclarationMild
+	} else {
+		return constants.DeclarationNormal
+	}
+}
+
+func StressScoreToStatus(score int64) int64 {
+	if score >= 34 {
+		return constants.DeclarationExtremelySevere
+	} else if score >= 26 {
+		return constants.DeclarationSevere
+	} else if score >= 19 {
+		return constants.DeclarationModerate
+	} else if score >= 15 {
+		return constants.DeclarationMild
+	} else {
+		return constants.DeclarationNormal
+	}
+}
+
+func PstdScoreToStatus(score int64) int64 {
+	if score >= 37 {
+		return constants.DeclarationSevere
+	} else {
+		return constants.DeclarationNormal
+	}
+}
+
 func ShuffleFeeds(a []*dto.Feed) {
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
