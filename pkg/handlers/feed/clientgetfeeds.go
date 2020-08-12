@@ -13,6 +13,29 @@ type ClientGetFeedsHandler struct {
 }
 
 func (s *ClientGetFeedsHandler) GetFeeds(ctx context.Context, req *pb.ClientGetFeedsRequest) (*pb.CommonFeedsResponse, error) {
+	// if id is 1, do uncategorized query
+	if req.Id == "1" {
+		var filter map[string]interface{}
+		filter = map[string]interface{}{
+			constants.Type: constants.NoMentalIssue,
+		}
+		// do query
+		_, feeds, err := s.Model.QueryFeeds(ctx, nil, nil, filter)
+		if err != nil {
+			return nil, err
+		}
+
+		// shuffle feeds
+		utility.ShuffleFeeds(feeds)
+		if len(feeds) > 3 {
+			feeds = feeds[0:3]
+		}
+
+		resp := utility.FeedsToResponse(feeds)
+		resp.Total = int64(len(feeds))
+		return resp, nil
+	}
+
 	// get patient
 	total, patients, err := s.Model.QueryPatients(ctx, nil, nil, map[string]interface{}{
 		constants.UserId: req.Id,
