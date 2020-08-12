@@ -20,6 +20,7 @@ const (
 	Feeds        = "feeds"
 	Games        = "games"
 	Meditations  = "meditations"
+	Tips         = "tips"
 )
 
 // Documents

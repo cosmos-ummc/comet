@@ -530,6 +530,36 @@ func FeedsToResponse(feeds []*dto.Feed) *pb.CommonFeedsResponse {
 
 // -------------- Feeds -----------------
 
+// -------------- Tips -----------------
+
+func TipToResponse(tip *dto.Tip) *pb.CommonTipResponse {
+	return &pb.CommonTipResponse{
+		Data: &pb.Tip{
+			Id:          tip.ID,
+			Title:       tip.Title,
+			Description: tip.Description,
+		},
+	}
+}
+
+func TipsToResponse(tips []*dto.Tip) *pb.CommonTipsResponse {
+	var resps []*pb.Tip
+	for _, tip := range tips {
+		resp := &pb.Tip{
+			Id:          tip.ID,
+			Title:       tip.Title,
+			Description: tip.Description,
+		}
+		resps = append(resps, resp)
+	}
+	rslt := &pb.CommonTipsResponse{
+		Data: resps,
+	}
+	return rslt
+}
+
+// -------------- Tips -----------------
+
 // -------------- Games -----------------
 
 func GameToResponse(game *dto.Game) *pb.CommonGameResponse {

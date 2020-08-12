@@ -100,6 +100,25 @@ type IModel interface {
 	DeleteFeeds(ctx context.Context, ids []string) ([]string, error)
 	/////////////
 
+	///////////// Tip models
+	// CreateTip creates new tip
+	CreateTip(ctx context.Context, tip *dto.Tip) (*dto.Tip, error)
+	// UpdateTip updates tip
+	UpdateTip(ctx context.Context, tip *dto.Tip) (*dto.Tip, error)
+	// UpdateTips update tips
+	UpdateTips(ctx context.Context, tip *dto.Tip, ids []string) ([]string, error)
+	// GetTip gets tip by ID
+	GetTip(ctx context.Context, id string) (*dto.Tip, error)
+	// BatchGetTips get tips by slice of IDs
+	BatchGetTips(ctx context.Context, ids []string) ([]*dto.Tip, error)
+	// QueryTips queries tips by sort, range, filter
+	QueryTips(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Tip, error)
+	// DeleteTip deletes tip by ID
+	DeleteTip(ctx context.Context, id string) (*dto.Tip, error)
+	// DeleteTips delete tips by IDs
+	DeleteTips(ctx context.Context, ids []string) ([]string, error)
+	/////////////
+
 	///////////// Game models
 	// CreateGame creates new game
 	CreateGame(ctx context.Context, game *dto.Game) (*dto.Game, error)

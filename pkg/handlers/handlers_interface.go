@@ -53,6 +53,7 @@ type IHandlers interface {
 	ClientCreateDeclaration(ctx context.Context, req *pb.ClientCreateDeclarationRequest) (*pb.ClientCreateDeclarationResponse, error)
 	ClientNewMatch(ctx context.Context, req *pb.ClientNewMatchRequest) (*pb.ClientNewMatchResponse, error)
 
+	ClientGetTips(ctx context.Context, req *pb.ClientGetTipsRequest) (*pb.CommonTipsResponse, error)
 	ClientGetFeeds(ctx context.Context, req *pb.ClientGetFeedsRequest) (*pb.CommonFeedsResponse, error)
 	ClientGetGames(ctx context.Context, req *pb.ClientGetGamesRequest) (*pb.CommonGamesResponse, error)
 	ClientGetMeditations(ctx context.Context, req *pb.ClientGetMeditationsRequest) (*pb.CommonMeditationsResponse, error)
@@ -75,6 +76,14 @@ type IHandlers interface {
 	UpdateFeeds(ctx context.Context, req *pb.CommonFeedsRequest) (*pb.CommonIdsResponse, error)
 	DeleteFeed(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonFeedResponse, error)
 	DeleteFeeds(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
+
+	CreateTip(ctx context.Context, req *pb.CommonTipRequest) (*pb.CommonTipResponse, error)
+	GetTip(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonTipResponse, error)
+	GetTips(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonTipsResponse, error)
+	UpdateTip(ctx context.Context, req *pb.CommonTipRequest) (*pb.CommonTipResponse, error)
+	UpdateTips(ctx context.Context, req *pb.CommonTipsRequest) (*pb.CommonIdsResponse, error)
+	DeleteTip(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonTipResponse, error)
+	DeleteTips(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
 
 	CreateChatMessage(ctx context.Context, req *pb.CommonChatMessageRequest) (*pb.CommonChatMessageResponse, error)
 	GetChatMessage(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonChatMessageResponse, error)

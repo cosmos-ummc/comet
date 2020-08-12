@@ -68,6 +68,24 @@ type IFeedDAO interface {
 	BatchDelete(ctx context.Context, ids []string) ([]string, error)
 }
 
+// ITipDAO ...
+type ITipDAO interface {
+	// Create creates new tip
+	Create(ctx context.Context, tip *dto.Tip) (*dto.Tip, error)
+	// Update updates tip
+	Update(ctx context.Context, tip *dto.Tip) (*dto.Tip, error)
+	// Get gets tip by ID
+	Get(ctx context.Context, id string) (*dto.Tip, error)
+	// BatchGet gets tips by slice of IDs
+	BatchGet(ctx context.Context, ids []string) ([]*dto.Tip, error)
+	// Query queries tips by sort, range, filter
+	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Tip, error)
+	// Delete deletes tip by ID
+	Delete(ctx context.Context, id string) error
+	// BatchDelete deletes tips by IDs
+	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+}
+
 // IGameDAO ...
 type IGameDAO interface {
 	// Create creates new game

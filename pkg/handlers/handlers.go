@@ -15,6 +15,7 @@ import (
 	"comet/pkg/handlers/patient"
 	"comet/pkg/handlers/question"
 	"comet/pkg/handlers/report"
+	"comet/pkg/handlers/tip"
 	"comet/pkg/handlers/user"
 	"comet/pkg/logger"
 	"comet/pkg/model"
@@ -560,6 +561,129 @@ func (s *Handlers) DeleteFeeds(ctx context.Context, req *pb.CommonDeletesRequest
 		return nil, err
 	}
 	logger.Log.Info("DeleteFeedsHandler", zap.String("UserID", u.ID), zap.Strings("FeedIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) CreateTip(ctx context.Context, req *pb.CommonTipRequest) (*pb.CommonTipResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &tip.CreateTipHandler{Model: s.Model}
+	resp, err := handler.CreateTip(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateTipHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("CreateTipHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetTip(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonTipResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.GetTipHandler{Model: s.Model}
+	resp, err := handler.GetTip(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetTipHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("TipID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("GetTipHandler", zap.String("UserID", u.ID), zap.String("TipID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) GetTips(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonTipsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.GetTipsHandler{Model: s.Model}
+	resp, err := handler.GetTips(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetTipsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("TipIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("GetTipsHandler", zap.String("UserID", u.ID), zap.Strings("TipIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) ClientGetTips(ctx context.Context, req *pb.ClientGetTipsRequest) (*pb.CommonTipsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.ClientGetTipsHandler{Model: s.Model}
+	resp, err := handler.GetTips(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetTipsHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetTipsHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateTip(ctx context.Context, req *pb.CommonTipRequest) (*pb.CommonTipResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.UpdateTipHandler{Model: s.Model}
+	resp, err := handler.UpdateTip(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateTipHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("TipID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("UpdateTipHandler", zap.String("UserID", u.ID), zap.String("TipID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) UpdateTips(ctx context.Context, req *pb.CommonTipsRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.UpdateTipsHandler{Model: s.Model}
+	resp, err := handler.UpdateTips(ctx, req)
+	if err != nil {
+		logger.Log.Error("UpdateTipsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("TipIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("UpdateTipsHandler", zap.String("UserID", u.ID), zap.Strings("TipIDs", req.Ids))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteTip(ctx context.Context, req *pb.CommonDeleteRequest) (*pb.CommonTipResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.DeleteTipHandler{Model: s.Model}
+	resp, err := handler.DeleteTip(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteTipHandler: "+err.Error(), zap.String("UserID", u.ID), zap.String("TipID", req.Id))
+		return nil, err
+	}
+	logger.Log.Info("DeleteTipHandler", zap.String("UserID", u.ID), zap.String("TipID", req.Id))
+	return resp, nil
+}
+
+func (s *Handlers) DeleteTips(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
+	u, err := s.validateUser(ctx, constants.SuperUserOnly)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &tip.DeleteTipsHandler{Model: s.Model}
+	resp, err := handler.DeleteTips(ctx, req)
+	if err != nil {
+		logger.Log.Error("DeleteTipsHandler: "+err.Error(), zap.String("UserID", u.ID), zap.Strings("TipIDs", req.Ids))
+		return nil, err
+	}
+	logger.Log.Info("DeleteTipsHandler", zap.String("UserID", u.ID), zap.Strings("TipIDs", req.Ids))
 	return resp, nil
 }
 

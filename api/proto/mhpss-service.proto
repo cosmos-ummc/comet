@@ -496,6 +496,51 @@ service MhpssService {
             get: "/v1/feeds"
         };
     }
+    // Create Tip
+    rpc CreateTip (CommonTipRequest) returns (CommonTipResponse) {
+        option (google.api.http) = {
+            post: "/v1/tips/{id}"
+            body: "*"
+        };
+    }
+    // Get Tip
+    rpc GetTip (CommonGetRequest) returns (CommonTipResponse) {
+        option (google.api.http) = {
+            get: "/v1/tips/{id}"
+        };
+    }
+    // Update Tip
+    rpc UpdateTip (CommonTipRequest) returns (CommonTipResponse) {
+        option (google.api.http) = {
+            put: "/v1/tips/{id}"
+            body: "*"
+        };
+    }
+    // Update Tips
+    rpc UpdateTips (CommonTipsRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            put: "/v1/tips"
+            body: "*"
+        };
+    }
+    // Delete Tip
+    rpc DeleteTip (CommonDeleteRequest) returns (CommonTipResponse) {
+        option (google.api.http) = {
+            delete: "/v1/tips/{id}"
+        };
+    }
+    // Delete Tips
+    rpc DeleteTips (CommonDeletesRequest) returns (CommonIdsResponse) {
+        option (google.api.http) = {
+            delete: "/v1/tips"
+        };
+    }
+    // Get Tips
+    rpc GetTips (CommonGetsRequest) returns (CommonTipsResponse) {
+        option (google.api.http) = {
+            get: "/v1/tips"
+        };
+    }
     // Create Meditation
     rpc CreateMeditation (CommonMeditationRequest) returns (CommonMeditationResponse) {
         option (google.api.http) = {
@@ -617,6 +662,12 @@ service MhpssService {
     rpc ClientGetFeeds(ClientGetFeedsRequest) returns (CommonFeedsResponse) {
         option (google.api.http) = {
             get: "/v1/client/feeds/{id}"
+        };
+    }
+    // Client Get Tips
+    rpc ClientGetTips(ClientGetTipsRequest) returns (CommonTipsResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/tips/{id}"
         };
     }
     // Client Get Games
@@ -1280,6 +1331,10 @@ message ClientGetGamesRequest {
     string id = 1;
 }
 
+message ClientGetTipsRequest {
+    string id = 1;
+}
+
 message ClientGetMeditationsRequest {
     string id = 1;
 }
@@ -1326,4 +1381,29 @@ message ClientBlockRequest {
 
 message ClientBlockResponse {
     bool ok = 1;
+}
+
+message Tip {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+}
+
+message CommonTipRequest {
+    string id = 1;
+    Tip data = 2;
+}
+
+message CommonTipsRequest {
+    repeated string ids = 1;
+    Tip data = 2;
+}
+
+message CommonTipResponse {
+    Tip data = 1;
+}
+
+message CommonTipsResponse {
+    repeated Tip data = 1;
+    int64 total = 2;
 }

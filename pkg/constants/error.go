@@ -34,6 +34,7 @@ var (
 	FeedAlreadyExistError        = status.Error(codes.AlreadyExists, "Feed already exist!")
 	GameAlreadyExistError        = status.Error(codes.AlreadyExists, "Game already exist!")
 	MeditationAlreadyExistError  = status.Error(codes.AlreadyExists, "Meditation already exist!")
+	TipAlreadyExistError         = status.Error(codes.AlreadyExists, "Tip already exist!")
 
 	UserNotFoundError        = status.Error(codes.NotFound, "User not found!")
 	PatientNotFoundError     = status.Error(codes.NotFound, "Patient not found!")
@@ -48,6 +49,7 @@ var (
 	FeedNotFoundError        = status.Error(codes.NotFound, "Feed not found!")
 	GameNotFoundError        = status.Error(codes.NotFound, "Game not found!")
 	MeditationNotFoundError  = status.Error(codes.NotFound, "Meditation not found!")
+	TipNotFoundError         = status.Error(codes.NotFound, "Tip not found!")
 
 	UserOperationError         = status.Error(codes.Internal, "Authentication Service failed. Might be due to invalid input.")
 	UnauthorizedAccessError    = status.Error(codes.Unauthenticated, "User is not authorized to perform this action!")
