@@ -316,6 +316,12 @@ service MhpssService {
             get: "/v1/chatrooms"
         };
     }
+    // Client Get ChatRooms
+    rpc ClientGetChatRooms (ClientGetChatRoomsRequest) returns (CommonChatRoomsResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/chatrooms"
+        };
+    }
     // Create Consultant
     rpc CreateConsultant (CommonConsultantRequest) returns (CommonConsultantResponse) {
         option (google.api.http) = {
@@ -1406,4 +1412,8 @@ message CommonTipResponse {
 message CommonTipsResponse {
     repeated Tip data = 1;
     int64 total = 2;
+}
+
+message ClientGetChatRoomsRequest {
+    string id = 1;
 }

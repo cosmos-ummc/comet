@@ -614,6 +614,37 @@
         ]
       }
     },
+    "/v1/client/chatrooms": {
+      "get": {
+        "summary": "Client Get ChatRooms",
+        "operationId": "ClientGetChatRooms",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonChatRoomsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/declarations": {
       "post": {
         "summary": "Client Create Declaration",

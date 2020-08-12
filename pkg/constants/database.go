@@ -81,6 +81,7 @@ const (
 
 	// ChatRooms
 	ParticipantIDs = "participantIds"
+	Timestamp      = "timestamp"
 
 	// ChatMessages
 	Content = "content"

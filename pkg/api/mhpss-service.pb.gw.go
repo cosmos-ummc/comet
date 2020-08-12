@@ -2273,6 +2273,39 @@ func local_request_MhpssService_GetChatRooms_0(ctx context.Context, marshaler ru
 
 }
 
+var (
+	filter_MhpssService_ClientGetChatRooms_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
+)
+
+func request_MhpssService_ClientGetChatRooms_0(ctx context.Context, marshaler runtime.Marshaler, client MhpssServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ClientGetChatRoomsRequest
+	var metadata runtime.ServerMetadata
+
+	if err := req.ParseForm(); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+	if err := runtime.PopulateQueryParameters(&protoReq, req.Form, filter_MhpssService_ClientGetChatRooms_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := client.ClientGetChatRooms(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
+	return msg, metadata, err
+
+}
+
+func local_request_MhpssService_ClientGetChatRooms_0(ctx context.Context, marshaler runtime.Marshaler, server MhpssServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
+	var protoReq ClientGetChatRoomsRequest
+	var metadata runtime.ServerMetadata
+
+	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_MhpssService_ClientGetChatRooms_0); err != nil {
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
+	}
+
+	msg, err := server.ClientGetChatRooms(ctx, &protoReq)
+	return msg, metadata, err
+
+}
+
 func request_MhpssService_CreateConsultant_0(ctx context.Context, marshaler runtime.Marshaler, client MhpssServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq CommonConsultantRequest
 	var metadata runtime.ServerMetadata
@@ -6155,6 +6188,26 @@ func RegisterMhpssServiceHandlerServer(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("GET", pattern_MhpssService_ClientGetChatRooms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateIncomingContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := local_request_MhpssService_ClientGetChatRooms_0(rctx, inboundMarshaler, server, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MhpssService_ClientGetChatRooms_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MhpssService_CreateConsultant_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -8356,6 +8409,26 @@ func RegisterMhpssServiceHandlerClient(ctx context.Context, mux *runtime.ServeMu
 
 	})
 
+	mux.Handle("GET", pattern_MhpssService_ClientGetChatRooms_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
+		ctx, cancel := context.WithCancel(req.Context())
+		defer cancel()
+		inboundMarshaler, outboundMarshaler := runtime.MarshalerForRequest(mux, req)
+		rctx, err := runtime.AnnotateContext(ctx, mux, req)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+		resp, md, err := request_MhpssService_ClientGetChatRooms_0(rctx, inboundMarshaler, client, req, pathParams)
+		ctx = runtime.NewServerMetadataContext(ctx, md)
+		if err != nil {
+			runtime.HTTPError(ctx, mux, outboundMarshaler, w, req, err)
+			return
+		}
+
+		forward_MhpssService_ClientGetChatRooms_0(ctx, mux, outboundMarshaler, w, req, resp, mux.GetForwardResponseOptions()...)
+
+	})
+
 	mux.Handle("POST", pattern_MhpssService_CreateConsultant_0, func(w http.ResponseWriter, req *http.Request, pathParams map[string]string) {
 		ctx, cancel := context.WithCancel(req.Context())
 		defer cancel()
@@ -9692,6 +9765,8 @@ var (
 
 	pattern_MhpssService_GetChatRooms_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "chatrooms"}, "", runtime.AssumeColonVerbOpt(true)))
 
+	pattern_MhpssService_ClientGetChatRooms_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "client", "chatrooms"}, "", runtime.AssumeColonVerbOpt(true)))
+
 	pattern_MhpssService_CreateConsultant_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "consultants", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_MhpssService_GetConsultant_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "consultants", "id"}, "", runtime.AssumeColonVerbOpt(true)))
@@ -9909,6 +9984,8 @@ var (
 	forward_MhpssService_DeleteChatRooms_0 = runtime.ForwardResponseMessage
 
 	forward_MhpssService_GetChatRooms_0 = runtime.ForwardResponseMessage
+
+	forward_MhpssService_ClientGetChatRooms_0 = runtime.ForwardResponseMessage
 
 	forward_MhpssService_CreateConsultant_0 = runtime.ForwardResponseMessage
 

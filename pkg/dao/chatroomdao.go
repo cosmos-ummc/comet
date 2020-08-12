@@ -121,7 +121,10 @@ func (v *ChatRoomDAO) QueryByUsers(ctx context.Context, users []string) ([]*dto.
 			users,
 		}},
 	}}
-	_, rooms, err := v.query(ctx, nil, nil, filter)
+	_, rooms, err := v.query(ctx, &dto.SortData{
+		Item:  constants.Timestamp,
+		Order: constants.DESC,
+	}, nil, filter)
 	return rooms, err
 }
 
