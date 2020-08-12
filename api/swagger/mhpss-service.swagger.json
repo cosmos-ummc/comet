@@ -3284,46 +3284,7 @@
         ]
       }
     },
-    "/v1/reports": {
-      "get": {
-        "summary": "Get Reports",
-        "operationId": "GetReports",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
-            "schema": {
-              "$ref": "#/definitions/pbCommonReportsResponse"
-            }
-          },
-          "default": {
-            "description": "An unexpected error response",
-            "schema": {
-              "$ref": "#/definitions/runtimeError"
-            }
-          }
-        },
-        "parameters": [
-          {
-            "name": "from",
-            "description": "from date (inclusive, in yyyyMMdd format).",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "to",
-            "description": "to date (inclusive, in yyyyMMdd format).",
-            "in": "query",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "tags": [
-          "MhpssService"
-        ]
-      }
-    },
-    "/v1/reports/{date}": {
+    "/v1/reports/{id}": {
       "get": {
         "summary": "Get Report",
         "operationId": "GetReport",
@@ -3343,8 +3304,7 @@
         },
         "parameters": [
           {
-            "name": "date",
-            "description": "date of report",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -4098,8 +4058,8 @@
       "type": "object",
       "properties": {
         "hasSymptom": {
-          "type": "string",
-          "format": "int64",
+          "type": "boolean",
+          "format": "boolean",
           "title": "client report result"
         }
       },
@@ -4769,19 +4729,6 @@
       },
       "title": "common report response payload"
     },
-    "pbCommonReportsResponse": {
-      "type": "object",
-      "properties": {
-        "data": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/pbReport"
-          },
-          "title": "reports payload"
-        }
-      },
-      "title": "common reports response payload"
-    },
     "pbCommonUserRequest": {
       "type": "object",
       "properties": {
@@ -4893,10 +4840,6 @@
           "type": "string",
           "format": "int64"
         },
-        "status": {
-          "type": "string",
-          "format": "int64"
-        },
         "submittedAt": {
           "type": "string",
           "format": "int64",
@@ -4915,6 +4858,22 @@
           "format": "int64"
         },
         "stress": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionStatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressStatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyStatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdStatus": {
           "type": "string",
           "format": "int64"
         }
@@ -5053,11 +5012,6 @@
           "type": "string",
           "title": "patient name"
         },
-        "status": {
-          "type": "string",
-          "format": "int64",
-          "title": "patient status (1 - Symptomatic, 2 - Asymptomatic，3 - Confirmed but not Admitted, 4 - Confirmed and Admitted, 5 - Completed, 6 - Recovered, 7 - Quit, 8 - Passed Away)"
-        },
         "phoneNumber": {
           "type": "string",
           "title": "patient phone number"
@@ -5136,6 +5090,22 @@
         "swabResult": {
           "type": "string",
           "format": "int64"
+        },
+        "stressStatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdStatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionStatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyStatus": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "patient payload"
@@ -5175,16 +5145,105 @@
     "pbReport": {
       "type": "object",
       "properties": {
-        "date": {
+        "depressionNormal": {
           "type": "string",
-          "title": "date of report"
+          "format": "int64"
         },
-        "counts": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string",
-            "format": "int64"
-          }
+        "depressionMild": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionModerate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionSevere": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionExtreme": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyNormal": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyMild": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyModerate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietySevere": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyExtreme": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressNormal": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressMild": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressModerate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressSevere": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressExtreme": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdNormal": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdSevere": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionCount1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "depressionCount2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyCount1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anxietyCount2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressCount1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stressCount2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdCount1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ptsdCount2": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "report payload"

@@ -50,7 +50,6 @@ func (s *UpdatePatientsHandler) validateAndProcessReq(req *pb.CommonPatientsRequ
 		TelegramID:         utility.RemoveZeroWidth(req.Data.TelegramId),
 		PhoneNumber:        utility.RemoveZeroWidth(req.Data.PhoneNumber),
 		Email:              utility.RemoveZeroWidth(req.Data.Email),
-		Status:             req.Data.Status,
 		Remarks:            utility.RemoveZeroWidth(req.Data.Remarks),
 		HomeAddress:        req.Data.HomeAddress,
 		IsolationAddress:   utility.RemoveZeroWidth(req.Data.IsolationAddress),

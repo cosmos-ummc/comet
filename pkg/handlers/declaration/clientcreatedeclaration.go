@@ -23,12 +23,21 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 	req.Data.PatientId = req.PatientId
 	declaration := utility.PbToDeclaration(req.Data)
 
-	_, err := s.Model.ClientCreateDeclaration(ctx, declaration)
+	d, err := s.Model.ClientCreateDeclaration(ctx, declaration)
 	if err != nil {
 		return nil, err
 	}
+
+	hasSymptom := false
+	if d.StressStatus == constants.DeclarationSevere || d.StressStatus == constants.DeclarationExtremelySevere ||
+		d.DepressionStatus == constants.DeclarationSevere || d.DepressionStatus == constants.DeclarationExtremelySevere ||
+		d.AnxietyStatus == constants.DeclarationSevere || d.AnxietyStatus == constants.DeclarationExtremelySevere ||
+		d.PtsdStatus == constants.DeclarationSevere || d.PtsdStatus == constants.DeclarationExtremelySevere {
+		hasSymptom = true
+	}
+
 	resp := &pb.ClientCreateDeclarationResponse{
-		HasSymptom: constants.DeclarationSevere,
+		HasSymptom: hasSymptom,
 	}
 	return resp, nil
 }

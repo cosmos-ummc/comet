@@ -178,13 +178,7 @@ service MhpssService {
     // Get Report
     rpc GetReport (GetReportRequest) returns (CommonReportResponse) {
         option (google.api.http) = {
-            get: "/v1/reports/{date}"
-        };
-    }
-    // Get Reports
-    rpc GetReports (GetReportsRequest) returns (CommonReportsResponse) {
-        option (google.api.http) = {
-            get: "/v1/reports"
+            get: "/v1/reports/{id}"
         };
     }
     // Create Question
@@ -748,8 +742,6 @@ message Patient {
     string telegramId = 2;
     // patient name
     string name = 3;
-    // patient status (1 - Symptomatic, 2 - Asymptomatic，3 - Confirmed but not Admitted, 4 - Confirmed and Admitted, 5 - Completed, 6 - Recovered, 7 - Quit, 8 - Passed Away)
-    int64 status = 4;
     // patient phone number
     string phoneNumber = 5;
     // patient email
@@ -777,6 +769,10 @@ message Patient {
     int64 type = 22;
     string swabDate = 23;
     int64 swabResult = 24;
+    int64 stressStatus = 25;
+    int64 ptsdStatus = 26;
+    int64 depressionStatus = 27;
+    int64 anxietyStatus = 28;
 }
 
 // common patient request payload
@@ -864,17 +860,20 @@ message Declaration {
     string id = 1;
     // patient IC / passport
     string patientId = 2;
-    repeated Question result = 5;
-    string category = 6;
-    int64 score = 7;
-    int64 status = 8;
+    repeated Question result = 3;
+    string category = 4;
+    int64 score = 5;
     // report submission time in milliseconds
-    int64 submittedAt = 9;
+    int64 submittedAt = 6;
     // doctor remarks on the report
-    string doctorRemarks = 10;
-    int64 depression = 11;
-    int64 anxiety = 12;
-    int64 stress = 13;
+    string doctorRemarks = 7;
+    int64 depression = 8;
+    int64 anxiety = 9;
+    int64 stress = 10;
+    int64 depressionStatus = 11;
+    int64 stressStatus = 12;
+    int64 anxietyStatus = 13;
+    int64 ptsdStatus = 14;
 }
 
 // common declaration request payload
@@ -981,40 +980,47 @@ message ClientGetUndeclaredPatientsResponse {
 // client create declaration response payload
 message ClientCreateDeclarationResponse {
     // client report result
-    int64 hasSymptom = 1;
+    bool hasSymptom = 1;
 }
 
 // report payload
 message Report {
-    // date of report
-    string date = 1;
-    map<string, int64> counts = 2;
+    int64 depressionNormal = 1;
+    int64 depressionMild = 2;
+    int64 depressionModerate = 3;
+    int64 depressionSevere = 4;
+    int64 depressionExtreme = 5;
+    int64 anxietyNormal = 6;
+    int64 anxietyMild = 7;
+    int64 anxietyModerate = 8;
+    int64 anxietySevere = 9;
+    int64 anxietyExtreme = 10;
+    int64 stressNormal = 11;
+    int64 stressMild = 12;
+    int64 stressModerate = 13;
+    int64 stressSevere = 14;
+    int64 stressExtreme = 15;
+    int64 ptsdNormal = 16;
+    int64 ptsdSevere = 17;
+    int64 depressionCount1 = 18;
+    int64 depressionCount2 = 19;
+    int64 anxietyCount1 = 20;
+    int64 anxietyCount2 = 21;
+    int64 stressCount1 = 22;
+    int64 stressCount2 = 23;
+    int64 ptsdCount1 = 24;
+    int64 ptsdCount2 = 25;
 }
 
 // get report request payload
 message GetReportRequest {
-    // date of report
-    string date = 1;
-}
-
-// get reports request payload
-message GetReportsRequest {
-    // from date (inclusive, in yyyyMMdd format)
-    string from = 1;
-    // to date (inclusive, in yyyyMMdd format)
-    string to = 2;
+    string id = 1;
 }
 
 // common report response payload
 message CommonReportResponse {
     // report payload
     Report data = 1;
-}
-
-// common reports response payload
-message CommonReportsResponse {
-    // reports payload
-    repeated Report data = 1;
 }
 
 message Question {

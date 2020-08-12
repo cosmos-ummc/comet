@@ -36,7 +36,6 @@ func (s *ClientGetUndeclaredPatientsHandler) patientsToResp(patients []*dto.Pati
 			Id:                 patient.ID,
 			TelegramId:         patient.TelegramID,
 			Name:               patient.Name,
-			Status:             patient.Status,
 			PhoneNumber:        patient.PhoneNumber,
 			Email:              patient.Email,
 			IsolationAddress:   patient.IsolationAddress,
@@ -49,6 +48,17 @@ func (s *ClientGetUndeclaredPatientsHandler) patientsToResp(patients []*dto.Pati
 			LastDassResult:     patient.LastDassResult,
 			LastIesrResult:     patient.LastIesrResult,
 			RegistrationStatus: patient.RegistrationStatus,
+			UserId:             patient.UserID,
+			DaySinceMonitoring: patient.DaySinceMonitoring,
+			HasCompleted:       patient.HasCompleted,
+			MentalStatus:       patient.MentalStatus,
+			Type:               patient.Type,
+			SwabDate:           patient.SwabDate,
+			SwabResult:         patient.SwabResult,
+			StressStatus:       patient.StressStatus,
+			PtsdStatus:         patient.PtsdStatus,
+			DepressionStatus:   patient.DepressionStatus,
+			AnxietyStatus:      patient.AnxietyStatus,
 		}
 		resps = append(resps, resp)
 	}

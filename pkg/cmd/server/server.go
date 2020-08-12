@@ -6,15 +6,12 @@ import (
 	model2 "comet/pkg/model"
 	"comet/pkg/protocol/grpc"
 	"comet/pkg/protocol/rest"
-	"comet/pkg/utility"
 	"context"
 	"fmt"
-	"os"
-	"time"
-
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"os"
 )
 
 // Config is configuration for Server
@@ -54,17 +51,11 @@ func RunServer() error {
 	// initialize model
 	model := model2.InitModel(mongoClient)
 
-	// force generate report on server start
-	err = model.GenerateReport(ctx, utility.TimeToDateString(utility.MalaysiaTime(time.Now())))
-	if err != nil {
-		logger.Log.Warn(err.Error())
-	}
-
 	// initialize scheduler
-	go func() {
-		it := utility.Scheduler{Enabled: true, Job: model.GenerateReport, RevokeJob: model.RevokeUserTokens}
-		it.Start()
-	}()
+	//go func() {
+	//	it := utility.Scheduler{Enabled: true, Job: model.GenerateReport, RevokeJob: model.RevokeUserTokens}
+	//	it.Start()
+	//}()
 
 	// initialize handlers
 	handler := handlers.NewHandlers(model)

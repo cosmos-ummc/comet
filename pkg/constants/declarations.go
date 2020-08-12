@@ -6,5 +6,5 @@ const (
 	DeclarationMild
 	DeclarationModerate
 	DeclarationSevere
-	DeclarationExremelySevere
+	DeclarationExtremelySevere
 )

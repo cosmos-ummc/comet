@@ -85,7 +85,6 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 
 	// patch patient
 	p.Name = patient.Name
-	p.Status = patient.Status
 	p.PhoneNumber = patient.PhoneNumber
 	p.Email = patient.Email
 	p.IsolationAddress = patient.IsolationAddress

@@ -37,7 +37,6 @@ type IHandlers interface {
 	DeleteDeclarations(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
 
 	GetReport(ctx context.Context, req *pb.GetReportRequest) (*pb.CommonReportResponse, error)
-	GetReports(ctx context.Context, req *pb.GetReportsRequest) (*pb.CommonReportsResponse, error)
 
 	Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error)
 	Logout(ctx context.Context, req *empty.Empty) (*empty.Empty, error)

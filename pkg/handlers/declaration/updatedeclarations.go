@@ -37,8 +37,6 @@ func (s *UpdateDeclarationsHandler) UpdateDeclarations(ctx context.Context, req 
 func (s *UpdateDeclarationsHandler) reqToDeclaration(req *pb.CommonDeclarationsRequest) *dto.Declaration {
 	declaration := &dto.Declaration{
 		ID:            utility.RemoveZeroWidth(req.Ids[0]),
-		Score:         req.Data.Score,
-		Status:        req.Data.Status,
 		DoctorRemarks: utility.RemoveZeroWidth(req.Data.DoctorRemarks),
 	}
 	return declaration

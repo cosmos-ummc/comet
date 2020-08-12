@@ -253,14 +253,6 @@ type IModel interface {
 
 	///////////// Report models
 	// GetReport gets report
-	GetReport(ctx context.Context, dateString string) (*dto.Report, error)
-	// GetReports get reports given dates inclusive
-	GetReports(ctx context.Context, from, to string) ([]*dto.Report, error)
-	// GenerateReport generates all reports based on latest data
-	GenerateReport(ctx context.Context, date string) error
-	// SyncDays syncs days
-	SyncDays(ctx context.Context) error
-	// SyncPatientReport sync patient record when changed type
-	SyncPatientReport(ctx context.Context) error
+	GetReport(ctx context.Context, id string) (*dto.Report, error)
 	/////////////
 }

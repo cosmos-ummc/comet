@@ -8,7 +8,10 @@ type Patient struct {
 	TelegramID         string `json:"telegramId" bson:"telegramId"`
 	PhoneNumber        string `json:"phoneNumber" bson:"phoneNumber"`
 	Email              string `json:"email" bson:"email"`
-	Status             int64  `json:"status" bson:"status"`
+	StressStatus       int64  `json:"stressStatus" bson:"stressStatus"`
+	AnxietyStatus      int64  `json:"anxietyStatus" bson:"anxietyStatus"`
+	DepressionStatus   int64  `json:"depressionStatus" bson:"depressionStatus"`
+	PtsdStatus         int64  `json:"ptsdStatus" bson:"ptsdStatus"`
 	LastDassTime       int64  `json:"lastDassTime" bson:"lastDassTime"`
 	LastIesrTime       int64  `json:"lastIesrTime" bson:"lastIesrTime"`
 	LastDassResult     int64  `json:"lastDassResult" bson:"lastDassResult"`

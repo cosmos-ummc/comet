@@ -14,7 +14,6 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 		Id:                 patient.ID,
 		TelegramId:         patient.TelegramID,
 		Name:               patient.Name,
-		Status:             patient.Status,
 		PhoneNumber:        patient.PhoneNumber,
 		Email:              patient.Email,
 		IsolationAddress:   patient.IsolationAddress,
@@ -34,6 +33,10 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 		Type:               patient.Type,
 		SwabDate:           patient.SwabDate,
 		SwabResult:         patient.SwabResult,
+		StressStatus:       patient.StressStatus,
+		PtsdStatus:         patient.PtsdStatus,
+		DepressionStatus:   patient.DepressionStatus,
+		AnxietyStatus:      patient.AnxietyStatus,
 	}
 }
 
@@ -43,7 +46,6 @@ func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
 			Id:                 patient.ID,
 			TelegramId:         patient.TelegramID,
 			Name:               patient.Name,
-			Status:             patient.Status,
 			PhoneNumber:        patient.PhoneNumber,
 			Email:              patient.Email,
 			IsolationAddress:   patient.IsolationAddress,
@@ -63,6 +65,10 @@ func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
 			Type:               patient.Type,
 			SwabDate:           patient.SwabDate,
 			SwabResult:         patient.SwabResult,
+			StressStatus:       patient.StressStatus,
+			PtsdStatus:         patient.PtsdStatus,
+			DepressionStatus:   patient.DepressionStatus,
+			AnxietyStatus:      patient.AnxietyStatus,
 		},
 	}
 }
@@ -74,7 +80,6 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			Id:                 patient.ID,
 			TelegramId:         patient.TelegramID,
 			Name:               patient.Name,
-			Status:             patient.Status,
 			PhoneNumber:        patient.PhoneNumber,
 			Email:              patient.Email,
 			IsolationAddress:   patient.IsolationAddress,
@@ -94,6 +99,10 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			Type:               patient.Type,
 			SwabDate:           patient.SwabDate,
 			SwabResult:         patient.SwabResult,
+			StressStatus:       patient.StressStatus,
+			PtsdStatus:         patient.PtsdStatus,
+			DepressionStatus:   patient.DepressionStatus,
+			AnxietyStatus:      patient.AnxietyStatus,
 		}
 		resps = append(resps, resp)
 	}
@@ -110,23 +119,34 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 	resp := &pb.CommonReportResponse{
 		Data: &pb.Report{
-			Date:   report.Date,
-			Counts: report.Counts,
+			DepressionNormal:   report.DepressionNormal,
+			DepressionMild:     report.DepressionMild,
+			DepressionModerate: report.DepressionModerate,
+			DepressionSevere:   report.DepressionSevere,
+			DepressionExtreme:  report.DepressionExtreme,
+			AnxietyNormal:      report.AnxietyNormal,
+			AnxietyMild:        report.AnxietyMild,
+			AnxietyModerate:    report.AnxietyModerate,
+			AnxietySevere:      report.AnxietySevere,
+			AnxietyExtreme:     report.AnxietyExtreme,
+			StressNormal:       report.StressNormal,
+			StressMild:         report.StressMild,
+			StressModerate:     report.StressModerate,
+			StressSevere:       report.StressSevere,
+			StressExtreme:      report.StressExtreme,
+			PtsdNormal:         report.PtsdNormal,
+			PtsdSevere:         report.PtsdSevere,
+			DepressionCount1:   report.DepressionCount1,
+			DepressionCount2:   report.DepressionCount2,
+			AnxietyCount1:      report.AnxietyCount1,
+			AnxietyCount2:      report.AnxietyCount2,
+			StressCount1:       report.StressCount1,
+			StressCount2:       report.StressCount2,
+			PtsdCount1:         report.PtsdCount1,
+			PtsdCount2:         report.PtsdCount2,
 		},
 	}
 	return resp
-}
-
-func ReportsToResponse(reports []*dto.Report) *pb.CommonReportsResponse {
-	var resp []*pb.Report
-	for _, report := range reports {
-		r := &pb.Report{
-			Date:   report.Date,
-			Counts: report.Counts,
-		}
-		resp = append(resp, r)
-	}
-	return &pb.CommonReportsResponse{Data: resp}
 }
 
 // -------------- Reports -----------------
@@ -176,34 +196,40 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 func DeclarationToResponse(declaration *dto.Declaration) *pb.CommonDeclarationResponse {
 	return &pb.CommonDeclarationResponse{
 		Data: &pb.Declaration{
-			Id:            declaration.ID,
-			PatientId:     declaration.PatientID,
-			Result:        QuestionsToPb(declaration.Result),
-			Category:      declaration.Category,
-			Score:         declaration.Score,
-			Status:        declaration.Status,
-			SubmittedAt:   declaration.SubmittedAt,
-			DoctorRemarks: declaration.DoctorRemarks,
-			Stress:        declaration.Stress,
-			Depression:    declaration.Depression,
-			Anxiety:       declaration.Anxiety,
+			Id:               declaration.ID,
+			PatientId:        declaration.PatientID,
+			Result:           QuestionsToPb(declaration.Result),
+			Category:         declaration.Category,
+			Score:            declaration.Score,
+			SubmittedAt:      declaration.SubmittedAt,
+			DoctorRemarks:    declaration.DoctorRemarks,
+			Depression:       declaration.Depression,
+			Anxiety:          declaration.Anxiety,
+			Stress:           declaration.Stress,
+			DepressionStatus: declaration.DepressionStatus,
+			StressStatus:     declaration.StressStatus,
+			AnxietyStatus:    declaration.AnxietyStatus,
+			PtsdStatus:       declaration.PtsdStatus,
 		},
 	}
 }
 
 func PbToDeclaration(declaration *pb.Declaration) *dto.Declaration {
 	return &dto.Declaration{
-		ID:            declaration.Id,
-		PatientID:     declaration.PatientId,
-		Result:        PbToQuestions(declaration.Result),
-		Category:      declaration.Category,
-		Score:         declaration.Score,
-		Status:        declaration.Status,
-		SubmittedAt:   declaration.SubmittedAt,
-		DoctorRemarks: declaration.DoctorRemarks,
-		Stress:        declaration.Stress,
-		Depression:    declaration.Depression,
-		Anxiety:       declaration.Anxiety,
+		ID:               declaration.Id,
+		PatientID:        declaration.PatientId,
+		Result:           PbToQuestions(declaration.Result),
+		Category:         declaration.Category,
+		Score:            declaration.Score,
+		SubmittedAt:      declaration.SubmittedAt,
+		DoctorRemarks:    declaration.DoctorRemarks,
+		Depression:       declaration.Depression,
+		Anxiety:          declaration.Anxiety,
+		Stress:           declaration.Stress,
+		DepressionStatus: declaration.DepressionStatus,
+		StressStatus:     declaration.StressStatus,
+		AnxietyStatus:    declaration.AnxietyStatus,
+		PtsdStatus:       declaration.PtsdStatus,
 	}
 }
 
@@ -211,17 +237,20 @@ func DeclarationsToResponse(declarations []*dto.Declaration) *pb.CommonDeclarati
 	var resps []*pb.Declaration
 	for _, declaration := range declarations {
 		resp := &pb.Declaration{
-			Id:            declaration.ID,
-			PatientId:     declaration.PatientID,
-			Result:        QuestionsToPb(declaration.Result),
-			Category:      declaration.Category,
-			Score:         declaration.Score,
-			Status:        declaration.Status,
-			SubmittedAt:   declaration.SubmittedAt,
-			DoctorRemarks: declaration.DoctorRemarks,
-			Stress:        declaration.Stress,
-			Depression:    declaration.Depression,
-			Anxiety:       declaration.Anxiety,
+			Id:               declaration.ID,
+			PatientId:        declaration.PatientID,
+			Result:           QuestionsToPb(declaration.Result),
+			Category:         declaration.Category,
+			Score:            declaration.Score,
+			SubmittedAt:      declaration.SubmittedAt,
+			DoctorRemarks:    declaration.DoctorRemarks,
+			Depression:       declaration.Depression,
+			Anxiety:          declaration.Anxiety,
+			Stress:           declaration.Stress,
+			DepressionStatus: declaration.DepressionStatus,
+			StressStatus:     declaration.StressStatus,
+			AnxietyStatus:    declaration.AnxietyStatus,
+			PtsdStatus:       declaration.PtsdStatus,
 		}
 		resps = append(resps, resp)
 	}

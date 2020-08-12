@@ -193,7 +193,8 @@ func (v *DeclarationDAO) parseFilter(filter map[string]interface{}) bson.D {
 				key == constants.Remarks ||
 				key == constants.Date ||
 				key == constants.PatientPhoneNumber ||
-				key == constants.DoctorRemarks {
+				key == constants.DoctorRemarks ||
+				key == constants.Category {
 				result = append(result, bson.E{Key: key, Value: fmt.Sprint(value)})
 			} else if key != constants.PatientType {
 				result = append(result, bson.E{Key: key, Value: utility.SafeCastInt64(value)})

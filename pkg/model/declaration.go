@@ -73,8 +73,6 @@ func (m *Model) UpdateDeclaration(ctx context.Context, declaration *dto.Declarat
 	}
 
 	// patch declaration
-	d.Score = declaration.Score
-	d.Status = declaration.Status
 	d.DoctorRemarks = declaration.DoctorRemarks
 
 	// update declaration
@@ -148,7 +146,17 @@ func (m *Model) QueryDeclarationsByPatientID(ctx context.Context, id string) (in
 }
 
 func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration, patient *dto.Patient) {
-	counts := []int64{0, 0, 0}
+	// skip if no result
+	if len(declaration.Result) == 0 {
+		return
+	}
+
+	// get declaration category
+	q, err := m.questionDAO.Get(ctx, declaration.Result[0].ID)
+	if err != nil {
+		return
+	}
+	declaration.Category = q.Category
 
 	if declaration.Category == constants.DASS {
 		for _, result := range declaration.Result {
@@ -170,42 +178,76 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 		declaration.Stress *= 2
 		declaration.Anxiety *= 2
 		declaration.Depression *= 2
-		if declaration.Score >= 28 {
-			declaration.Status = constants.DeclarationExremelySevere
-		} else if declaration.Score >= 21 {
-			declaration.Status = constants.DeclarationSevere
-		} else if declaration.Score >= 14 {
-			declaration.Status = constants.DeclarationModerate
-		} else if declaration.Score >= 10 {
-			declaration.Status = constants.DeclarationMild
-		} else {
-			declaration.Status = constants.DeclarationNormal
-		}
 		patient.LastDassTime = declaration.SubmittedAt
 		patient.LastDassResult = declaration.Score
-		// comparison for the counts
-		if counts[0] > counts[1] && counts[0] > counts[2] {
+
+		// Depression
+		if declaration.Depression >= 28 {
+			declaration.DepressionStatus = constants.DeclarationExtremelySevere
+		} else if declaration.Depression >= 21 {
+			declaration.DepressionStatus = constants.DeclarationSevere
+		} else if declaration.Depression >= 14 {
+			declaration.DepressionStatus = constants.DeclarationModerate
+		} else if declaration.Depression >= 10 {
+			declaration.DepressionStatus = constants.DeclarationMild
+		} else {
+			declaration.DepressionStatus = constants.DeclarationNormal
+		}
+
+		// Anxiety
+		if declaration.Anxiety >= 20 {
+			declaration.AnxietyStatus = constants.DeclarationExtremelySevere
+		} else if declaration.Anxiety >= 15 {
+			declaration.AnxietyStatus = constants.DeclarationSevere
+		} else if declaration.Anxiety >= 10 {
+			declaration.AnxietyStatus = constants.DeclarationModerate
+		} else if declaration.Anxiety >= 8 {
+			declaration.AnxietyStatus = constants.DeclarationMild
+		} else {
+			declaration.AnxietyStatus = constants.DeclarationNormal
+		}
+
+		// Stress
+		if declaration.Stress >= 34 {
+			declaration.StressStatus = constants.DeclarationExtremelySevere
+		} else if declaration.Stress >= 26 {
+			declaration.StressStatus = constants.DeclarationSevere
+		} else if declaration.Stress >= 19 {
+			declaration.StressStatus = constants.DeclarationModerate
+		} else if declaration.Stress >= 15 {
+			declaration.StressStatus = constants.DeclarationMild
+		} else {
+			declaration.StressStatus = constants.DeclarationNormal
+		}
+
+		// Patient mental status
+		if declaration.Stress > declaration.Depression && declaration.Stress > declaration.Anxiety {
 			patient.MentalStatus = constants.Stress
-		} else if counts[1] > counts[0] && counts[1] > counts[2] {
+		} else if declaration.Anxiety > declaration.Depression && declaration.Anxiety > declaration.Stress {
 			patient.MentalStatus = constants.Anxiety
 		} else {
 			patient.MentalStatus = constants.Depression
 		}
+
+		patient.DepressionStatus = declaration.DepressionStatus
+		patient.AnxietyStatus = declaration.AnxietyStatus
+		patient.StressStatus = declaration.StressStatus
 	} else {
 		score := int64(0)
 		for _, result := range declaration.Result {
 			score += result.Score
 		}
-		declaration.Score = score
-		if score >= 37 {
-			declaration.Status = constants.DeclarationSevere
-			patient.MentalStatus = constants.PTSD
-		} else {
-			declaration.Status = constants.DeclarationNormal
-		}
 		patient.LastIesrTime = declaration.SubmittedAt
 		patient.LastIesrResult = score
-	}
+		declaration.Score = score
 
-	patient.Status = declaration.Status
+		if score >= 37 {
+			declaration.PtsdStatus = constants.DeclarationSevere
+			patient.MentalStatus = constants.PTSD
+		} else {
+			declaration.PtsdStatus = constants.DeclarationNormal
+		}
+
+		patient.PtsdStatus = declaration.PtsdStatus
+	}
 }

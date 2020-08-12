@@ -1347,21 +1347,6 @@ func (s *Handlers) GetReport(ctx context.Context, req *pb.GetReportRequest) (*pb
 	return resp, nil
 }
 
-func (s *Handlers) GetReports(ctx context.Context, req *pb.GetReportsRequest) (*pb.CommonReportsResponse, error) {
-	u, err := s.validateUser(ctx, constants.AllCanAccess)
-	if err != nil {
-		return nil, constants.UnauthorizedAccessError
-	}
-	handler := &report.GetReportsHandler{Model: s.Model}
-	resp, err := handler.GetReports(ctx, req)
-	if err != nil {
-		logger.Log.Error("GetReportsHandler: "+err.Error(), zap.String("UserID", u.ID))
-		return nil, err
-	}
-	logger.Log.Info("GetReportsHandler", zap.String("UserID", u.ID))
-	return resp, nil
-}
-
 func (s *Handlers) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 	handler := &user.LoginHandler{Model: s.Model}
 	resp, err := handler.Login(ctx, req)

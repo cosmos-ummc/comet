@@ -1,78 +1,133 @@
 package model
 
 import (
+	"comet/pkg/constants"
 	"comet/pkg/dto"
-	"comet/pkg/utility"
 	"context"
-	"time"
 )
 
 // GetReport gets report
-func (m *Model) GetReport(ctx context.Context, dateString string) (*dto.Report, error) {
-	report, err := m.reportDAO.Get(ctx, dateString)
-	if err != nil {
-		return nil, err
-	}
-	return report, nil
-}
+func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
+	report := &dto.Report{}
+	if id == "1" {
+		// get general report
 
-// GetReports get reports given from and to date (inclusive)
-func (m *Model) GetReports(ctx context.Context, from, to string) ([]*dto.Report, error) {
-	reports, err := m.reportDAO.BatchGet(ctx, utility.GetDatesByRange(from, to))
-	if err != nil {
-		return nil, err
-	}
-	return reports, nil
-}
-
-// GenerateReport force generates report given a new date (based on latest data)
-func (m *Model) GenerateReport(ctx context.Context, date string) error {
-	_, err := utility.DateStringToTime(date)
-	if err != nil {
-		return err
-	}
-
-	// sync days
-	err = m.SyncDays(ctx)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// SyncPatientReport sync patient record when changed type
-func (m *Model) SyncPatientReport(ctx context.Context) error {
-	date := utility.TimeToDateString(utility.MalaysiaTime(time.Now()))
-	// get today 12 am timestamp
-	_, err := utility.DateStringToTime(date)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-// SyncDays ...
-func (m *Model) SyncDays(ctx context.Context) error {
-	_, patients, err := m.patientDAO.Query(ctx, nil, nil, nil)
-	if err != nil {
-		return err
-	}
-
-	for _, p := range patients {
-		//if p.Consent == 0 {
-		//	p.Consent = 0
-		//} else {
-		//	t := utility.MilliToTime(p.Consent)
-		//	p.DaySinceMonitoring = utility.DaysElapsed(t, utility.MalaysiaTime(time.Now())) + 1
-		//}
-
-		// update patient
-		_, err = m.patientDAO.Update(ctx, p)
+		// get all patients
+		_, patients, err := m.QueryPatients(ctx, nil, nil, nil)
 		if err != nil {
-			return err
+			return nil, err
+		}
+
+		for _, patient := range patients {
+			// Depression
+			switch patient.DepressionStatus {
+			case constants.DeclarationNormal:
+				report.DepressionNormal += 1
+			case constants.DeclarationMild:
+				report.DepressionMild += 1
+			case constants.DeclarationModerate:
+				report.DepressionModerate += 1
+			case constants.DeclarationSevere:
+				report.DepressionSevere += 1
+			case constants.DeclarationExtremelySevere:
+				report.DepressionExtreme += 1
+			}
+
+			// Anxiety
+			switch patient.AnxietyStatus {
+			case constants.DeclarationNormal:
+				report.AnxietyNormal += 1
+			case constants.DeclarationMild:
+				report.AnxietyMild += 1
+			case constants.DeclarationModerate:
+				report.AnxietyModerate += 1
+			case constants.DeclarationSevere:
+				report.AnxietySevere += 1
+			case constants.DeclarationExtremelySevere:
+				report.AnxietyExtreme += 1
+			}
+
+			// Stress
+			switch patient.StressStatus {
+			case constants.DeclarationNormal:
+				report.StressNormal += 1
+			case constants.DeclarationMild:
+				report.StressMild += 1
+			case constants.DeclarationModerate:
+				report.StressModerate += 1
+			case constants.DeclarationSevere:
+				report.StressSevere += 1
+			case constants.DeclarationExtremelySevere:
+				report.StressExtreme += 1
+			}
+
+			// PTSD
+			switch patient.PtsdStatus {
+			case constants.DeclarationNormal:
+				report.PtsdNormal += 1
+			case constants.DeclarationSevere:
+				report.PtsdSevere += 1
+			}
+
+			// get declarations (DASS)
+			total, declarations, err := m.QueryDeclarations(ctx, &dto.SortData{
+				Item:  constants.SubmittedAt,
+				Order: constants.ASC,
+			}, nil, map[string]interface{}{
+				constants.PatientID: patient.ID,
+				constants.Category:  constants.DASS,
+			})
+			if err != nil {
+				return nil, err
+			}
+			if total >= 2 {
+				// Depression
+				if declarations[0].DepressionStatus == constants.DeclarationSevere || declarations[0].DepressionStatus == constants.DeclarationExtremelySevere {
+					report.DepressionCount1 += 1
+				}
+				if declarations[1].DepressionStatus == constants.DeclarationSevere || declarations[1].DepressionStatus == constants.DeclarationExtremelySevere {
+					report.DepressionCount2 += 1
+				}
+
+				// Stress
+				if declarations[0].StressStatus == constants.DeclarationSevere || declarations[0].StressStatus == constants.DeclarationExtremelySevere {
+					report.StressCount1 += 1
+				}
+				if declarations[1].StressStatus == constants.DeclarationSevere || declarations[1].StressStatus == constants.DeclarationExtremelySevere {
+					report.StressCount2 += 1
+				}
+
+				// Anxiety
+				if declarations[0].AnxietyStatus == constants.DeclarationSevere || declarations[0].AnxietyStatus == constants.DeclarationExtremelySevere {
+					report.AnxietyCount1 += 1
+				}
+				if declarations[1].AnxietyStatus == constants.DeclarationSevere || declarations[1].AnxietyStatus == constants.DeclarationExtremelySevere {
+					report.AnxietyCount2 += 1
+				}
+			}
+
+			// get declarations (IES-R)
+			total, declarations, err = m.QueryDeclarations(ctx, &dto.SortData{
+				Item:  constants.SubmittedAt,
+				Order: constants.ASC,
+			}, nil, map[string]interface{}{
+				constants.PatientID: patient.ID,
+				constants.Category:  constants.IESR,
+			})
+			if err != nil {
+				return nil, err
+			}
+			if total >= 2 {
+				// Anxiety
+				if declarations[0].PtsdStatus == constants.DeclarationSevere || declarations[0].PtsdStatus == constants.DeclarationExtremelySevere {
+					report.PtsdCount1 += 1
+				}
+				if declarations[1].PtsdStatus == constants.DeclarationSevere || declarations[1].PtsdStatus == constants.DeclarationExtremelySevere {
+					report.PtsdCount2 += 1
+				}
+			}
 		}
 	}
-	return nil
+
+	return report, nil
 }

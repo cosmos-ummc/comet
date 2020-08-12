@@ -140,17 +140,6 @@ type IUserDAO interface {
 	BatchDelete(ctx context.Context, ids []string) ([]string, error)
 }
 
-type IReportDAO interface {
-	// Create creates report
-	Create(ctx context.Context, date string, declarationReport *dto.Report) error
-	// UpdateByFields decrease decrementField by 1 for given date and increase incrementField by 1
-	UpdateByFields(ctx context.Context, date, decrementField, incrementField string) error
-	// Get gets report by date
-	Get(ctx context.Context, date string) (*dto.Report, error)
-	// BatchGet gets report by dates
-	BatchGet(ctx context.Context, dates []string) ([]*dto.Report, error)
-}
-
 type IAuthDAO interface {
 	InitIndex(ctx context.Context) error
 	// Create creates new auth token

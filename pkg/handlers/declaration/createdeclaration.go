@@ -18,17 +18,20 @@ type CreateDeclarationHandler struct {
 
 func (s *CreateDeclarationHandler) CreateDeclaration(ctx context.Context, req *pb.CommonDeclarationRequest) (*pb.CommonDeclarationResponse, error) {
 	declaration := &dto.Declaration{
-		ID:            uuid.NewV4().String(),
-		PatientID:     utility.RemoveZeroWidth(req.Data.PatientId),
-		Result:        utility.PbToQuestions(req.Data.Result),
-		Category:      req.Data.Category,
-		Score:         req.Data.Score,
-		Status:        req.Data.Status,
-		SubmittedAt:   req.Data.SubmittedAt,
-		DoctorRemarks: utility.RemoveZeroWidth(req.Data.DoctorRemarks),
-		Stress:        req.Data.Stress,
-		Depression:    req.Data.Depression,
-		Anxiety:       req.Data.Anxiety,
+		ID:               uuid.NewV4().String(),
+		PatientID:        utility.RemoveZeroWidth(req.Data.PatientId),
+		Result:           utility.PbToQuestions(req.Data.Result),
+		Category:         req.Data.Category,
+		Score:            req.Data.Score,
+		Depression:       req.Data.Depression,
+		Anxiety:          req.Data.Anxiety,
+		Stress:           req.Data.Stress,
+		DepressionStatus: req.Data.DepressionStatus,
+		StressStatus:     req.Data.StressStatus,
+		AnxietyStatus:    req.Data.AnxietyStatus,
+		PtsdStatus:       req.Data.PtsdStatus,
+		SubmittedAt:      req.Data.SubmittedAt,
+		DoctorRemarks:    utility.RemoveZeroWidth(req.Data.DoctorRemarks),
 	}
 
 	// create new declaration
