@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"comet/pkg/constants"
 	"comet/pkg/handlers"
 	"comet/pkg/logger"
 	model2 "comet/pkg/model"
@@ -50,6 +51,14 @@ func RunServer() error {
 
 	// initialize model
 	model := model2.InitModel(mongoClient)
+
+	_, q, err := model.QueryQuestions(ctx, nil, nil, nil)
+	for _, qq := range q {
+		if qq.Category == "iers" {
+			qq.Category = constants.IESR
+		}
+		model.UpdateQuestion(ctx, qq)
+	}
 
 	// initialize scheduler
 	//go func() {
