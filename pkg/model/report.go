@@ -118,7 +118,7 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 				return nil, err
 			}
 			if total >= 2 {
-				// Anxiety
+				// PTSD
 				if declarations[0].PtsdStatus == constants.DeclarationSevere || declarations[0].PtsdStatus == constants.DeclarationExtremelySevere {
 					report.PtsdCount1 += 1
 				}
@@ -126,6 +126,51 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 					report.PtsdCount2 += 1
 				}
 			}
+		}
+	} else {
+		// personalized report
+		// TODO: Add description payload
+
+		// get declarations (DASS)
+		total, declarations, err := m.QueryDeclarations(ctx, &dto.SortData{
+			Item:  constants.SubmittedAt,
+			Order: constants.ASC,
+		}, nil, map[string]interface{}{
+			constants.PatientID: id,
+			constants.Category:  constants.DASS,
+		})
+		if err != nil {
+			return nil, err
+		}
+		if total >= 2 {
+			// Depression
+			report.DepressionCount1 = declarations[0].Depression
+			report.DepressionCount2 = declarations[1].Depression
+
+			// Stress
+			report.StressCount1 = declarations[0].Stress
+			report.StressCount2 = declarations[1].Stress
+
+			// Anxiety
+			report.AnxietyCount1 = declarations[0].Anxiety
+			report.AnxietyCount2 = declarations[1].Anxiety
+		}
+
+		// get declarations (IES-R)
+		total, declarations, err = m.QueryDeclarations(ctx, &dto.SortData{
+			Item:  constants.SubmittedAt,
+			Order: constants.ASC,
+		}, nil, map[string]interface{}{
+			constants.PatientID: id,
+			constants.Category:  constants.IESR,
+		})
+		if err != nil {
+			return nil, err
+		}
+		if total >= 2 {
+			// PTSD
+			report.PtsdCount1 = declarations[0].Score
+			report.PtsdCount2 = declarations[1].Score
 		}
 	}
 
