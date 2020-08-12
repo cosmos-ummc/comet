@@ -12,8 +12,9 @@ const (
 	Consultant  = "consultant"
 	PatientUser = "patient"
 	ChatBot     = "chatbot"
+	Admin       = "admin"
 )
 
 var SuperUserOnly = []string{Superuser}
-var AllCanAccess = []string{Superuser, Consultant, PatientUser}
+var AllCanAccess = []string{Superuser, Consultant, PatientUser, Admin}
 var ChatBotOnly = []string{ChatBot}

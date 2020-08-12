@@ -23,7 +23,7 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 	}
 	user := &dto.User{
 		ID:               uuid.NewV4().String(),
-		Role:             constants.Superuser,
+		Role:             req.Data.Role,
 		Name:             req.Data.Name,
 		PhoneNumber:      utility.RemoveZeroWidth(req.Data.PhoneNumber),
 		Email:            utility.RemoveZeroWidth(req.Data.Email),
