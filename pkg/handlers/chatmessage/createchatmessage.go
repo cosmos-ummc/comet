@@ -8,6 +8,7 @@ import (
 	"comet/pkg/utility"
 	"context"
 	"github.com/twinj/uuid"
+	"net/http"
 	"time"
 
 	"google.golang.org/grpc/codes"
@@ -37,6 +38,13 @@ func (s *CreateChatMessageHandler) CreateChatMessage(ctx context.Context, req *p
 		}
 		return nil, constants.InternalError
 	}
+
+	// trigger general socket event for hot reload
+	_, err = http.Get("https://chat.quaranteams.tk/message")
+	if err != nil {
+		return nil, err
+	}
+
 	resp := utility.ChatMessageToResponse(rslt)
 	return resp, nil
 }
