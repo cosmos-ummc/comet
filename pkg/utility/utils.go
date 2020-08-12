@@ -16,6 +16,15 @@ import (
 	"github.com/dongri/phonenumber"
 )
 
+func StringInSlice(s string, ss []string) bool {
+	for _, sss := range ss {
+		if sss == s {
+			return true
+		}
+	}
+	return false
+}
+
 func DepressionScoreToStatus(score int64) int64 {
 	if score >= 28 {
 		return constants.DeclarationExtremelySevere

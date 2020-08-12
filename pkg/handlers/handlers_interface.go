@@ -50,6 +50,7 @@ type IHandlers interface {
 	ClientUpdatePatient(ctx context.Context, req *pb.ClientUpdatePatientRequest) (*empty.Empty, error)
 	ClientUpdatePatientV2(ctx context.Context, req *pb.ClientUpdatePatientRequest) (*pb.ClientUpdatePatientV2Response, error)
 	ClientCreateDeclaration(ctx context.Context, req *pb.ClientCreateDeclarationRequest) (*pb.ClientCreateDeclarationResponse, error)
+	ClientNewMatch(ctx context.Context, req *pb.ClientNewMatchRequest) (*pb.ClientNewMatchResponse, error)
 
 	ClientGetFeeds(ctx context.Context, req *pb.ClientGetFeedsRequest) (*pb.CommonFeedsResponse, error)
 	ClientGetGames(ctx context.Context, req *pb.ClientGetGamesRequest) (*pb.CommonGamesResponse, error)

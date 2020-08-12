@@ -652,6 +652,13 @@ service MhpssService {
             body: "*"
         };
     }
+    // Client New Match
+    rpc ClientNewMatch (ClientNewMatchRequest) returns (ClientNewMatchResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/newmatch"
+            body: "*"
+        };
+    }
 }
 
 // common gets request payload
@@ -1294,4 +1301,13 @@ message ClientMessageEventRequest {
 
 message ClientMessageEventResponse {
     bool ok = 1;
+}
+
+message ClientNewMatchRequest {
+    string id = 1;
+}
+
+message ClientNewMatchResponse {
+    User user = 1;
+    ChatRoom chatRoom = 2;
 }

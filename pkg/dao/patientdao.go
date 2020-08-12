@@ -314,7 +314,6 @@ func (v *PatientDAO) parseFilter(filter map[string]interface{}) bson.D {
 				if v, err := strconv.ParseBool(strings.ToLower(fmt.Sprint(value))); err != nil {
 					result = append(result, bson.E{Key: key, Value: v})
 				}
-
 			} else if key == constants.Status ||
 				key == constants.LastDeclared ||
 				key == constants.Consent ||

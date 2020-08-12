@@ -160,6 +160,20 @@ func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 // -------------- Reports -----------------
 
 // -------------- Users -----------------
+func UserToPb(user *dto.User) *pb.User {
+	return &pb.User{
+		Id:               user.ID,
+		Role:             user.Role,
+		Name:             user.Name,
+		PhoneNumber:      user.PhoneNumber,
+		Email:            user.Email,
+		BlockList:        user.BlockList,
+		Visible:          user.Visible,
+		NotFirstTimeChat: user.NotFirstTimeChat,
+		InvitedToMeeting: user.InvitedToMeeting,
+	}
+}
+
 func UserToResponse(user *dto.User) *pb.CommonUserResponse {
 	return &pb.CommonUserResponse{
 		Data: &pb.User{
@@ -370,6 +384,15 @@ func ChatMessagesToResponse(chatMessages []*dto.ChatMessage) *pb.CommonChatMessa
 // -------------- ChatMessages -----------------
 
 // -------------- ChatRooms -----------------
+
+func ChatRoomToPb(chatRoom *dto.ChatRoom) *pb.ChatRoom {
+	return &pb.ChatRoom{
+		Id:             chatRoom.ID,
+		ParticipantIds: chatRoom.ParticipantIDs,
+		Blocked:        chatRoom.Blocked,
+		Timestamp:      chatRoom.Timestamp,
+	}
+}
 
 func ChatRoomToResponse(chatRoom *dto.ChatRoom) *pb.CommonChatRoomResponse {
 	return &pb.CommonChatRoomResponse{

@@ -707,6 +707,39 @@
         ]
       }
     },
+    "/v1/client/newmatch": {
+      "post": {
+        "summary": "Client New Match",
+        "operationId": "ClientNewMatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbClientNewMatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbClientNewMatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/patients": {
       "get": {
         "summary": "Client Get Patients",
@@ -4114,6 +4147,25 @@
         "ok": {
           "type": "boolean",
           "format": "boolean"
+        }
+      }
+    },
+    "pbClientNewMatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "pbClientNewMatchResponse": {
+      "type": "object",
+      "properties": {
+        "user": {
+          "$ref": "#/definitions/pbUser"
+        },
+        "chatRoom": {
+          "$ref": "#/definitions/pbChatRoom"
         }
       }
     },
