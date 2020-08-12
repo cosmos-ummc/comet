@@ -84,6 +84,7 @@ func (s *UpdateUsersHandler) reqToUser(req *pb.CommonUsersRequest) *dto.User {
 		Visible:          req.Data.Visible,
 		Disabled:         req.Data.Disabled,
 		NotFirstTimeChat: req.Data.NotFirstTimeChat,
+		InvitedToMeeting: req.Data.InvitedToMeeting,
 	}
 	return user
 }

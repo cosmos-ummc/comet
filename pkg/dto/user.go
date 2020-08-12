@@ -20,4 +20,5 @@ type User struct {
 	BlockList        []string `json:"blockList" bson:"blockList"`
 	Visible          bool     `json:"visible" bson:"visible"`
 	NotFirstTimeChat bool     `json:"notFirstTimeChat" bson:"notFirstTimeChat"`
+	InvitedToMeeting bool     `json:"invitedToMeeting" bson:"invitedToMeeting"`
 }

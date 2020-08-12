@@ -36,6 +36,26 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		hasSymptom = true
 	}
 
+	// if hasSymptom, notify user to create meeting
+	if hasSymptom {
+		// get patient
+		p, err := s.Model.GetPatient(ctx, req.PatientId)
+		if err != nil {
+			return nil, err
+		}
+
+		u, err := s.Model.GetUser(ctx, p.UserID)
+		if err != nil {
+			return nil, err
+		}
+
+		u.InvitedToMeeting = true
+		_, err = s.Model.UpdateUser(ctx, u)
+		if err != nil {
+			return nil, err
+		}
+	}
+
 	resp := &pb.ClientCreateDeclarationResponse{
 		HasSymptom: hasSymptom,
 	}

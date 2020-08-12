@@ -823,6 +823,7 @@ message User {
     bool visible = 8;
     bool disabled = 9;
     bool notFirstTimeChat = 10;
+    bool invitedToMeeting = 11;
 }
 
 // common user request payload

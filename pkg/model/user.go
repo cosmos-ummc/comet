@@ -54,6 +54,7 @@ func (m *Model) UpdateUser(ctx context.Context, user *dto.User) (*dto.User, erro
 	u.BlockList = user.BlockList
 	u.Visible = user.Visible
 	u.NotFirstTimeChat = user.NotFirstTimeChat
+	u.InvitedToMeeting = user.InvitedToMeeting
 
 	_, err = m.userDAO.Update(ctx, u)
 	if err != nil {

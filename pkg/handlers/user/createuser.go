@@ -32,6 +32,7 @@ func (s *CreateUserHandler) CreateUser(ctx context.Context, req *pb.CommonUserRe
 		Visible:          req.Data.Visible,
 		Disabled:         req.Data.Disabled,
 		NotFirstTimeChat: req.Data.NotFirstTimeChat,
+		InvitedToMeeting: req.Data.InvitedToMeeting,
 	}
 	err := s.validateAndProcessReq(user)
 	if err != nil {

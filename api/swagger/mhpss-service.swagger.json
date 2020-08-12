@@ -5306,6 +5306,10 @@
         "notFirstTimeChat": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "invitedToMeeting": {
+          "type": "boolean",
+          "format": "boolean"
         }
       },
       "title": "user payload"

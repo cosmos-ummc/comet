@@ -163,6 +163,7 @@ func UserToResponse(user *dto.User) *pb.CommonUserResponse {
 			BlockList:        user.BlockList,
 			Visible:          user.Visible,
 			NotFirstTimeChat: user.NotFirstTimeChat,
+			InvitedToMeeting: user.InvitedToMeeting,
 		},
 	}
 }
@@ -179,6 +180,7 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 			BlockList:        user.BlockList,
 			Visible:          user.Visible,
 			NotFirstTimeChat: user.NotFirstTimeChat,
+			InvitedToMeeting: user.InvitedToMeeting,
 		}
 
 		resps = append(resps, resp)
