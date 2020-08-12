@@ -78,6 +78,9 @@ const (
 	SubmittedAt   = "submittedAt"
 	DoctorRemarks = "doctorRemarks"
 
+	// ChatRooms
+	ParticipantIDs = "participantIds"
+
 	// ChatMessages
 	Content = "content"
 

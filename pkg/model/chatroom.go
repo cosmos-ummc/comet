@@ -82,6 +82,11 @@ func (m *Model) QueryChatRooms(ctx context.Context, sort *dto.SortData, itemsRan
 	return m.chatRoomDAO.Query(ctx, sort, itemsRange, filter)
 }
 
+// QueryByUsers ...
+func (m *Model) QueryByUsers(ctx context.Context, users []string) ([]*dto.ChatRoom, error) {
+	return m.chatRoomDAO.QueryByUsers(ctx, users)
+}
+
 // DeleteChatRoom deletes chatRoom by ID
 func (m *Model) DeleteChatRoom(ctx context.Context, id string) (*dto.ChatRoom, error) {
 	// check if chatRoom exist

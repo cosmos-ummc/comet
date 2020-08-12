@@ -112,6 +112,19 @@ func (v *ChatRoomDAO) Update(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.
 	return chatRoom, nil
 }
 
+// Query By User
+func (v *ChatRoomDAO) QueryByUsers(ctx context.Context, users []string) ([]*dto.ChatRoom, error) {
+	filter := bson.D{{
+		constants.ParticipantIDs,
+		bson.D{{
+			"$in",
+			users,
+		}},
+	}}
+	_, rooms, err := v.query(ctx, nil, nil, filter)
+	return rooms, err
+}
+
 // query is a generic mongodb find helper method
 // IMPORTANT SHIT: this query uses FIND. It will never return err codes.Unknown! Only FINDONE will return codes.Unknown
 // DO NOT check for codes.Unknown to see if there's result. It will never hit! Use length instead please.
@@ -178,6 +191,8 @@ func (v *ChatRoomDAO) parseFilter(filter map[string]interface{}) bson.D {
 						},
 					},
 				})
+			} else if key != constants.Type { // prevent access-control by-passing and nasty bugs
+				result = append(result, bson.E{Key: key, Value: fmt.Sprint(value)})
 			}
 		}
 	}

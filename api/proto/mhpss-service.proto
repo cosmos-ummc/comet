@@ -659,6 +659,13 @@ service MhpssService {
             body: "*"
         };
     }
+    // Client Block
+    rpc ClientBlock (ClientBlockRequest) returns (ClientBlockResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/block"
+            body: "*"
+        };
+    }
 }
 
 // common gets request payload
@@ -1310,4 +1317,13 @@ message ClientNewMatchRequest {
 message ClientNewMatchResponse {
     User user = 1;
     ChatRoom chatRoom = 2;
+}
+
+message ClientBlockRequest {
+    string id = 1;
+    string targetId = 2;
+}
+
+message ClientBlockResponse {
+    bool ok = 1;
 }

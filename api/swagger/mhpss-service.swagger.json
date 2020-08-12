@@ -581,6 +581,39 @@
         ]
       }
     },
+    "/v1/client/block": {
+      "post": {
+        "summary": "Client Block",
+        "operationId": "ClientBlock",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbClientBlockResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbClientBlockRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/declarations": {
       "post": {
         "summary": "Client Create Declaration",
@@ -4071,6 +4104,26 @@
         "timestamp": {
           "type": "string",
           "format": "int64"
+        }
+      }
+    },
+    "pbClientBlockRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "targetId": {
+          "type": "string"
+        }
+      }
+    },
+    "pbClientBlockResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },

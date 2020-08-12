@@ -278,6 +278,15 @@ func (s *Handlers) ClientMessageEvent(ctx context.Context, req *pb.ClientMessage
 	return resp, nil
 }
 
+func (s *Handlers) ClientBlock(ctx context.Context, req *pb.ClientBlockRequest) (*pb.ClientBlockResponse, error) {
+	handler := &user.ClientBlockHandler{Model: s.Model}
+	resp, err := handler.ClientBlock(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *Handlers) UpdateUsers(ctx context.Context, req *pb.CommonUsersRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {

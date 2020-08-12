@@ -186,6 +186,8 @@ type IChatRoomDAO interface {
 	Delete(ctx context.Context, id string) error
 	// BatchDelete deletes chatRooms by IDs
 	BatchDelete(ctx context.Context, ids []string) ([]string, error)
+	// Query By Users
+	QueryByUsers(ctx context.Context, users []string) ([]*dto.ChatRoom, error)
 }
 
 // IConsultantDAO ...

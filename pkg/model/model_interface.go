@@ -174,6 +174,8 @@ type IModel interface {
 	DeleteChatRoom(ctx context.Context, id string) (*dto.ChatRoom, error)
 	// DeleteChatRooms delete chatRooms by IDs
 	DeleteChatRooms(ctx context.Context, ids []string) ([]string, error)
+	// QueryByUsers ...
+	QueryByUsers(ctx context.Context, users []string) ([]*dto.ChatRoom, error)
 	/////////////
 
 	///////////// Consultant models

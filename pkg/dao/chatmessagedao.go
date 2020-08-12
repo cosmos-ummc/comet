@@ -178,6 +178,8 @@ func (v *ChatMessageDAO) parseFilter(filter map[string]interface{}) bson.D {
 						},
 					},
 				})
+			} else if key != constants.Type { // prevent access-control by-passing and nasty bugs
+				result = append(result, bson.E{Key: key, Value: fmt.Sprint(value)})
 			}
 		}
 	}
