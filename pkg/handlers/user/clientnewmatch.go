@@ -80,6 +80,15 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 			targetPatient.HasCompleted {
 			continue
 		}
+		// check if chatroom already exist
+		chatrooms, err := s.Model.QueryByUsers(ctx, []string{u.ID, targetUser.ID})
+		if err != nil {
+			continue
+		}
+		if len(chatrooms) != 0 {
+			continue
+		}
+
 		ok = true
 		user = targetUser
 		break
