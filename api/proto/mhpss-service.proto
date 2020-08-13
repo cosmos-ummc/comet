@@ -729,6 +729,12 @@ service MhpssService {
             get: "/v1/client/users/completed"
         };
     }
+    // Client Set Not First Time
+    rpc ClientSetNotFirstTime (ClientSetNotFirstTimeRequest) returns (ClientSetNotFirstTimeResponse) {
+        option (google.api.http) = {
+            put: "/v1/client/users/notfirsttime"
+        };
+    }
 }
 
 // common gets request payload
@@ -1432,4 +1438,12 @@ message ClientCheckCompletedRequest {
 
 message ClientCheckCompletedResponse {
     bool completed = 1;
+}
+
+message ClientSetNotFirstTimeRequest {
+    string id = 1;
+}
+
+message ClientSetNotFirstTimeResponse {
+    bool ok = 1;
 }

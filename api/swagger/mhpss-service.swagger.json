@@ -1067,6 +1067,29 @@
         ]
       }
     },
+    "/v1/client/users/notfirsttime": {
+      "put": {
+        "summary": "Client Set Not First Time",
+        "operationId": "ClientSetNotFirstTime",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbClientSetNotFirstTimeResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/users/visibility": {
       "put": {
         "summary": "Client Set Visibility",
@@ -4608,6 +4631,15 @@
         },
         "msg": {
           "type": "string"
+        }
+      }
+    },
+    "pbClientSetNotFirstTimeResponse": {
+      "type": "object",
+      "properties": {
+        "ok": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },

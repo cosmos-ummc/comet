@@ -306,6 +306,15 @@ func (s *Handlers) ClientCheckCompleted(ctx context.Context, req *pb.ClientCheck
 	return resp, nil
 }
 
+func (s *Handlers) ClientSetNotFirstTime(ctx context.Context, req *pb.ClientSetNotFirstTimeRequest) (*pb.ClientSetNotFirstTimeResponse, error) {
+	handler := &user.ClientSetNotFirstTimeHandler{Model: s.Model}
+	resp, err := handler.ClientSetNotFirstTime(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *Handlers) UpdateUsers(ctx context.Context, req *pb.CommonUsersRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {

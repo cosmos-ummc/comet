@@ -54,6 +54,7 @@ type IHandlers interface {
 	ClientNewMatch(ctx context.Context, req *pb.ClientNewMatchRequest) (*pb.ClientNewMatchResponse, error)
 	ClientGetChatRooms(ctx context.Context, req *pb.ClientGetChatRoomsRequest) (*pb.CommonChatRoomsResponse, error)
 	ClientCheckCompleted(ctx context.Context, req *pb.ClientCheckCompletedRequest) (*pb.ClientCheckCompletedResponse, error)
+	ClientSetNotFirstTime(ctx context.Context, req *pb.ClientSetNotFirstTimeRequest) (*pb.ClientSetNotFirstTimeResponse, error)
 
 	ClientGetTips(ctx context.Context, req *pb.ClientGetTipsRequest) (*pb.CommonTipsResponse, error)
 	ClientGetFeeds(ctx context.Context, req *pb.ClientGetFeedsRequest) (*pb.CommonFeedsResponse, error)
