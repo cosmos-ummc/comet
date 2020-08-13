@@ -74,9 +74,10 @@ func RunServer() error {
 
 	_, dec, _ := model.QueryDeclarations(ctx, nil, nil, nil)
 	for _, dd := range dec {
-		if dd.Category == "" {
-			model.DeleteDeclaration(ctx, dd.ID)
-		}
+		model.DeleteDeclaration(ctx, dd.ID)
+		//if dd.Category == "" {
+		//	model.DeleteDeclaration(ctx, dd.ID)
+		//}
 	}
 
 	// report generator
@@ -113,60 +114,60 @@ func RunServer() error {
 		}
 		model.ClientCreateDeclaration(ctx, declaration)
 
-		_, results, err = model.QueryQuestions(ctx, nil, nil, map[string]interface{}{constants.Category: constants.IESR})
+		_, resultsIesr, err := model.QueryQuestions(ctx, nil, nil, map[string]interface{}{constants.Category: constants.IESR})
 		if err != nil {
 			continue
 		}
 
 		// first declaration
-		for _, r := range results {
+		for _, r := range resultsIesr {
 			r.Score = int64(rand.Intn(2)) + 3
 		}
 		declaration = &dto.Declaration{
 			ID:               uuid.NewV4().String(),
 			PatientID:        patient.ID,
-			Result:           results,
+			Result:           resultsIesr,
 			SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
 		}
 		model.ClientCreateDeclaration(ctx, declaration)
 
 		// second declaration
-		for _, r := range results {
+		for _, r := range resultsIesr {
 			r.Score = int64(rand.Intn(2)) + 1
 		}
 		declaration = &dto.Declaration{
 			ID:               uuid.NewV4().String(),
 			PatientID:        patient.ID,
-			Result:           results,
+			Result:           resultsIesr,
 			SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())) + 100000,
 		}
 		model.ClientCreateDeclaration(ctx, declaration)
 
-		_, results, err = model.QueryQuestions(ctx, nil, nil, map[string]interface{}{constants.Category: constants.Daily})
+		_, resultsDaily, err := model.QueryQuestions(ctx, nil, nil, map[string]interface{}{constants.Category: constants.Daily})
 		if err != nil {
 			continue
 		}
 
 		// first declaration
-		for _, r := range results {
+		for _, r := range resultsDaily {
 			r.Score = int64(rand.Intn(2)) + 4
 		}
 		declaration = &dto.Declaration{
 			ID:               uuid.NewV4().String(),
 			PatientID:        patient.ID,
-			Result:           results,
+			Result:           resultsDaily,
 			SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
 		}
 		model.ClientCreateDeclaration(ctx, declaration)
 
 		// second declaration
-		for _, r := range results {
+		for _, r := range resultsDaily {
 			r.Score = int64(rand.Intn(2)) + 1
 		}
 		declaration = &dto.Declaration{
 			ID:               uuid.NewV4().String(),
 			PatientID:        patient.ID,
-			Result:           results,
+			Result:           resultsDaily,
 			SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())) + 100000,
 		}
 		model.ClientCreateDeclaration(ctx, declaration)

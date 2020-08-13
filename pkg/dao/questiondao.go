@@ -178,6 +178,8 @@ func (v *QuestionDAO) parseFilter(filter map[string]interface{}) bson.D {
 						},
 					},
 				})
+			} else if key != constants.PatientType {
+				result = append(result, bson.E{Key: key, Value: fmt.Sprint(value)})
 			}
 		}
 	}
