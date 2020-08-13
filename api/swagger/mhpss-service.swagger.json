@@ -5987,6 +5987,12 @@
         "invitedToMeeting": {
           "type": "boolean",
           "format": "boolean"
+        },
+        "personality": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "user payload"

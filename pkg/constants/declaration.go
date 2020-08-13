@@ -1,6 +1,7 @@
 package constants
 
 const (
-	DASS = "dass"
-	IESR = "iesr"
+	DASS  = "dass"
+	IESR  = "iesr"
+	Daily = "daily"
 )

@@ -3,6 +3,10 @@ package utility
 import (
 	pb "comet/pkg/api"
 	"comet/pkg/dto"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
 )
 
 // -------------- Patients -----------------
@@ -161,7 +165,7 @@ func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 
 // -------------- Users -----------------
 func UserToPb(user *dto.User) *pb.User {
-	return &pb.User{
+	u := &pb.User{
 		Id:               user.ID,
 		Role:             user.Role,
 		Name:             user.Name,
@@ -172,28 +176,65 @@ func UserToPb(user *dto.User) *pb.User {
 		NotFirstTimeChat: user.NotFirstTimeChat,
 		InvitedToMeeting: user.InvitedToMeeting,
 	}
+	// get personality
+	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", user.ID))
+	if err == nil {
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			bodyString := string(body)
+			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
+			i := 0
+			for _, rs := range ids {
+				ids[i] = rs[1 : len(rs)-1]
+				i += 1
+			}
+			u.Personality = ids
+		}
+	}
+
+	return u
 }
 
 func UserToResponse(user *dto.User) *pb.CommonUserResponse {
+	u := &pb.User{
+		Id:               user.ID,
+		Role:             user.Role,
+		Name:             user.Name,
+		PhoneNumber:      user.PhoneNumber,
+		Email:            user.Email,
+		BlockList:        user.BlockList,
+		Visible:          user.Visible,
+		NotFirstTimeChat: user.NotFirstTimeChat,
+		InvitedToMeeting: user.InvitedToMeeting,
+	}
+
+	// get personality
+	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", user.ID))
+	if err == nil {
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			bodyString := string(body)
+			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
+			i := 0
+			for _, rs := range ids {
+				ids[i] = rs[1 : len(rs)-1]
+				i += 1
+			}
+			u.Personality = ids
+		}
+	}
+
 	return &pb.CommonUserResponse{
-		Data: &pb.User{
-			Id:               user.ID,
-			Role:             user.Role,
-			Name:             user.Name,
-			PhoneNumber:      user.PhoneNumber,
-			Email:            user.Email,
-			BlockList:        user.BlockList,
-			Visible:          user.Visible,
-			NotFirstTimeChat: user.NotFirstTimeChat,
-			InvitedToMeeting: user.InvitedToMeeting,
-		},
+		Data: u,
 	}
 }
 
 func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 	var resps []*pb.User
 	for _, user := range users {
-		resp := &pb.User{
+		u := &pb.User{
 			Id:               user.ID,
 			Role:             user.Role,
 			Name:             user.Name,
@@ -205,7 +246,24 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 			InvitedToMeeting: user.InvitedToMeeting,
 		}
 
-		resps = append(resps, resp)
+		// get personality
+		resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", user.ID))
+		if err == nil {
+			defer resp.Body.Close()
+			body, err := ioutil.ReadAll(resp.Body)
+			if err == nil {
+				bodyString := string(body)
+				ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
+				i := 0
+				for _, rs := range ids {
+					ids[i] = rs[1 : len(rs)-1]
+					i += 1
+				}
+				u.Personality = ids
+			}
+		}
+
+		resps = append(resps, u)
 	}
 	rslt := &pb.CommonUsersResponse{
 		Data: resps,

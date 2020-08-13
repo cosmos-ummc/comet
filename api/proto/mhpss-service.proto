@@ -915,6 +915,7 @@ message User {
     bool disabled = 9;
     bool notFirstTimeChat = 10;
     bool invitedToMeeting = 11;
+    repeated string personality = 12;
 }
 
 // common user request payload
