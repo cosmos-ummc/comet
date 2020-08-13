@@ -14,7 +14,8 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 	if patient == nil {
 		return nil
 	}
-	return &pb.Patient{
+
+	p := &pb.Patient{
 		Id:                 patient.ID,
 		TelegramId:         patient.TelegramID,
 		Name:               patient.Name,
@@ -42,45 +43,84 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 		DepressionStatus:   patient.DepressionStatus,
 		AnxietyStatus:      patient.AnxietyStatus,
 	}
+
+	// get personality
+	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", patient.ID))
+	if err == nil {
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			bodyString := string(body)
+			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
+			i := 0
+			for _, rs := range ids {
+				ids[i] = rs[1 : len(rs)-1]
+				i += 1
+			}
+			p.Personality = ids
+		}
+	}
+
+	return p
 }
 
 func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
+	p := &pb.Patient{
+		Id:                 patient.ID,
+		TelegramId:         patient.TelegramID,
+		Name:               patient.Name,
+		PhoneNumber:        patient.PhoneNumber,
+		Email:              patient.Email,
+		IsolationAddress:   patient.IsolationAddress,
+		Remarks:            patient.Remarks,
+		Consent:            patient.Consent,
+		PrivacyPolicy:      patient.PrivacyPolicy,
+		HomeAddress:        patient.HomeAddress,
+		LastDassTime:       patient.LastDassTime,
+		LastIesrTime:       patient.LastIesrTime,
+		LastDassResult:     patient.LastDassResult,
+		LastIesrResult:     patient.LastIesrResult,
+		RegistrationStatus: patient.RegistrationStatus,
+		UserId:             patient.UserID,
+		DaySinceMonitoring: patient.DaySinceMonitoring,
+		HasCompleted:       patient.HasCompleted,
+		MentalStatus:       patient.MentalStatus,
+		Type:               patient.Type,
+		SwabDate:           patient.SwabDate,
+		SwabResult:         patient.SwabResult,
+		StressStatus:       patient.StressStatus,
+		PtsdStatus:         patient.PtsdStatus,
+		DepressionStatus:   patient.DepressionStatus,
+		AnxietyStatus:      patient.AnxietyStatus,
+	}
+
+	// get personality
+	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", patient.ID))
+	if err == nil {
+		defer resp.Body.Close()
+		body, err := ioutil.ReadAll(resp.Body)
+		if err == nil {
+			bodyString := string(body)
+			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
+			i := 0
+			for _, rs := range ids {
+				ids[i] = rs[1 : len(rs)-1]
+				i += 1
+			}
+			p.Personality = ids
+		}
+	}
+
 	return &pb.CommonPatientResponse{
-		Data: &pb.Patient{
-			Id:                 patient.ID,
-			TelegramId:         patient.TelegramID,
-			Name:               patient.Name,
-			PhoneNumber:        patient.PhoneNumber,
-			Email:              patient.Email,
-			IsolationAddress:   patient.IsolationAddress,
-			Remarks:            patient.Remarks,
-			Consent:            patient.Consent,
-			PrivacyPolicy:      patient.PrivacyPolicy,
-			HomeAddress:        patient.HomeAddress,
-			LastDassTime:       patient.LastDassTime,
-			LastIesrTime:       patient.LastIesrTime,
-			LastDassResult:     patient.LastDassResult,
-			LastIesrResult:     patient.LastIesrResult,
-			RegistrationStatus: patient.RegistrationStatus,
-			UserId:             patient.UserID,
-			DaySinceMonitoring: patient.DaySinceMonitoring,
-			HasCompleted:       patient.HasCompleted,
-			MentalStatus:       patient.MentalStatus,
-			Type:               patient.Type,
-			SwabDate:           patient.SwabDate,
-			SwabResult:         patient.SwabResult,
-			StressStatus:       patient.StressStatus,
-			PtsdStatus:         patient.PtsdStatus,
-			DepressionStatus:   patient.DepressionStatus,
-			AnxietyStatus:      patient.AnxietyStatus,
-		},
+		Data: p,
 	}
 }
 
 func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 	var resps []*pb.Patient
 	for _, patient := range patients {
-		resp := &pb.Patient{
+
+		p := &pb.Patient{
 			Id:                 patient.ID,
 			TelegramId:         patient.TelegramID,
 			Name:               patient.Name,
@@ -108,7 +148,25 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			DepressionStatus:   patient.DepressionStatus,
 			AnxietyStatus:      patient.AnxietyStatus,
 		}
-		resps = append(resps, resp)
+
+		// get personality
+		resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", patient.ID))
+		if err == nil {
+			defer resp.Body.Close()
+			body, err := ioutil.ReadAll(resp.Body)
+			if err == nil {
+				bodyString := string(body)
+				ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
+				i := 0
+				for _, rs := range ids {
+					ids[i] = rs[1 : len(rs)-1]
+					i += 1
+				}
+				p.Personality = ids
+			}
+		}
+
+		resps = append(resps, )
 	}
 	rslt := &pb.CommonPatientsResponse{
 		Data: resps,
@@ -176,22 +234,6 @@ func UserToPb(user *dto.User) *pb.User {
 		NotFirstTimeChat: user.NotFirstTimeChat,
 		InvitedToMeeting: user.InvitedToMeeting,
 	}
-	// get personality
-	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", user.ID))
-	if err == nil {
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		if err == nil {
-			bodyString := string(body)
-			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
-			i := 0
-			for _, rs := range ids {
-				ids[i] = rs[1 : len(rs)-1]
-				i += 1
-			}
-			u.Personality = ids
-		}
-	}
 
 	return u
 }
@@ -207,23 +249,6 @@ func UserToResponse(user *dto.User) *pb.CommonUserResponse {
 		Visible:          user.Visible,
 		NotFirstTimeChat: user.NotFirstTimeChat,
 		InvitedToMeeting: user.InvitedToMeeting,
-	}
-
-	// get personality
-	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", user.ID))
-	if err == nil {
-		defer resp.Body.Close()
-		body, err := ioutil.ReadAll(resp.Body)
-		if err == nil {
-			bodyString := string(body)
-			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
-			i := 0
-			for _, rs := range ids {
-				ids[i] = rs[1 : len(rs)-1]
-				i += 1
-			}
-			u.Personality = ids
-		}
 	}
 
 	return &pb.CommonUserResponse{
@@ -244,23 +269,6 @@ func UsersToResponse(users []*dto.User) (*pb.CommonUsersResponse, error) {
 			Visible:          user.Visible,
 			NotFirstTimeChat: user.NotFirstTimeChat,
 			InvitedToMeeting: user.InvitedToMeeting,
-		}
-
-		// get personality
-		resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/personality?id=%s", user.ID))
-		if err == nil {
-			defer resp.Body.Close()
-			body, err := ioutil.ReadAll(resp.Body)
-			if err == nil {
-				bodyString := string(body)
-				ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
-				i := 0
-				for _, rs := range ids {
-					ids[i] = rs[1 : len(rs)-1]
-					i += 1
-				}
-				u.Personality = ids
-			}
 		}
 
 		resps = append(resps, u)

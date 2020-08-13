@@ -5737,6 +5737,12 @@
         "anxietyStatus": {
           "type": "string",
           "format": "int64"
+        },
+        "personality": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "title": "patient payload"
@@ -5987,12 +5993,6 @@
         "invitedToMeeting": {
           "type": "boolean",
           "format": "boolean"
-        },
-        "personality": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
       },
       "title": "user payload"
