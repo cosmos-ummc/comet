@@ -723,6 +723,12 @@ service MhpssService {
             body: "*"
         };
     }
+    // Client Check Completed
+    rpc ClientCheckCompleted (ClientCheckCompletedRequest) returns (ClientCheckCompletedResponse) {
+        option (google.api.http) = {
+            get: "/v1/client/users/completed"
+        };
+    }
 }
 
 // common gets request payload
@@ -1418,4 +1424,12 @@ message CommonTipsResponse {
 
 message ClientGetChatRoomsRequest {
     string id = 1;
+}
+
+message ClientCheckCompletedRequest {
+    string id = 1;
+}
+
+message ClientCheckCompletedResponse {
+    bool completed = 1;
 }

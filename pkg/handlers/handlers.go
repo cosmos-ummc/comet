@@ -297,6 +297,15 @@ func (s *Handlers) ClientBlock(ctx context.Context, req *pb.ClientBlockRequest) 
 	return resp, nil
 }
 
+func (s *Handlers) ClientCheckCompleted(ctx context.Context, req *pb.ClientCheckCompletedRequest) (*pb.ClientCheckCompletedResponse, error) {
+	handler := &user.ClientCheckCompletedHandler{Model: s.Model}
+	resp, err := handler.ClientCheckCompleted(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *Handlers) UpdateUsers(ctx context.Context, req *pb.CommonUsersRequest) (*pb.CommonIdsResponse, error) {
 	u, err := s.validateUser(ctx, constants.SuperUserOnly)
 	if err != nil {
