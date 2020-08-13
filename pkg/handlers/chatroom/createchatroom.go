@@ -7,6 +7,7 @@ import (
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
+	"fmt"
 	"github.com/twinj/uuid"
 	"io/ioutil"
 	"net/http"
@@ -55,7 +56,11 @@ func (s *CreateChatRoomHandler) CreateChatRoom(ctx context.Context, req *pb.Comm
 		return nil, constants.InternalError
 	}
 
-	// TODO: trigger event to pop up explore
+	// trigger event to pop up explore
+	_, err = http.Get(fmt.Sprintf("https://chat.quaranteams.tk/message?id=%s&id2=%s", chatRoom.ParticipantIDs[0], chatRoom.ParticipantIDs[1]))
+	if err != nil {
+		return nil, err
+	}
 
 	resp := utility.ChatRoomToResponse(rslt)
 	return resp, nil

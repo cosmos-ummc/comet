@@ -4,6 +4,7 @@ import (
 	pb "comet/pkg/api"
 	"comet/pkg/model"
 	"context"
+	"net/http"
 )
 
 type ClientBlockHandler struct {
@@ -49,6 +50,12 @@ func (s *ClientBlockHandler) ClientBlock(ctx context.Context, req *pb.ClientBloc
 		if err != nil {
 			return nil, err
 		}
+	}
+
+	// trigger event to refresh chatrooms
+	_, err = http.Get("https://chat.quaranteams.tk/message")
+	if err != nil {
+		return nil, err
 	}
 
 	return &pb.ClientBlockResponse{
