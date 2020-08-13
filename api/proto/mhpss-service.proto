@@ -143,6 +143,18 @@ service MhpssService {
             get: "/v1/declarations"
         };
     }
+    // Get Normal Declarations
+    rpc GetNormalDeclarations (CommonGetsRequest) returns (CommonDeclarationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/normaldeclarations"
+        };
+    }
+    // Get Daily Declarations
+    rpc GetDailyDeclarations (CommonGetsRequest) returns (CommonDeclarationsResponse) {
+        option (google.api.http) = {
+            get: "/v1/dailydeclarations"
+        };
+    }
     // Get Declaration
     rpc GetDeclaration (CommonGetRequest) returns (CommonDeclarationResponse) {
         option (google.api.http) = {

@@ -138,6 +138,11 @@ func (m *Model) QueryDeclarations(ctx context.Context, sort *dto.SortData, items
 	return m.declarationDAO.Query(ctx, sort, itemsRange, filter)
 }
 
+// QueryDeclarationsByCategories query declarations by categories
+func (m *Model) QueryDeclarationsByCategories(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, id string, categories []string) (int64, []*dto.Declaration, error) {
+	return m.declarationDAO.QueryByCategories(ctx, sort, itemsRange, id, categories)
+}
+
 // QueryDeclarationsByPatientID ...
 func (m *Model) QueryDeclarationsByPatientID(ctx context.Context, id string) (int64, []*dto.Declaration, error) {
 	filter := map[string]interface{}{constants.PatientID: id}

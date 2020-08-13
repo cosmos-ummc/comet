@@ -134,6 +134,7 @@ type IDeclarationDAO interface {
 	Delete(ctx context.Context, declarationID string) error
 	// Query queries declarations
 	Query(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Declaration, error)
+	QueryByCategories(ctx context.Context, sortData *dto.SortData, itemsRange *dto.RangeData, id string, categories []string) (int64, []*dto.Declaration, error)
 	// BatchGet gets declarations
 	BatchGet(ctx context.Context, ids []string) ([]*dto.Declaration, error)
 	// BatchDelete deletes declarations

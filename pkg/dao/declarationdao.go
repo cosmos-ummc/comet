@@ -68,6 +68,28 @@ func (v *DeclarationDAO) Query(ctx context.Context, sort *dto.SortData, itemsRan
 	return v.query(ctx, sort, itemsRange, f)
 }
 
+// QueryByCategories ...
+func (v *DeclarationDAO) QueryByCategories(ctx context.Context, sortData *dto.SortData, itemsRange *dto.RangeData, id string, categories []string) (int64, []*dto.Declaration, error) {
+	filter := bson.D{{
+		"$and",
+		bson.A{
+			bson.D{{
+				constants.PatientID,
+				id,
+			}},
+			bson.D{{
+				constants.Category,
+				bson.D{{
+					"$in",
+					categories,
+				}},
+			}},
+		},
+	}}
+
+	return v.query(ctx, sortData, itemsRange, filter)
+}
+
 func (v *DeclarationDAO) BatchGet(ctx context.Context, ids []string) ([]*dto.Declaration, error) {
 	collection := v.client.Database(constants.Mhpss).Collection(constants.Declarations)
 

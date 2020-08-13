@@ -1454,6 +1454,36 @@ func (s *Handlers) GetDeclarations(ctx context.Context, req *pb.CommonGetsReques
 	return resp, nil
 }
 
+func (s *Handlers) GetNormalDeclarations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonDeclarationsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &declaration.GetNormalDeclarationsHandler{Model: s.Model}
+	resp, err := handler.GetNormalDeclarations(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetDeclarationsHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetDeclarationsHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
+func (s *Handlers) GetDailyDeclarations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonDeclarationsResponse, error) {
+	u, err := s.validateUser(ctx, constants.AllCanAccess)
+	if err != nil {
+		return nil, constants.UnauthorizedAccessError
+	}
+	handler := &declaration.GetDailyDeclarationsHandler{Model: s.Model}
+	resp, err := handler.GetDailyDeclarations(ctx, req)
+	if err != nil {
+		logger.Log.Error("GetDeclarationsHandler: "+err.Error(), zap.String("UserID", u.ID))
+		return nil, err
+	}
+	logger.Log.Info("GetDeclarationsHandler", zap.String("UserID", u.ID))
+	return resp, nil
+}
+
 func (s *Handlers) UpdateDeclaration(ctx context.Context, req *pb.CommonDeclarationRequest) (*pb.CommonDeclarationResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {

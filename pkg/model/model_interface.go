@@ -27,6 +27,7 @@ type IModel interface {
 	DeleteDeclarations(ctx context.Context, declarationID []string) ([]string, error)
 	// QueryDeclarations query declarations
 	QueryDeclarations(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, filter map[string]interface{}) (int64, []*dto.Declaration, error)
+	QueryDeclarationsByCategories(ctx context.Context, sort *dto.SortData, itemsRange *dto.RangeData, id string, categories []string) (int64, []*dto.Declaration, error)
 	// QueryDeclarationsByPatientID ...
 	QueryDeclarationsByPatientID(ctx context.Context, id string) (int64, []*dto.Declaration, error)
 	/////////////

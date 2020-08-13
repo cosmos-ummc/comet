@@ -66,6 +66,13 @@ func RunServer() error {
 		model.DeleteChatMessage(ctx, dd.ID)
 	}
 
+	_, dec, _ := model.QueryDeclarations(ctx, nil, nil, nil)
+	for _, dd := range dec {
+		if dd.Category == "" {
+			model.DeleteDeclaration(ctx, dd.ID)
+		}
+	}
+
 	// initialize scheduler
 	//go func() {
 	//	it := utility.Scheduler{Enabled: true, Job: model.GenerateReport, RevokeJob: model.RevokeUserTokens}
