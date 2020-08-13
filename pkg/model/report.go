@@ -143,6 +143,8 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 		report.StressStatuses = []int64{}
 		report.AnxietyStatuses = []int64{}
 		report.PtsdStatuses = []int64{}
+		report.DailyCounts = []int64{}
+		report.DailyStatuses = []int64{}
 
 		// get declarations (DASS)
 		_, declarations, err := m.QueryDeclarations(ctx, &dto.SortData{
