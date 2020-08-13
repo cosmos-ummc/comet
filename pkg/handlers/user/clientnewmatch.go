@@ -124,7 +124,7 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 	}
 
 	// trigger event to pop up explore
-	_, err = http.Get(fmt.Sprintf("https://chat.quaranteams.tk/message?id=%s&id2=%s", c.ParticipantIDs[0], c.ParticipantIDs[1]))
+	_, err = http.Get(fmt.Sprintf("https://chat.quaranteams.tk/chatroom?id=%s&id2=%s", c.ParticipantIDs[0], c.ParticipantIDs[1]))
 	if err != nil {
 		return nil, err
 	}

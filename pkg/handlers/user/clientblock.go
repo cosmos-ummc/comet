@@ -53,7 +53,7 @@ func (s *ClientBlockHandler) ClientBlock(ctx context.Context, req *pb.ClientBloc
 	}
 
 	// trigger event to refresh chatrooms
-	_, err = http.Get("https://chat.quaranteams.tk/message")
+	_, err = http.Get("https://chat.quaranteams.tk/block")
 	if err != nil {
 		return nil, err
 	}
