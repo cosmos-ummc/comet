@@ -1302,6 +1302,19 @@ func (s *Handlers) CreateMeeting(ctx context.Context, req *pb.CommonMeetingReque
 	return resp, nil
 }
 
+func (s *Handlers) ClientCreateMeeting(ctx context.Context, req *pb.CommonMeetingRequest) (*pb.CommonMeetingResponse, error) {
+	if req.Data == nil {
+		return nil, constants.InvalidArgumentError
+	}
+	handler := &meeting.ClientCreateMeetingHandler{Model: s.Model}
+	resp, err := handler.ClientCreateMeeting(ctx, req)
+	if err != nil {
+		logger.Log.Error("CreateMeetingHandler: " + err.Error())
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *Handlers) GetMeeting(ctx context.Context, req *pb.CommonGetRequest) (*pb.CommonMeetingResponse, error) {
 	u, err := s.validateUser(ctx, constants.AllCanAccess)
 	if err != nil {

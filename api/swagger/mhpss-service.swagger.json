@@ -771,6 +771,45 @@
         ]
       }
     },
+    "/v1/client/meetings/{id}": {
+      "post": {
+        "summary": "Client Create Meeting",
+        "operationId": "ClientCreateMeeting",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCommonMeetingResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCommonMeetingRequest"
+            }
+          }
+        ],
+        "tags": [
+          "MhpssService"
+        ]
+      }
+    },
     "/v1/client/newmatch": {
       "post": {
         "summary": "Client New Match",
@@ -1085,6 +1124,16 @@
             }
           }
         },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbClientSetNotFirstTimeRequest"
+            }
+          }
+        ],
         "tags": [
           "MhpssService"
         ]
@@ -4630,6 +4679,14 @@
           "$ref": "#/definitions/pbChatRoom"
         },
         "msg": {
+          "type": "string"
+        }
+      }
+    },
+    "pbClientSetNotFirstTimeRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
           "type": "string"
         }
       }

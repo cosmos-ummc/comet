@@ -733,6 +733,14 @@ service MhpssService {
     rpc ClientSetNotFirstTime (ClientSetNotFirstTimeRequest) returns (ClientSetNotFirstTimeResponse) {
         option (google.api.http) = {
             put: "/v1/client/users/notfirsttime"
+            body: "*"
+        };
+    }
+    // Client Create Meeting
+    rpc ClientCreateMeeting (CommonMeetingRequest) returns (CommonMeetingResponse) {
+        option (google.api.http) = {
+            post: "/v1/client/meetings/{id}"
+            body: "*"
         };
     }
 }

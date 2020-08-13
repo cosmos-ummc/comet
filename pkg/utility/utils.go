@@ -75,6 +75,11 @@ func PstdScoreToStatus(score int64) int64 {
 	}
 }
 
+func ShuffleConsultants(a []*dto.Consultant) {
+	rand.Seed(time.Now().UnixNano())
+	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
+}
+
 func ShuffleTips(a []*dto.Tip) {
 	rand.Seed(time.Now().UnixNano())
 	rand.Shuffle(len(a), func(i, j int) { a[i], a[j] = a[j], a[i] })
