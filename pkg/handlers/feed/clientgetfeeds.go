@@ -3,6 +3,7 @@ package feed
 import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
+	"comet/pkg/dto"
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
@@ -49,26 +50,87 @@ func (s *ClientGetFeedsHandler) GetFeeds(ctx context.Context, req *pb.ClientGetF
 
 	// setup filter for patient mental status
 	patient := patients[0]
-	var filter map[string]interface{}
-	if patient.MentalStatus != constants.NoMentalIssue {
-		filter = map[string]interface{}{
-			constants.Type: patient.MentalStatus,
-		}
+	var resultFeeds []*dto.Feed
+
+	// default is depression
+	if patient.MentalStatus == constants.NoMentalIssue {
+		patient.MentalStatus = constants.Depression
 	}
 
-	// do query
-	_, feeds, err := s.Model.QueryFeeds(ctx, nil, nil, filter)
+	// do first query
+	_, feeds, err := s.Model.QueryFeeds(ctx, nil, nil, map[string]interface{}{
+		constants.Type: patient.MentalStatus,
+	})
 	if err != nil {
 		return nil, err
 	}
-
-	// shuffle feeds
 	utility.ShuffleFeeds(feeds)
 	if len(feeds) > 3 {
 		feeds = feeds[0:3]
 	}
+	resultFeeds = append(resultFeeds, feeds...)
 
-	resp := utility.FeedsToResponse(feeds)
-	resp.Total = int64(len(feeds))
+	// do second query
+	if patient.MentalStatus != constants.Depression {
+		_, feeds, err = s.Model.QueryFeeds(ctx, nil, nil, map[string]interface{}{
+			constants.Type: constants.Depression,
+		})
+		if err != nil {
+			return nil, err
+		}
+		utility.ShuffleFeeds(feeds)
+		if len(feeds) > 3 {
+			feeds = feeds[0:3]
+		}
+		resultFeeds = append(resultFeeds, feeds...)
+	}
+
+	// do third query
+	if patient.MentalStatus != constants.Anxiety {
+		_, feeds, err = s.Model.QueryFeeds(ctx, nil, nil, map[string]interface{}{
+			constants.Type: constants.Anxiety,
+		})
+		if err != nil {
+			return nil, err
+		}
+		utility.ShuffleFeeds(feeds)
+		if len(feeds) > 3 {
+			feeds = feeds[0:3]
+		}
+		resultFeeds = append(resultFeeds, feeds...)
+	}
+
+	// do forth query
+	if patient.MentalStatus != constants.Stress {
+		_, feeds, err = s.Model.QueryFeeds(ctx, nil, nil, map[string]interface{}{
+			constants.Type: constants.Stress,
+		})
+		if err != nil {
+			return nil, err
+		}
+		utility.ShuffleFeeds(feeds)
+		if len(feeds) > 3 {
+			feeds = feeds[0:3]
+		}
+		resultFeeds = append(resultFeeds, feeds...)
+	}
+
+	// do fifth query
+	if patient.MentalStatus != constants.PTSD {
+		_, feeds, err = s.Model.QueryFeeds(ctx, nil, nil, map[string]interface{}{
+			constants.Type: constants.PTSD,
+		})
+		if err != nil {
+			return nil, err
+		}
+		utility.ShuffleFeeds(feeds)
+		if len(feeds) > 3 {
+			feeds = feeds[0:3]
+		}
+		resultFeeds = append(resultFeeds, feeds...)
+	}
+
+	resp := utility.FeedsToResponse(resultFeeds)
+	resp.Total = int64(len(resultFeeds))
 	return resp, nil
 }
