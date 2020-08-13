@@ -194,9 +194,9 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 			return nil, err
 		}
 		for _, declaration := range declarations {
-			report.DailyCounts = append(report.PtsdCounts, declaration.Score)
+			report.DailyCounts = append(report.DailyCounts, declaration.Score)
 			// Todo: passing marks for daily report
-			report.DailyStatuses = append(report.PtsdStatuses, utility.PtsdScoreToStatus(declaration.Score))
+			report.DailyStatuses = append(report.DailyStatuses, utility.PtsdScoreToStatus(declaration.Score))
 		}
 	}
 
