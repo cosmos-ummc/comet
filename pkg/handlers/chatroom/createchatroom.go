@@ -45,8 +45,8 @@ func (s *CreateChatRoomHandler) CreateChatRoom(ctx context.Context, req *pb.Comm
 	}
 	bodyString := string(body)
 	bodyString = bodyString[9:]
-	bodyString = bodyString[0: strings.Index(bodyString, "\"")]
-	chatRoom.Name = bodyString
+	bodyString = bodyString[0:strings.Index(bodyString, "\"")]
+	chatRoom.Name = "Anonymous " + bodyString
 
 	rslt, err := s.Model.CreateChatRoom(ctx, chatRoom)
 	if err != nil {

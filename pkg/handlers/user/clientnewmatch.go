@@ -110,14 +110,14 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 	}
 	bodyString2 := string(body2)
 	bodyString2 = bodyString2[9:]
-	bodyString2 = bodyString2[0: strings.Index(bodyString2, "\"")]
+	bodyString2 = bodyString2[0:strings.Index(bodyString2, "\"")]
 
 	// match! Create ChatRoom for both people
 	c, err := s.Model.CreateChatRoom(ctx, &dto.ChatRoom{
 		ID:             uuid.NewV4().String(),
 		ParticipantIDs: []string{u.ID, user.ID},
 		Timestamp:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
-		Name: bodyString2,
+		Name:           "Anonymous " + bodyString2,
 	})
 	if err != nil {
 		return nil, err
