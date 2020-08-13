@@ -68,15 +68,15 @@ func (s *ClientCreateMeetingHandler) ClientCreateMeeting(ctx context.Context, re
 	}
 
 	// update user
-	u, err := s.Model.GetUser(ctx, req.Id)
-	if err != nil {
-		return nil, err
-	}
-	u.InvitedToMeeting = true
-	_, err = s.Model.UpdateUser(ctx, u)
-	if err != nil {
-		return nil, err
-	}
+	//u, err := s.Model.GetUser(ctx, req.Id)
+	//if err != nil {
+	//	return nil, err
+	//}
+	//u.InvitedToMeeting = true
+	//_, err = s.Model.UpdateUser(ctx, u)
+	//if err != nil {
+	//	return nil, err
+	//}
 
 	resp := utility.MeetingToResponse(rslt)
 	return resp, nil
