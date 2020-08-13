@@ -56,17 +56,18 @@ func RunServer() error {
 
 	// initialize model
 	model := model2.InitModel(mongoClient)
-	//_, u, _ := model.QueryUsers(ctx, nil, nil, nil, false)
-	//for _, uu := range u {
-	//	uu.BlockList = []string{}
-	//	model.UpdateUser(ctx, uu)
-	//}
+	_, u, _ := model.QueryUsers(ctx, nil, nil, nil, false)
+	for _, uu := range u {
+		uu.BlockList = []string{}
+		model.UpdateUser(ctx, uu)
+	}
 
-	//_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
-	//for _, cc := range c {
-	//	model.DeleteChatRoom(ctx, cc.ID)
-	//}
-	//
+	_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
+	for _, cc := range c {
+		cc.Blocked = false
+		model.UpdateChatRoom(ctx, cc)
+	}
+
 	//_, d, _ := model.QueryChatMessages(ctx, nil, nil, nil)
 	//for _, dd := range d {
 	//	model.DeleteChatMessage(ctx, dd.ID)
