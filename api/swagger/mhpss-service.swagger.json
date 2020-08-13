@@ -4447,6 +4447,9 @@
         "timestamp": {
           "type": "string",
           "format": "int64"
+        },
+        "name": {
+          "type": "string"
         }
       }
     },

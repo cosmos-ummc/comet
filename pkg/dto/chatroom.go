@@ -6,4 +6,5 @@ type ChatRoom struct {
 	ParticipantIDs []string `json:"participantIds" bson:"participantIds"`
 	Blocked        bool     `json:"blocked" bson:"blocked"`
 	Timestamp      int64    `json:"timestamp" bson:"timestamp"`
+	Name           string   `json:"name" bson:"name"`
 }

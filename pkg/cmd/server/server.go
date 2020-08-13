@@ -50,10 +50,15 @@ func RunServer() error {
 
 	// initialize model
 	model := model2.InitModel(mongoClient)
-	//_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
-	//for _, cc := range c {
-	//	model.DeleteChatRoom(ctx, cc.ID)
-	//}
+	_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
+	for _, cc := range c {
+		model.DeleteChatRoom(ctx, cc.ID)
+	}
+
+	_, d, _ := model.QueryChatMessages(ctx, nil, nil, nil)
+	for _, dd := range d {
+		model.DeleteChatMessage(ctx, dd.ID)
+	}
 
 	// initialize scheduler
 	//go func() {

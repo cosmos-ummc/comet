@@ -391,6 +391,7 @@ func ChatRoomToPb(chatRoom *dto.ChatRoom) *pb.ChatRoom {
 		ParticipantIds: chatRoom.ParticipantIDs,
 		Blocked:        chatRoom.Blocked,
 		Timestamp:      chatRoom.Timestamp,
+		Name:           chatRoom.Name,
 	}
 }
 
@@ -401,6 +402,7 @@ func ChatRoomToResponse(chatRoom *dto.ChatRoom) *pb.CommonChatRoomResponse {
 			ParticipantIds: chatRoom.ParticipantIDs,
 			Blocked:        chatRoom.Blocked,
 			Timestamp:      chatRoom.Timestamp,
+			Name:           chatRoom.Name,
 		},
 	}
 }
@@ -413,6 +415,7 @@ func ChatRoomsToResponse(chatRooms []*dto.ChatRoom) *pb.CommonChatRoomsResponse 
 			ParticipantIds: chatRoom.ParticipantIDs,
 			Blocked:        chatRoom.Blocked,
 			Timestamp:      chatRoom.Timestamp,
+			Name:           chatRoom.Name,
 		}
 		resps = append(resps, resp)
 	}
