@@ -82,6 +82,7 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 		}
 		ok = true
 		user = targetUser
+		break
 	}
 
 	if !ok {
