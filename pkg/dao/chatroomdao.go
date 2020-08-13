@@ -116,7 +116,10 @@ func (v *ChatRoomDAO) Update(ctx context.Context, chatRoom *dto.ChatRoom) (*dto.
 func (v *ChatRoomDAO) QueryByUsers(ctx context.Context, users []string) ([]*dto.ChatRoom, error) {
 	filter := bson.D{{
 		constants.ParticipantIDs,
-		users,
+		bson.D{{
+			"$all",
+			users,
+		}},
 	}}
 	_, rooms, err := v.query(ctx, &dto.SortData{
 		Item:  constants.Timestamp,
