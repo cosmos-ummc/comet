@@ -166,7 +166,7 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			}
 		}
 
-		resps = append(resps, )
+		resps = append(resps, p)
 	}
 	rslt := &pb.CommonPatientsResponse{
 		Data: resps,
