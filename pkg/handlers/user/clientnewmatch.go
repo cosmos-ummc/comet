@@ -43,6 +43,10 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 		return nil, err
 	}
 
+	if !u.Visible {
+		return &pb.ClientNewMatchResponse{}, nil
+	}
+
 	// find patient IDs via similarity API
 	resp, err := http.Get(fmt.Sprintf("https://chat.quaranteams.tk/similarusers?id=%s", p.ID))
 	if err != nil {
