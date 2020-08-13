@@ -1057,7 +1057,7 @@ message ClientGetUndeclaredPatientsRequest {
 message ClientCreateDeclarationRequest {
     // patient IC / passport
     string patientId = 1;
-    Declaration data = 2;
+    map<string, int64> data = 2;
 }
 
 // client get patients response payload

@@ -3,6 +3,7 @@ package declaration
 import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
+	"comet/pkg/dto"
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
@@ -18,10 +19,23 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 	if req.Data == nil {
 		return nil, constants.InvalidArgumentError
 	}
-	req.Data.Id = uuid.NewV4().String()
-	req.Data.SubmittedAt = utility.TimeToMilli(utility.MalaysiaTime(time.Now()))
-	req.Data.PatientId = req.PatientId
-	declaration := utility.PbToDeclaration(req.Data)
+
+	var result []*dto.Question
+	for k, v := range req.Data {
+		q, err := s.Model.GetQuestion(ctx, k)
+		if err != nil {
+			continue
+		}
+		q.Score = v
+		result = append(result, q)
+	}
+	
+	declaration := &dto.Declaration{
+		ID:               uuid.NewV4().String(),
+		PatientID:        req.PatientId,
+		Result:           result,
+		SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
+	}
 
 	d, err := s.Model.ClientCreateDeclaration(ctx, declaration)
 	if err != nil {

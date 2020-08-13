@@ -4753,7 +4753,11 @@
           "title": "patient IC / passport"
         },
         "data": {
-          "$ref": "#/definitions/pbDeclaration"
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       },
       "title": "client create declaration request payload"
