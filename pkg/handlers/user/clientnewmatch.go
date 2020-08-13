@@ -85,7 +85,7 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 	}
 
 	if !ok {
-		return &pb.ClientNewMatchResponse{}, nil
+		return &pb.ClientNewMatchResponse{Msg: string(body)}, nil
 	}
 
 	// match! Create ChatRoom for both people
@@ -101,5 +101,6 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 	return &pb.ClientNewMatchResponse{
 		User:     utility.UserToPb(user),
 		ChatRoom: utility.ChatRoomToPb(c),
+		Msg:      string(body),
 	}, nil
 }

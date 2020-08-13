@@ -1378,6 +1378,7 @@ message ClientNewMatchRequest {
 message ClientNewMatchResponse {
     User user = 1;
     ChatRoom chatRoom = 2;
+    string msg = 3;
 }
 
 message ClientBlockRequest {

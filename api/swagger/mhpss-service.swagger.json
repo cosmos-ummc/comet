@@ -4562,6 +4562,9 @@
         },
         "chatRoom": {
           "$ref": "#/definitions/pbChatRoom"
+        },
+        "msg": {
+          "type": "string"
         }
       }
     },
