@@ -5878,6 +5878,13 @@
             "format": "int64"
           }
         },
+        "dailyCounts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
         "depressionStatuses": {
           "type": "array",
           "items": {
@@ -5900,6 +5907,13 @@
           }
         },
         "ptsdStatuses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
+        },
+        "dailyStatuses": {
           "type": "array",
           "items": {
             "type": "string",

@@ -179,6 +179,23 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 			report.PtsdCounts = append(report.PtsdCounts, declaration.Score)
 			report.PtsdStatuses = append(report.PtsdStatuses, utility.PtsdScoreToStatus(declaration.Score))
 		}
+
+		// get declarations (Daily)
+		_, declarations, err = m.QueryDeclarations(ctx, &dto.SortData{
+			Item:  constants.SubmittedAt,
+			Order: constants.ASC,
+		}, nil, map[string]interface{}{
+			constants.PatientID: id,
+			constants.Category:  constants.Daily,
+		})
+		if err != nil {
+			return nil, err
+		}
+		for _, declaration := range declarations {
+			report.DailyCounts = append(report.PtsdCounts, declaration.Score)
+			// Todo: passing marks for daily report
+			report.DailyStatuses = append(report.PtsdStatuses, utility.PtsdScoreToStatus(declaration.Score))
+		}
 	}
 
 	return report, nil

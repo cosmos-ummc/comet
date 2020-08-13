@@ -237,17 +237,19 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 		for _, result := range declaration.Result {
 			score += result.Score
 		}
-		patient.LastIesrTime = declaration.SubmittedAt
-		patient.LastIesrResult = score
 		declaration.Score = score
 
-		if score >= 37 {
-			declaration.PtsdStatus = constants.DeclarationSevere
-			patient.MentalStatus = constants.PTSD
-		} else {
-			declaration.PtsdStatus = constants.DeclarationNormal
-		}
+		if declaration.Category == constants.IESR {
+			patient.LastIesrTime = declaration.SubmittedAt
+			patient.LastIesrResult = score
 
-		patient.PtsdStatus = declaration.PtsdStatus
+			if score >= 37 {
+				declaration.PtsdStatus = constants.DeclarationSevere
+				patient.MentalStatus = constants.PTSD
+			} else {
+				declaration.PtsdStatus = constants.DeclarationNormal
+			}
+			patient.PtsdStatus = declaration.PtsdStatus
+		}
 	}
 }

@@ -202,10 +202,12 @@ func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 			AnxietyCounts:      report.AnxietyCounts,
 			StressCounts:       report.StressCounts,
 			PtsdCounts:         report.PtsdCounts,
+			DailyCounts:        report.DailyCounts,
 			DepressionStatuses: report.DepressionStatuses,
 			AnxietyStatuses:    report.AnxietyStatuses,
 			StressStatuses:     report.StressStatuses,
 			PtsdStatuses:       report.PtsdStatuses,
+			DailyStatuses:      report.DailyStatuses,
 		},
 	}
 	return resp

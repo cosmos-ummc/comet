@@ -1099,10 +1099,12 @@ message Report {
     repeated int64 anxietyCounts = 19;
     repeated int64 stressCounts = 20;
     repeated int64 ptsdCounts = 21;
-    repeated int64 depressionStatuses = 22;
-    repeated int64 anxietyStatuses = 23;
-    repeated int64 stressStatuses = 24;
-    repeated int64 ptsdStatuses = 25;
+    repeated int64 dailyCounts = 22;
+    repeated int64 depressionStatuses = 23;
+    repeated int64 anxietyStatuses = 24;
+    repeated int64 stressStatuses = 25;
+    repeated int64 ptsdStatuses = 26;
+    repeated int64 dailyStatuses = 27;
 }
 
 // get report request payload
