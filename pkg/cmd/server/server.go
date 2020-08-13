@@ -1,17 +1,23 @@
 package cmd
 
 import (
+	"comet/pkg/constants"
+	"comet/pkg/dto"
 	"comet/pkg/handlers"
 	"comet/pkg/logger"
 	model2 "comet/pkg/model"
 	"comet/pkg/protocol/grpc"
 	"comet/pkg/protocol/rest"
+	"comet/pkg/utility"
 	"context"
 	"fmt"
 	"github.com/joho/godotenv"
+	"github.com/twinj/uuid"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"math/rand"
 	"os"
+	"time"
 )
 
 // Config is configuration for Server
@@ -50,27 +56,62 @@ func RunServer() error {
 
 	// initialize model
 	model := model2.InitModel(mongoClient)
-	_, u, _ := model.QueryUsers(ctx, nil, nil, nil, false)
-	for _, uu := range u {
-		uu.BlockList = []string{}
-		model.UpdateUser(ctx, uu)
-	}
+	//_, u, _ := model.QueryUsers(ctx, nil, nil, nil, false)
+	//for _, uu := range u {
+	//	uu.BlockList = []string{}
+	//	model.UpdateUser(ctx, uu)
+	//}
 
-	_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
-	for _, cc := range c {
-		model.DeleteChatRoom(ctx, cc.ID)
-	}
+	//_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
+	//for _, cc := range c {
+	//	model.DeleteChatRoom(ctx, cc.ID)
+	//}
+	//
+	//_, d, _ := model.QueryChatMessages(ctx, nil, nil, nil)
+	//for _, dd := range d {
+	//	model.DeleteChatMessage(ctx, dd.ID)
+	//}
+	//
+	//_, dec, _ := model.QueryDeclarations(ctx, nil, nil, nil)
+	//for _, dd := range dec {
+	//	if dd.Category == "" {
+	//		model.DeleteDeclaration(ctx, dd.ID)
+	//	}
+	//}
 
-	_, d, _ := model.QueryChatMessages(ctx, nil, nil, nil)
-	for _, dd := range d {
-		model.DeleteChatMessage(ctx, dd.ID)
-	}
+	// report generator
+	_, patients, err := model.QueryPatients(ctx, nil, nil, nil)
+	for _, patient := range patients {
 
-	_, dec, _ := model.QueryDeclarations(ctx, nil, nil, nil)
-	for _, dd := range dec {
-		if dd.Category == "" {
-			model.DeleteDeclaration(ctx, dd.ID)
+		var dassResults []*dto.Question
+		_, dassResults, err := model.QueryQuestions(ctx, nil, nil, map[string]interface{}{constants.Category: constants.DASS})
+		if err != nil {
+			continue
 		}
+
+		// first declaration
+		for _, r := range dassResults {
+			r.Score = int64(rand.Intn(2)) + 2
+		}
+		declaration := &dto.Declaration{
+			ID:               uuid.NewV4().String(),
+			PatientID:        patient.ID,
+			Result:           dassResults,
+			SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
+		}
+		model.ClientCreateDeclaration(ctx, declaration)
+
+		// second declaration
+		for _, r := range dassResults {
+			r.Score = int64(rand.Intn(2))
+		}
+		declaration = &dto.Declaration{
+			ID:               uuid.NewV4().String(),
+			PatientID:        patient.ID,
+			Result:           dassResults,
+			SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())) + 100000,
+		}
+		model.ClientCreateDeclaration(ctx, declaration)
 	}
 
 	// initialize scheduler
