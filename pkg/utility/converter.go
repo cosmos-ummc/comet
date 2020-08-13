@@ -49,7 +49,7 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 	if err == nil {
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
-		if err == nil {
+		if err == nil && len(string(body)) > 2{
 			bodyString := string(body)
 			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
 			i := 0
@@ -99,7 +99,7 @@ func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
 	if err == nil {
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
-		if err == nil {
+		if err == nil && len(string(body)) > 2 {
 			bodyString := string(body)
 			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
 			i := 0
@@ -154,7 +154,7 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 		if err == nil {
 			defer resp.Body.Close()
 			body, err := ioutil.ReadAll(resp.Body)
-			if err == nil {
+			if err == nil && len(string(body)) > 2 {
 				bodyString := string(body)
 				ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
 				i := 0
