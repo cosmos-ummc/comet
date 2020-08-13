@@ -7,6 +7,7 @@ import (
 	"comet/pkg/model"
 	"comet/pkg/utility"
 	"context"
+	"fmt"
 	"github.com/twinj/uuid"
 	"net/http"
 	"time"
@@ -40,7 +41,7 @@ func (s *CreateChatMessageHandler) CreateChatMessage(ctx context.Context, req *p
 	}
 
 	// trigger general socket event for hot reload
-	_, err = http.Get("https://chat.quaranteams.tk/message")
+	_, err = http.Get(fmt.Sprintf("https://chat.quaranteams.tk/message?roomid=%s", chatMessage.RoomID))
 	if err != nil {
 		return nil, err
 	}
