@@ -1095,22 +1095,14 @@ message Report {
     int64 stressExtreme = 15;
     int64 ptsdNormal = 16;
     int64 ptsdSevere = 17;
-    int64 depressionCount1 = 18;
-    int64 depressionCount2 = 19;
-    int64 anxietyCount1 = 20;
-    int64 anxietyCount2 = 21;
-    int64 stressCount1 = 22;
-    int64 stressCount2 = 23;
-    int64 ptsdCount1 = 24;
-    int64 ptsdCount2 = 25;
-    int64 depressionStatus1 = 26;
-    int64 depressionStatus2 = 27;
-    int64 anxietyStatus1 = 28;
-    int64 anxietyStatus2 = 29;
-    int64 stressStatus1 = 30;
-    int64 stressStatus2 = 31;
-    int64 ptsdStatus1 = 32;
-    int64 ptsdStatus2 = 33;
+    repeated int64 depressionCounts = 18;
+    repeated int64 anxietyCounts = 19;
+    repeated int64 stressCounts = 20;
+    repeated int64 ptsdCounts = 21;
+    repeated int64 depressionStatuses = 22;
+    repeated int64 anxietyStatuses = 23;
+    repeated int64 stressStatuses = 24;
+    repeated int64 ptsdStatuses = 25;
 }
 
 // get report request payload

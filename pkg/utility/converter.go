@@ -49,7 +49,7 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 	if err == nil {
 		defer resp.Body.Close()
 		body, err := ioutil.ReadAll(resp.Body)
-		if err == nil && len(string(body)) > 2{
+		if err == nil && len(string(body)) > 2 {
 			bodyString := string(body)
 			ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
 			i := 0
@@ -198,22 +198,14 @@ func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 			StressExtreme:      report.StressExtreme,
 			PtsdNormal:         report.PtsdNormal,
 			PtsdSevere:         report.PtsdSevere,
-			DepressionCount1:   report.DepressionCount1,
-			DepressionCount2:   report.DepressionCount2,
-			AnxietyCount1:      report.AnxietyCount1,
-			AnxietyCount2:      report.AnxietyCount2,
-			StressCount1:       report.StressCount1,
-			StressCount2:       report.StressCount2,
-			PtsdCount1:         report.PtsdCount1,
-			PtsdCount2:         report.PtsdCount2,
-			DepressionStatus1:  DepressionScoreToStatus(report.DepressionCount1),
-			DepressionStatus2:  DepressionScoreToStatus(report.DepressionCount2),
-			AnxietyStatus1:     AnxietyScoreToStatus(report.AnxietyCount1),
-			AnxietyStatus2:     AnxietyScoreToStatus(report.AnxietyCount2),
-			StressStatus1:      StressScoreToStatus(report.StressCount1),
-			StressStatus2:      StressScoreToStatus(report.StressCount2),
-			PtsdStatus1:        PstdScoreToStatus(report.PtsdCount1),
-			PtsdStatus2:        PstdScoreToStatus(report.PtsdCount2),
+			DepressionCounts:   report.DepressionCounts,
+			AnxietyCounts:      report.AnxietyCounts,
+			StressCounts:       report.StressCounts,
+			PtsdCounts:         report.PtsdCounts,
+			DepressionStatuses: report.DepressionStatuses,
+			AnxietyStatuses:    report.AnxietyStatuses,
+			StressStatuses:     report.StressStatuses,
+			PtsdStatuses:       report.PtsdStatuses,
 		},
 	}
 	return resp

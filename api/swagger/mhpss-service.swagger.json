@@ -5850,69 +5850,61 @@
           "type": "string",
           "format": "int64"
         },
-        "depressionCount1": {
-          "type": "string",
-          "format": "int64"
+        "depressionCounts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "depressionCount2": {
-          "type": "string",
-          "format": "int64"
+        "anxietyCounts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "anxietyCount1": {
-          "type": "string",
-          "format": "int64"
+        "stressCounts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "anxietyCount2": {
-          "type": "string",
-          "format": "int64"
+        "ptsdCounts": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "stressCount1": {
-          "type": "string",
-          "format": "int64"
+        "depressionStatuses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "stressCount2": {
-          "type": "string",
-          "format": "int64"
+        "anxietyStatuses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "ptsdCount1": {
-          "type": "string",
-          "format": "int64"
+        "stressStatuses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         },
-        "ptsdCount2": {
-          "type": "string",
-          "format": "int64"
-        },
-        "depressionStatus1": {
-          "type": "string",
-          "format": "int64"
-        },
-        "depressionStatus2": {
-          "type": "string",
-          "format": "int64"
-        },
-        "anxietyStatus1": {
-          "type": "string",
-          "format": "int64"
-        },
-        "anxietyStatus2": {
-          "type": "string",
-          "format": "int64"
-        },
-        "stressStatus1": {
-          "type": "string",
-          "format": "int64"
-        },
-        "stressStatus2": {
-          "type": "string",
-          "format": "int64"
-        },
-        "ptsdStatus1": {
-          "type": "string",
-          "format": "int64"
-        },
-        "ptsdStatus2": {
-          "type": "string",
-          "format": "int64"
+        "ptsdStatuses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "int64"
+          }
         }
       },
       "title": "report payload"

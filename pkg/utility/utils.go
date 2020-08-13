@@ -67,7 +67,7 @@ func StressScoreToStatus(score int64) int64 {
 	}
 }
 
-func PstdScoreToStatus(score int64) int64 {
+func PtsdScoreToStatus(score int64) int64 {
 	if score >= 37 {
 		return constants.DeclarationSevere
 	} else {
