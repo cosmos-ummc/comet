@@ -59,19 +59,21 @@ func RunServer() error {
 	_, u, _ := model.QueryUsers(ctx, nil, nil, nil, false)
 	for _, uu := range u {
 		uu.BlockList = []string{}
+		uu.Visible = false
 		model.UpdateUser(ctx, uu)
 	}
 
 	_, c, _ := model.QueryChatRooms(ctx, nil, nil, nil)
 	for _, cc := range c {
-		cc.Blocked = false
-		model.UpdateChatRoom(ctx, cc)
+		model.DeleteChatRoom(ctx, cc.ID)
+		//cc.Blocked = false
+		//model.UpdateChatRoom(ctx, cc)
 	}
 
-	//_, d, _ := model.QueryChatMessages(ctx, nil, nil, nil)
-	//for _, dd := range d {
-	//	model.DeleteChatMessage(ctx, dd.ID)
-	//}
+	_, d, _ := model.QueryChatMessages(ctx, nil, nil, nil)
+	for _, dd := range d {
+		model.DeleteChatMessage(ctx, dd.ID)
+	}
 
 	_, dec, _ := model.QueryDeclarations(ctx, nil, nil, nil)
 	for _, dd := range dec {
