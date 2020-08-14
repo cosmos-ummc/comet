@@ -97,6 +97,7 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	p.SwabDate = patient.SwabDate
 	p.SwabResult = patient.SwabResult
 	p.TutorialStage = patient.TutorialStage
+	p.TelegramID = patient.TelegramID
 
 	if phoneNumberChanged {
 		p.TelegramID = ""
