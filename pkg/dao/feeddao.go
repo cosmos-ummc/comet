@@ -3,6 +3,7 @@ package dao
 import (
 	"comet/pkg/constants"
 	"comet/pkg/dto"
+	"comet/pkg/utility"
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
@@ -179,7 +180,7 @@ func (v *FeedDAO) parseFilter(filter map[string]interface{}) bson.D {
 					},
 				})
 			} else {
-				result = append(result, bson.E{Key: key, Value: fmt.Sprint(value)})
+				result = append(result, bson.E{Key: key, Value: utility.SafeCastInt64(value)})
 			}
 		}
 	}
