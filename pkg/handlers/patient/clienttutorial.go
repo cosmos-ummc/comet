@@ -14,6 +14,24 @@ type ClientTutorialHandler struct {
 	Model model.IModel
 }
 
+func delaySecond(telegramID string, tutorialStage int64, n time.Duration) {
+	for _ = range time.Tick(n * time.Second) {
+		if tutorialStage == 0 {
+			_ = utility.SendBotNotification(telegramID, constants.PhoneLinkMessage)
+		}
+		if tutorialStage == 1 {
+			_ = utility.SendBotNotification(telegramID, constants.FirstDassMessage)
+		}
+		if tutorialStage == 2 {
+			_ = utility.SendBotNotification(telegramID, constants.FirstDailyMessage)
+		}
+		if tutorialStage == 3 {
+			_ = utility.SendBotNotification(telegramID, constants.FirstIesrMessage)
+		}
+
+	}
+}
+
 func (s *ClientTutorialHandler) ClientTutorial(ctx context.Context, req *pb.TutorialRequest) (*empty.Empty, error) {
 	p, err := s.Model.GetPatient(ctx, req.Id)
 	if err != nil {
@@ -24,22 +42,9 @@ func (s *ClientTutorialHandler) ClientTutorial(ctx context.Context, req *pb.Tuto
 		return &empty.Empty{}, nil
 	}
 
-	time.Sleep(3 * time.Second) // delay 3 seconds
+	go delaySecond(p.TelegramID, p.TutorialStage, 5) // delay first seconds
 
-	if p.TutorialStage == 0 {
-		err = utility.SendBotNotification(p.TelegramID, constants.PhoneLinkMessage)
-	}
-	if p.TutorialStage == 1 {
-		err = utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
-	}
-	if p.TutorialStage == 2 {
-		err = utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
-	}
-	if p.TutorialStage == 3 {
-		err = utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
-	}
 	p.TutorialStage += 1
-
 	_, err = s.Model.UpdatePatient(ctx, p)
 	if err != nil {
 		return nil, err
