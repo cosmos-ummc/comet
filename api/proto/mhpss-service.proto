@@ -758,7 +758,7 @@ service MhpssService {
     // ClientTutorial
     rpc ClientTutorial (TutorialRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            get: "/v1/client/tutorial/{id}"
+            get: "/v1/client/tutorial"
         };
     }
 }

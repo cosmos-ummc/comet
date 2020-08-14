@@ -1075,7 +1075,7 @@
         ]
       }
     },
-    "/v1/client/tutorial/{id}": {
+    "/v1/client/tutorial": {
       "get": {
         "summary": "ClientTutorial",
         "operationId": "ClientTutorial",
@@ -1096,8 +1096,8 @@
         "parameters": [
           {
             "name": "id",
-            "in": "path",
-            "required": true,
+            "in": "query",
+            "required": false,
             "type": "string"
           }
         ],
