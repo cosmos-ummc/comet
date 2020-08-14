@@ -81,6 +81,19 @@ func RunServer() error {
 		//}
 	}
 
+	_, ms, _ := model.QueryMeetings(ctx, nil, nil, nil)
+	for _, m := range ms {
+		p, _ := model.GetPatient(ctx, m.PatientID)
+		m.PatientPhoneNumber = p.PhoneNumber
+		m.PatientName = p.Name
+
+		c, _ := model.GetConsultant(ctx, m.ConsultantID)
+		m.ConsultantPhoneNumber = c.PhoneNumber
+		m.ConsultantName = c.Name
+
+		model.UpdateMeeting(ctx, m)
+	}
+
 	// report generator
 	_, patients, err := model.QueryPatients(ctx, nil, nil, nil)
 	for _, patient := range patients {

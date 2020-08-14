@@ -66,6 +66,10 @@ func (m *Model) UpdateMeeting(ctx context.Context, meeting *dto.Meeting) (*dto.M
 	s.Status = meeting.Status
 	s.Time = meeting.Time
 	s.ConsultantID = meeting.ConsultantID
+	s.PatientName = meeting.PatientName
+	s.PatientPhoneNumber = meeting.PatientPhoneNumber
+	s.ConsultantName = meeting.ConsultantName
+	s.ConsultantPhoneNumber = meeting.ConsultantPhoneNumber
 
 	// update meeting
 	_, err = m.meetingDAO.Update(ctx, s)
