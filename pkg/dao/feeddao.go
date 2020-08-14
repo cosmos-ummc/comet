@@ -178,6 +178,8 @@ func (v *FeedDAO) parseFilter(filter map[string]interface{}) bson.D {
 						},
 					},
 				})
+			} else {
+				result = append(result, bson.E{Key: key, Value: fmt.Sprint(value)})
 			}
 		}
 	}
