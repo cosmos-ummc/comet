@@ -5708,6 +5708,10 @@
         },
         "patientName": {
           "type": "string"
+        },
+        "dailyStatus": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "declaration payload"

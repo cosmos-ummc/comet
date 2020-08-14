@@ -296,6 +296,7 @@ func DeclarationToResponse(declaration *dto.Declaration) *pb.CommonDeclarationRe
 			PtsdStatus:         declaration.PtsdStatus,
 			PatientPhoneNumber: declaration.PatientPhoneNumber,
 			PatientName:        declaration.PatientName,
+			DailyStatus:        declaration.DailyStatus,
 		},
 	}
 }
@@ -318,6 +319,7 @@ func PbToDeclaration(declaration *pb.Declaration) *dto.Declaration {
 		PtsdStatus:         declaration.PtsdStatus,
 		PatientPhoneNumber: declaration.PatientPhoneNumber,
 		PatientName:        declaration.PatientName,
+		DailyStatus:        declaration.DailyStatus,
 	}
 }
 
@@ -341,6 +343,7 @@ func DeclarationsToResponse(declarations []*dto.Declaration) *pb.CommonDeclarati
 			PtsdStatus:         declaration.PtsdStatus,
 			PatientPhoneNumber: declaration.PatientPhoneNumber,
 			PatientName:        declaration.PatientName,
+			DailyStatus:        declaration.DailyStatus,
 		}
 		resps = append(resps, resp)
 	}

@@ -16,6 +16,15 @@ import (
 	"github.com/dongri/phonenumber"
 )
 
+func IntInSlice(s int64, ss []int64) bool {
+	for _, sss := range ss {
+		if sss == s {
+			return true
+		}
+	}
+	return false
+}
+
 func StringInSlice(s string, ss []string) bool {
 	for _, sss := range ss {
 		if sss == s {

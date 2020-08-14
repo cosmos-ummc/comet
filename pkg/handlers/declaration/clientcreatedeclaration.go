@@ -86,7 +86,58 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		}
 	}
 
+	// compute message by status
+	severeList := []int64{constants.DeclarationModerate, constants.DeclarationSevere, constants.DeclarationExtremelySevere}
+	var list []string
 	r := int64(1)
+
+	if d.Category == constants.DASS {
+		if utility.IntInSlice(d.DepressionStatus, severeList) {
+			list = append(list, "depression")
+		}
+		if utility.IntInSlice(d.AnxietyStatus, severeList) {
+			list = append(list, "anxiety")
+		}
+		if utility.IntInSlice(d.StressStatus, severeList) {
+			list = append(list, "stress")
+		}
+		if len(list) == 0 {
+			r = 1
+		}
+		if len(list) == 3 {
+			r = 9
+		}
+		if len(list) == 1 {
+			if utility.StringInSlice("depression", list) {
+				r = 3
+			} else if utility.StringInSlice("anxiety", list) {
+				r = 4
+			} else if utility.StringInSlice("stress", list) {
+				r = 5
+			}
+		} else {
+			if utility.StringInSlice("depression", list) && utility.StringInSlice("anxiety", list) {
+				r = 6
+			} else if utility.StringInSlice("depression", list) && utility.StringInSlice("stress", list) {
+				r = 7
+			} else {
+				r = 8
+			}
+		}
+	} else if d.Category == constants.IESR {
+		if utility.IntInSlice(d.PtsdStatus, severeList) {
+			r = 2
+		} else {
+			r = 1
+		}
+	} else {
+		if utility.IntInSlice(d.DailyStatus, severeList) {
+			r = 2
+		} else {
+			r = 1
+		}
+	}
+
 	if hasSymptom {
 		r = 2
 	}

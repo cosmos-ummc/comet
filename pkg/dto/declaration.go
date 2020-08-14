@@ -16,6 +16,7 @@ type Declaration struct {
 	StressStatus       int64       `json:"stressStatus" bson:"stressStatus"`
 	AnxietyStatus      int64       `json:"anxietyStatus" bson:"anxietyStatus"`
 	PtsdStatus         int64       `json:"ptsdStatus" bson:"ptsdStatus"`
+	DailyStatus        int64       `json:"dailyStatus" bson:"dailyStatus"`
 	SubmittedAt        int64       `json:"submittedAt" bson:"submittedAt"`
 	DoctorRemarks      string      `json:"doctorRemarks" bson:"doctorRemarks"`
 }

@@ -270,6 +270,12 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 				declaration.PtsdStatus = constants.DeclarationNormal
 			}
 			patient.PtsdStatus = declaration.PtsdStatus
+		} else {
+			if score >= 6 {
+				declaration.DailyStatus = constants.DeclarationSevere
+			} else {
+				declaration.DailyStatus = constants.DeclarationNormal
+			}
 		}
 	}
 }
