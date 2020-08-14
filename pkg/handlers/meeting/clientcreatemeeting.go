@@ -53,11 +53,15 @@ func (s *ClientCreateMeetingHandler) ClientCreateMeeting(ctx context.Context, re
 	}
 
 	meeting := &dto.Meeting{
-		ID:           uuid.NewV4().String(),
-		PatientID:    patient.ID,
-		ConsultantID: c.ID,
-		Time:         req.Data.Time,
-		Status:       req.Data.Status,
+		ID:                    uuid.NewV4().String(),
+		PatientID:             patient.ID,
+		PatientPhoneNumber:    patient.PhoneNumber,
+		PatientName:           patient.Name,
+		ConsultantID:          c.ID,
+		ConsultantName:        c.Name,
+		ConsultantPhoneNumber: c.PhoneNumber,
+		Time:                  req.Data.Time,
+		Status:                req.Data.Status,
 	}
 	rslt, err := s.Model.CreateMeeting(ctx, meeting)
 	if err != nil {
