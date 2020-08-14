@@ -61,6 +61,8 @@ type IModel interface {
 	ClientGetUndeclaredPatientsByTime(ctx context.Context, from int64) ([]*dto.Patient, error)
 	// VerifyPatientComplete verifies if patient has completed monitoring
 	VerifyPatientComplete(ctx context.Context, id string, force bool) (bool, error)
+	// RemindPatients ...
+	RemindPatients(ctx context.Context) error
 	/////////////
 
 	///////////// Question models

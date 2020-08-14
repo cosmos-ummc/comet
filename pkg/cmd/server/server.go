@@ -198,10 +198,10 @@ func RunServer() error {
 	}
 
 	// initialize scheduler
-	//go func() {
-	//	it := utility.Scheduler{Enabled: true, Job: model.GenerateReport, RevokeJob: model.RevokeUserTokens}
-	//	it.Start()
-	//}()
+	go func() {
+		it := utility.Scheduler{Enabled: true, Job: model.RemindPatients}
+		it.Start()
+	}()
 
 	// initialize handlers
 	handler := handlers.NewHandlers(model)

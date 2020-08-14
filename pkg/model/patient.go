@@ -133,6 +133,23 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	return p, nil
 }
 
+func (m *Model) RemindPatients(ctx context.Context) error {
+	_, patients, err := m.QueryPatients(ctx, nil, nil, nil)
+	if err != nil {
+		return err
+	}
+	for _, p := range patients {
+		if p.TelegramID != "" && !p.HasCompleted {
+			if p.DaySinceMonitoring % 7 == 0 {
+				_ = utility.SendBotNotification(p.TelegramID, constants.ReminderMessage)
+			} else {
+				_ = utility.SendBotNotification(p.TelegramID, constants.ReminderMessageDaily)
+			}
+		}
+	}
+	return nil
+}
+
 // UpdatePatients update patients
 func (m *Model) UpdatePatients(ctx context.Context, patient *dto.Patient, ids []string) ([]string, error) {
 	// TODO: Support Batch Updates

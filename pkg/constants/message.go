@@ -5,6 +5,8 @@ var CompletedMessage = "Thank you for using QUARANTEAM. You have completed 14 da
 	"Please go to this URL: https://quaranteams-main.herokuapp.com/complete " +
 	"to see your monitoring results. Thanks again for choosing us."
 
+var ReminderMessageDaily = "Hi, hope that you had a good rest yesterday, how do you feel today? Tell me by clicking /report this command!"
+
 var ReminderMessage = "Hi, today is your day 7 of quarantine, hope you are doing fine. I wish to know how you feel now. " +
 	"\n\nCan you type /dass command for DASS assessment and /iesr command for IES-R assessment? Really appreciate your efforts!"
 
