@@ -100,6 +100,7 @@ func RunServer() error {
 	_, ppp, err := model.QueryPatients(ctx, nil, nil, nil)
 	for _, p := range ppp {
 		p.TelegramID = ""
+		p.TutorialStage = 0
 		model.UpdatePatient(ctx, p)
 	}
 
