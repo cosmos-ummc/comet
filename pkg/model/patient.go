@@ -3,6 +3,7 @@ package model
 import (
 	"comet/pkg/constants"
 	"comet/pkg/dto"
+	"comet/pkg/utility"
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -84,6 +85,7 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	}
 
 	// patch patient
+	oldHasCompleted := p.HasCompleted
 	p.Name = patient.Name
 	p.PhoneNumber = patient.PhoneNumber
 	p.Email = patient.Email
@@ -98,6 +100,10 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	p.SwabResult = patient.SwabResult
 	p.TutorialStage = patient.TutorialStage
 	p.TelegramID = patient.TelegramID
+
+	if p.HasCompleted && !oldHasCompleted {
+		_ = utility.SendBotNotification(p.TelegramID, constants.CompletedMessage)
+	}
 
 	if phoneNumberChanged {
 		p.TelegramID = ""
