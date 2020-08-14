@@ -177,6 +177,9 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 			case "depression":
 				declaration.Depression += result.Score
 			}
+			result.Category = q.Category
+			result.Type = q.Type
+			result.Content = q.Content
 			declaration.Score += result.Score
 		}
 		declaration.Score *= 2
@@ -240,6 +243,13 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 	} else {
 		score := int64(0)
 		for _, result := range declaration.Result {
+			q, err := m.questionDAO.Get(ctx, result.ID)
+			if err != nil {
+				continue
+			}
+			result.Content = q.Content
+			result.Category = q.Category
+			result.Type = q.Type
 			score += result.Score
 		}
 		declaration.Score = score
