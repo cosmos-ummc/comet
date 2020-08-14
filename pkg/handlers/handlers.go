@@ -19,7 +19,6 @@ import (
 	"comet/pkg/handlers/user"
 	"comet/pkg/logger"
 	"comet/pkg/model"
-	"comet/pkg/utility"
 	"context"
 	"errors"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -244,16 +243,13 @@ func (s *Handlers) UpdateUser(ctx context.Context, req *pb.CommonUserRequest) (*
 	return resp, nil
 }
 
-func (s *Handlers) Test(ctx context.Context, req *pb.TestRequest) (*pb.CommonMeetingResponse, error) {
-	p, _ := s.Model.GetPatient(ctx, req.Id)
-	err := utility.SendBotNotification(p.TelegramID, constants.PhoneLinkMessage)
+func (s *Handlers) ClientTutorial(ctx context.Context, req *pb.TutorialRequest) (*empty.Empty, error) {
+	handler := &patient.ClientTutorialHandler{Model: s.Model}
+	resp, err := handler.ClientTutorial(ctx, req)
 	if err != nil {
 		return nil, err
 	}
-	utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
-	utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
-	utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
-	return &pb.CommonMeetingResponse{}, nil
+	return resp, nil
 }
 
 func (s *Handlers) ClientSetVisibility(ctx context.Context, req *pb.ClientSetVisibilityRequest) (*pb.ClientSetVisibilityResponse, error) {

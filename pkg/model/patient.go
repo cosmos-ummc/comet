@@ -96,6 +96,7 @@ func (m *Model) UpdatePatient(ctx context.Context, patient *dto.Patient) (*dto.P
 	p.Type = patient.Type
 	p.SwabDate = patient.SwabDate
 	p.SwabResult = patient.SwabResult
+	p.TutorialStage = patient.TutorialStage
 
 	if phoneNumberChanged {
 		p.TelegramID = ""
@@ -236,7 +237,7 @@ func (m *Model) VerifyPatientComplete(ctx context.Context, id string, force bool
 	}
 
 	// check if patient is PUI or PUS
-	if p.Type != constants.PUI && p.Type != constants.PUS && !force{
+	if p.Type != constants.PUI && p.Type != constants.PUS && !force {
 		_, err = m.patientDAO.Update(ctx, p)
 		if err != nil {
 			return false, err

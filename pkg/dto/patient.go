@@ -28,4 +28,5 @@ type Patient struct {
 	Type               int64  `json:"type" bson:"type"`
 	SwabDate           string `json:"swabDate" bson:"swabDate"`
 	SwabResult         int64  `json:"swabResult" bson:"swabResult"`
+	TutorialStage      int64  `json:"tutorialStage" bson:"tutorialStage"`
 }

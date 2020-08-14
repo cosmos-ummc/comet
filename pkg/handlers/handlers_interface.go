@@ -38,7 +38,7 @@ type IHandlers interface {
 	DeleteDeclarations(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error)
 	GetNormalDeclarations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonDeclarationsResponse, error)
 	GetDailyDeclarations(ctx context.Context, req *pb.CommonGetsRequest) (*pb.CommonDeclarationsResponse, error)
-	Test (ctx context.Context, req *pb.TestRequest) (*pb.CommonMeetingResponse, error)
+	ClientTutorial(ctx context.Context, req *pb.TutorialRequest) (*empty.Empty, error)
 
 	GetReport(ctx context.Context, req *pb.GetReportRequest) (*pb.CommonReportResponse, error)
 

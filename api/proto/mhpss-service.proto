@@ -755,10 +755,10 @@ service MhpssService {
             body: "*"
         };
     }
-    // Test
-    rpc Test (TestRequest) returns (CommonMeetingResponse) {
+    // ClientTutorial
+    rpc ClientTutorial (TutorialRequest) returns (google.protobuf.Empty) {
         option (google.api.http) = {
-            get: "/v1/test/{id}"
+            get: "/v1/client/tutorial/{id}"
         };
     }
 }
@@ -1476,6 +1476,6 @@ message ClientSetNotFirstTimeResponse {
     bool ok = 1;
 }
 
-message TestRequest {
+message TutorialRequest {
     string id = 1;
 }
