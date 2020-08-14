@@ -5671,6 +5671,12 @@
         "ptsdStatus": {
           "type": "string",
           "format": "int64"
+        },
+        "patientPhoneNumber": {
+          "type": "string"
+        },
+        "patientName": {
+          "type": "string"
         }
       },
       "title": "declaration payload"

@@ -16,6 +16,8 @@ func (m *Model) ClientCreateDeclaration(ctx context.Context, declaration *dto.De
 	if err != nil {
 		return nil, constants.PatientNotFoundError
 	}
+	declaration.PatientName = p.Name
+	declaration.PatientPhoneNumber = p.PhoneNumber
 
 	m.computeResult(ctx, declaration, p)
 

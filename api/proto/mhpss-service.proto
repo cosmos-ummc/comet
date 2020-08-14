@@ -979,6 +979,8 @@ message Declaration {
     int64 stressStatus = 12;
     int64 anxietyStatus = 13;
     int64 ptsdStatus = 14;
+    string patientPhoneNumber = 15;
+    string patientName = 16;
 }
 
 // common declaration request payload
