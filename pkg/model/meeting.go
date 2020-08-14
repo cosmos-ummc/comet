@@ -26,6 +26,16 @@ func (m *Model) CreateMeeting(ctx context.Context, meeting *dto.Meeting) (*dto.M
 		if err != nil {
 			return nil, err
 		}
+		meeting.ConsultantName = c.Name
+		meeting.ConsultantPhoneNumber = c.PhoneNumber
+
+		// add patient name and phone number into meeting
+		u, err := m.patientDAO.Get(ctx, meeting.PatientID)
+		if err != nil {
+			return nil, err
+		}
+		meeting.PatientName = u.Name
+		meeting.PatientPhoneNumber = u.Name
 
 		// create meeting
 		s, err := m.meetingDAO.Create(ctx, meeting)

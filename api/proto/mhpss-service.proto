@@ -1254,9 +1254,13 @@ message CommonConsultantsResponse {
 message Meeting {
     string id = 1;
     string patientId = 2;
-    string consultantId = 3;
-    string time = 4;
-    int64 status = 5;
+    string patientName = 3;
+    string patientPhoneNumber = 4;
+    string consultantId = 5;
+    string consultantName = 6;
+    string consultantPhoneNumber = 7;
+    string time = 8;
+    int64 status = 9;
 }
 
 message CommonMeetingRequest {

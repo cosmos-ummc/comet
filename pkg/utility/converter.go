@@ -528,11 +528,15 @@ func ConsultantsToResponse(consultants []*dto.Consultant) *pb.CommonConsultantsR
 func MeetingToResponse(meeting *dto.Meeting) *pb.CommonMeetingResponse {
 	return &pb.CommonMeetingResponse{
 		Data: &pb.Meeting{
-			Id:           meeting.ID,
-			PatientId:    meeting.PatientID,
-			ConsultantId: meeting.ConsultantID,
-			Time:         meeting.Time,
-			Status:       meeting.Status,
+			Id:                    meeting.ID,
+			PatientId:             meeting.PatientID,
+			PatientName:           meeting.PatientName,
+			PatientPhoneNumber:    meeting.PatientPhoneNumber,
+			ConsultantId:          meeting.ConsultantID,
+			ConsultantName:        meeting.ConsultantName,
+			ConsultantPhoneNumber: meeting.ConsultantPhoneNumber,
+			Time:                  meeting.Time,
+			Status:                meeting.Status,
 		},
 	}
 }
@@ -541,11 +545,15 @@ func MeetingsToResponse(meetings []*dto.Meeting) *pb.CommonMeetingsResponse {
 	var resps []*pb.Meeting
 	for _, meeting := range meetings {
 		resp := &pb.Meeting{
-			Id:           meeting.ID,
-			PatientId:    meeting.PatientID,
-			ConsultantId: meeting.ConsultantID,
-			Time:         meeting.Time,
-			Status:       meeting.Status,
+			Id:                    meeting.ID,
+			PatientId:             meeting.PatientID,
+			PatientName:           meeting.PatientName,
+			PatientPhoneNumber:    meeting.PatientPhoneNumber,
+			ConsultantId:          meeting.ConsultantID,
+			ConsultantName:        meeting.ConsultantName,
+			ConsultantPhoneNumber: meeting.ConsultantPhoneNumber,
+			Time:                  meeting.Time,
+			Status:                meeting.Status,
 		}
 		resps = append(resps, resp)
 	}

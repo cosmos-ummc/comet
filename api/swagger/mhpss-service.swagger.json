@@ -5780,7 +5780,19 @@
         "patientId": {
           "type": "string"
         },
+        "patientName": {
+          "type": "string"
+        },
+        "patientPhoneNumber": {
+          "type": "string"
+        },
         "consultantId": {
+          "type": "string"
+        },
+        "consultantName": {
+          "type": "string"
+        },
+        "consultantPhoneNumber": {
           "type": "string"
         },
         "time": {
