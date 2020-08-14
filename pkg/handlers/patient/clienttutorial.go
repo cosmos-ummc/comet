@@ -7,6 +7,7 @@ import (
 	"comet/pkg/utility"
 	"context"
 	"github.com/golang/protobuf/ptypes/empty"
+	"time"
 )
 
 type ClientTutorialHandler struct {
@@ -22,6 +23,8 @@ func (s *ClientTutorialHandler) ClientTutorial(ctx context.Context, req *pb.Tuto
 	if p.TutorialStage >= 4 {
 		return &empty.Empty{}, nil
 	}
+
+	time.Sleep(3 * time.Second) // delay 3 seconds
 
 	if p.TutorialStage == 0 {
 		err = utility.SendBotNotification(p.TelegramID, constants.PhoneLinkMessage)
