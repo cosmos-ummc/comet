@@ -28,7 +28,7 @@ func delaySecond(telegramID string, tutorialStage int64, n time.Duration) {
 		if tutorialStage == 3 {
 			_ = utility.SendBotNotification(telegramID, constants.FirstIesrMessage)
 		}
-
+		break
 	}
 }
 
@@ -42,7 +42,7 @@ func (s *ClientTutorialHandler) ClientTutorial(ctx context.Context, req *pb.Tuto
 		return &empty.Empty{}, nil
 	}
 
-	go delaySecond(p.TelegramID, p.TutorialStage, 5) // delay first seconds
+	go delaySecond(p.TelegramID, p.TutorialStage, 3) // delay first seconds
 
 	p.TutorialStage += 1
 	_, err = s.Model.UpdatePatient(ctx, p)
