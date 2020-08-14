@@ -37,5 +37,10 @@ func (s *ClientTutorialHandler) ClientTutorial(ctx context.Context, req *pb.Tuto
 	}
 	p.TutorialStage += 1
 
+	_, err = s.Model.UpdatePatient(ctx, p)
+	if err != nil {
+		return nil, err
+	}
+
 	return &empty.Empty{}, nil
 }
