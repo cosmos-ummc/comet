@@ -308,6 +308,12 @@ func (v *PatientDAO) parseFilter(filter map[string]interface{}) bson.D {
 								"$options": "i",
 							},
 						},
+						bson.M{
+							constants.Email: bson.M{
+								"$regex":   fmt.Sprintf("%s.*", value),
+								"$options": "i",
+							},
+						},
 					},
 				})
 			} else if key == constants.LastDeclareResult {
