@@ -173,7 +173,7 @@ func RunServer() error {
 
 		// first declaration
 		for _, r := range resultsDaily {
-			r.Score = int64(rand.Intn(2)) + 4
+			r.Score = int64(rand.Intn(2)) + 1
 		}
 		declaration = &dto.Declaration{
 			ID:               uuid.NewV4().String(),
@@ -185,7 +185,7 @@ func RunServer() error {
 
 		// second declaration
 		for _, r := range resultsDaily {
-			r.Score = int64(rand.Intn(2)) + 1
+			r.Score = int64(rand.Intn(2))
 		}
 		declaration = &dto.Declaration{
 			ID:               uuid.NewV4().String(),
