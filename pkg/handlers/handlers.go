@@ -245,11 +245,14 @@ func (s *Handlers) UpdateUser(ctx context.Context, req *pb.CommonUserRequest) (*
 }
 
 func (s *Handlers) Test (ctx context.Context, req *pb.TestRequest) (*pb.CommonMeetingResponse, error) {
-	p, _ := s.Model.GetPatient(ctx, req.Id)
-	utility.SendBotNotification(p.TelegramID, constants.PhoneLinkMessage)
-	utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
-	utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
-	utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
+	//p, _ := s.Model.GetPatient(ctx, req.Id)
+	err := utility.SendBotNotification("1103903253", constants.PhoneLinkMessage)
+	if err != nil {
+		return nil, err
+	}
+	//utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
+	//utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
+	//utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
 	return &pb.CommonMeetingResponse{}, nil
 }
 

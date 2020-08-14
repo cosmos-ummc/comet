@@ -1093,7 +1093,7 @@ message ClientGetUndeclaredPatientsResponse {
 // client create declaration response payload
 message ClientCreateDeclarationResponse {
     // client report result
-    bool hasSymptom = 1;
+    int64 hasSymptom = 1;
 }
 
 // report payload

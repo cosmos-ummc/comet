@@ -59,10 +59,10 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 	}
 
 	hasSymptom := false
-	if d.StressStatus == constants.DeclarationSevere || d.StressStatus == constants.DeclarationExtremelySevere ||
-		d.DepressionStatus == constants.DeclarationSevere || d.DepressionStatus == constants.DeclarationExtremelySevere ||
-		d.AnxietyStatus == constants.DeclarationSevere || d.AnxietyStatus == constants.DeclarationExtremelySevere ||
-		d.PtsdStatus == constants.DeclarationSevere || d.PtsdStatus == constants.DeclarationExtremelySevere {
+	if d.StressStatus == constants.DeclarationSevere || d.StressStatus == constants.DeclarationExtremelySevere || d.StressStatus == constants.DeclarationModerate ||
+		d.DepressionStatus == constants.DeclarationSevere || d.DepressionStatus == constants.DeclarationExtremelySevere || d.DepressionStatus == constants.DeclarationModerate ||
+		d.AnxietyStatus == constants.DeclarationSevere || d.AnxietyStatus == constants.DeclarationExtremelySevere || d.AnxietyStatus == constants.DeclarationModerate ||
+		d.PtsdStatus == constants.DeclarationSevere || d.PtsdStatus == constants.DeclarationExtremelySevere || d.PtsdStatus == constants.DeclarationModerate {
 		hasSymptom = true
 	}
 
@@ -86,8 +86,13 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		}
 	}
 
+	r := int64(1)
+	if hasSymptom {
+		r = 2
+	}
+
 	resp := &pb.ClientCreateDeclarationResponse{
-		HasSymptom: hasSymptom,
+		HasSymptom: r,
 	}
 	return resp, nil
 }

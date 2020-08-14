@@ -263,6 +263,9 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 			if score >= 37 {
 				declaration.PtsdStatus = constants.DeclarationSevere
 				patient.MentalStatus = constants.PTSD
+			} else if score >= 24 {
+				declaration.PtsdStatus = constants.DeclarationModerate
+				patient.MentalStatus = constants.PTSD
 			} else {
 				declaration.PtsdStatus = constants.DeclarationNormal
 			}

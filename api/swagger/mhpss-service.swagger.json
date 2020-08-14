@@ -4797,8 +4797,8 @@
       "type": "object",
       "properties": {
         "hasSymptom": {
-          "type": "boolean",
-          "format": "boolean",
+          "type": "string",
+          "format": "int64",
           "title": "client report result"
         }
       },
