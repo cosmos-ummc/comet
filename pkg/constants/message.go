@@ -13,7 +13,7 @@ var PhoneLinkMessage = "Well, I will bring you around with all the tests I’ve 
 	"\n\nPlease click /pers to proceed."
 
 var FirstDassMessage = "We will have 5 simple and casual question for you daily! \nIt is important for us to know how is your psychological well-being." +
-	"\n\nPlease click /5Q to proceed."
+	"\n\nPlease click /report to proceed."
 
 var FirstDailyMessage = "Let’s try the last test shall we? \n\nClick /iesr to proceed!"
 
