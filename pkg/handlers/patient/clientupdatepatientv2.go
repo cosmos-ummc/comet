@@ -33,6 +33,9 @@ func (s *ClientUpdatePatientV2Handler) ClientUpdatePatientV2(ctx context.Context
 		}, nil
 	}
 
+	// send telegram message
+	_ = utility.SendBotNotification(patient.TelegramID, constants.PhoneLinkMessage)
+
 	return &pb.ClientUpdatePatientV2Response{
 		RegistrationStatus: constants.Complete,
 	}, nil

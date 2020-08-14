@@ -755,6 +755,12 @@ service MhpssService {
             body: "*"
         };
     }
+    // Test
+    rpc Test (TestRequest) returns (CommonMeetingResponse) {
+        option (google.api.http) = {
+            get: "/v1/test/{id}"
+        };
+    }
 }
 
 // common gets request payload
@@ -1467,4 +1473,8 @@ message ClientSetNotFirstTimeRequest {
 
 message ClientSetNotFirstTimeResponse {
     bool ok = 1;
+}
+
+message TestRequest {
+    string id = 1;
 }

@@ -19,6 +19,7 @@ import (
 	"comet/pkg/handlers/user"
 	"comet/pkg/logger"
 	"comet/pkg/model"
+	"comet/pkg/utility"
 	"context"
 	"errors"
 	"github.com/golang/protobuf/ptypes/empty"
@@ -241,6 +242,15 @@ func (s *Handlers) UpdateUser(ctx context.Context, req *pb.CommonUserRequest) (*
 	}
 	logger.Log.Info("UpdateUserHandler", zap.String("UserID", u.ID), zap.String("TargetUserID", req.Id))
 	return resp, nil
+}
+
+func (s *Handlers) Test (ctx context.Context, req *pb.TestRequest) (*pb.CommonMeetingResponse, error) {
+	p, _ := s.Model.GetPatient(ctx, req.Id)
+	utility.SendBotNotification(p.TelegramID, constants.PhoneLinkMessage)
+	utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
+	utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
+	utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
+	return &pb.CommonMeetingResponse{}, nil
 }
 
 func (s *Handlers) ClientSetVisibility(ctx context.Context, req *pb.ClientSetVisibilityRequest) (*pb.ClientSetVisibilityResponse, error) {

@@ -29,17 +29,33 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		q.Score = v
 		result = append(result, q)
 	}
-	
+
 	declaration := &dto.Declaration{
-		ID:               uuid.NewV4().String(),
-		PatientID:        req.PatientId,
-		Result:           result,
-		SubmittedAt:      utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
+		ID:          uuid.NewV4().String(),
+		PatientID:   req.PatientId,
+		Result:      result,
+		SubmittedAt: utility.TimeToMilli(utility.MalaysiaTime(time.Now())),
 	}
 
 	d, err := s.Model.ClientCreateDeclaration(ctx, declaration)
 	if err != nil {
 		return nil, err
+	}
+
+	// check if the declaration is the first
+	total, _, err := s.Model.QueryDeclarationsByCategories(ctx, nil, nil, req.PatientId, []string{declaration.Category})
+	if total == 1 {
+		p, err := s.Model.GetPatient(ctx, req.PatientId)
+		if err == nil {
+			switch declaration.Category {
+			case constants.DASS:
+				_ = utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
+			case constants.IESR:
+				_ = utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
+			default:
+				_ = utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
+			}
+		}
 	}
 
 	hasSymptom := false
