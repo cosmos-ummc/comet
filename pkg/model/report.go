@@ -17,6 +17,7 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 		report.StressCounts = []int64{0, 0}
 		report.AnxietyCounts = []int64{0, 0}
 		report.PtsdCounts = []int64{0, 0}
+		report.DailyCounts = []int64{0, 0}
 
 		// get all patients
 		_, patients, err := m.QueryPatients(ctx, nil, nil, nil)
@@ -71,8 +72,18 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 			switch patient.PtsdStatus {
 			case constants.DeclarationNormal:
 				report.PtsdNormal += 1
-			case constants.DeclarationSevere:
+			case constants.DeclarationModerate:
+				report.PtsdModerate += 1
+				case constants.DeclarationSevere:
 				report.PtsdSevere += 1
+			}
+
+			// Daily
+			switch patient.DailyStatus {
+			case constants.DeclarationNormal:
+				report.DailyNormal += 1
+			case constants.DeclarationSevere:
+				report.DailySevere += 1
 			}
 
 			// get declarations (DASS)
@@ -88,26 +99,26 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 			}
 			if total >= 2 {
 				// Depression
-				if declarations[0].DepressionStatus == constants.DeclarationSevere || declarations[0].DepressionStatus == constants.DeclarationExtremelySevere {
+				if declarations[0].DepressionStatus == constants.DeclarationModerate || declarations[0].DepressionStatus == constants.DeclarationSevere || declarations[0].DepressionStatus == constants.DeclarationExtremelySevere {
 					report.DepressionCounts[0] += 1
 				}
-				if declarations[len(declarations)-1].DepressionStatus == constants.DeclarationSevere || declarations[len(declarations)-1].DepressionStatus == constants.DeclarationExtremelySevere {
+				if declarations[len(declarations)-1].DepressionStatus == constants.DeclarationModerate ||  declarations[len(declarations)-1].DepressionStatus == constants.DeclarationSevere || declarations[len(declarations)-1].DepressionStatus == constants.DeclarationExtremelySevere {
 					report.DepressionCounts[1] += 1
 				}
 
 				// Stress
-				if declarations[0].StressStatus == constants.DeclarationSevere || declarations[0].StressStatus == constants.DeclarationExtremelySevere {
+				if declarations[0].StressStatus == constants.DeclarationModerate || declarations[0].StressStatus == constants.DeclarationSevere || declarations[0].StressStatus == constants.DeclarationExtremelySevere {
 					report.StressCounts[0] += 1
 				}
-				if declarations[len(declarations)-1].StressStatus == constants.DeclarationSevere || declarations[len(declarations)-1].StressStatus == constants.DeclarationExtremelySevere {
+				if declarations[len(declarations)-1].StressStatus == constants.DeclarationModerate ||declarations[len(declarations)-1].StressStatus == constants.DeclarationSevere || declarations[len(declarations)-1].StressStatus == constants.DeclarationExtremelySevere {
 					report.StressCounts[1] += 1
 				}
 
 				// Anxiety
-				if declarations[0].AnxietyStatus == constants.DeclarationSevere || declarations[0].AnxietyStatus == constants.DeclarationExtremelySevere {
+				if declarations[0].AnxietyStatus == constants.DeclarationModerate || declarations[0].AnxietyStatus == constants.DeclarationSevere || declarations[0].AnxietyStatus == constants.DeclarationExtremelySevere {
 					report.AnxietyCounts[0] += 1
 				}
-				if declarations[len(declarations)-1].AnxietyStatus == constants.DeclarationSevere || declarations[len(declarations)-1].AnxietyStatus == constants.DeclarationExtremelySevere {
+				if declarations[len(declarations)-1].AnxietyStatus == constants.DeclarationModerate || declarations[len(declarations)-1].AnxietyStatus == constants.DeclarationSevere || declarations[len(declarations)-1].AnxietyStatus == constants.DeclarationExtremelySevere {
 					report.AnxietyCounts[1] += 1
 				}
 			}
@@ -125,11 +136,32 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 			}
 			if total >= 2 {
 				// PTSD
-				if declarations[0].PtsdStatus == constants.DeclarationSevere || declarations[0].PtsdStatus == constants.DeclarationExtremelySevere {
+				if declarations[0].PtsdStatus == constants.DeclarationSevere || declarations[0].PtsdStatus == constants.DeclarationExtremelySevere || declarations[0].PtsdStatus == constants.DeclarationModerate {
 					report.PtsdCounts[0] += 1
 				}
-				if declarations[len(declarations)-1].PtsdStatus == constants.DeclarationSevere || declarations[len(declarations)-1].PtsdStatus == constants.DeclarationExtremelySevere {
+				if declarations[len(declarations)-1].PtsdStatus == constants.DeclarationSevere || declarations[len(declarations)-1].PtsdStatus == constants.DeclarationExtremelySevere || declarations[len(declarations)-1].PtsdStatus == constants.DeclarationModerate {
 					report.PtsdCounts[1] += 1
+				}
+			}
+
+			// get declarations (Daily)
+			total, declarations, err = m.QueryDeclarations(ctx, &dto.SortData{
+				Item:  constants.SubmittedAt,
+				Order: constants.ASC,
+			}, nil, map[string]interface{}{
+				constants.PatientID: patient.ID,
+				constants.Category:  constants.Daily,
+			})
+			if err != nil {
+				return nil, err
+			}
+			if total >= 2 {
+				// Daily
+				if declarations[0].DailyStatus == constants.DeclarationSevere || declarations[0].DailyStatus == constants.DeclarationExtremelySevere {
+					report.DailyCounts[0] += 1
+				}
+				if declarations[len(declarations)-1].DailyStatus == constants.DeclarationSevere || declarations[len(declarations)-1].DailyStatus == constants.DeclarationExtremelySevere {
+					report.DailyCounts[1] += 1
 				}
 			}
 		}
@@ -195,8 +227,7 @@ func (m *Model) GetReport(ctx context.Context, id string) (*dto.Report, error) {
 		}
 		for _, declaration := range declarations {
 			report.DailyCounts = append(report.DailyCounts, declaration.Score)
-			// Todo: passing marks for daily report
-			report.DailyStatuses = append(report.DailyStatuses, utility.PtsdScoreToStatus(declaration.Score))
+			report.DailyStatuses = append(report.DailyStatuses, utility.DailyScoreToStatus(declaration.Score))
 		}
 	}
 

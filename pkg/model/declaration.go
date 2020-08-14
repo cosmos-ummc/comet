@@ -276,6 +276,7 @@ func (m *Model) computeResult(ctx context.Context, declaration *dto.Declaration,
 			} else {
 				declaration.DailyStatus = constants.DeclarationNormal
 			}
+			patient.DailyStatus = declaration.DailyStatus
 		}
 	}
 }

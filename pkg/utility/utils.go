@@ -76,9 +76,19 @@ func StressScoreToStatus(score int64) int64 {
 	}
 }
 
+func DailyScoreToStatus(score int64) int64 {
+	if score >= 6 {
+		return constants.DeclarationSevere
+	}else {
+		return constants.DeclarationNormal
+	}
+}
+
 func PtsdScoreToStatus(score int64) int64 {
 	if score >= 37 {
 		return constants.DeclarationSevere
+	} else if score >= 24 {
+		return constants.DeclarationModerate
 	} else {
 		return constants.DeclarationNormal
 	}

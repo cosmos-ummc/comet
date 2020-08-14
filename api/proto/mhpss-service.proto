@@ -883,6 +883,7 @@ message Patient {
     int64 depressionStatus = 27;
     int64 anxietyStatus = 28;
     repeated string personality = 29;
+    int64 dailyStatus = 30;
 }
 
 // common patient request payload
@@ -1126,6 +1127,9 @@ message Report {
     repeated int64 stressStatuses = 25;
     repeated int64 ptsdStatuses = 26;
     repeated int64 dailyStatuses = 27;
+    int64 ptsdModerate = 28;
+    int64 dailyNormal = 29;
+    int64 dailySevere = 30;
 }
 
 // get report request payload

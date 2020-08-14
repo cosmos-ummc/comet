@@ -12,6 +12,7 @@ type Patient struct {
 	AnxietyStatus      int64  `json:"anxietyStatus" bson:"anxietyStatus"`
 	DepressionStatus   int64  `json:"depressionStatus" bson:"depressionStatus"`
 	PtsdStatus         int64  `json:"ptsdStatus" bson:"ptsdStatus"`
+	DailyStatus        int64  `json:"dailyStatus" bson:"dailyStatus"`
 	LastDassTime       int64  `json:"lastDassTime" bson:"lastDassTime"`
 	LastIesrTime       int64  `json:"lastIesrTime" bson:"lastIesrTime"`
 	LastDassResult     int64  `json:"lastDassResult" bson:"lastDassResult"`

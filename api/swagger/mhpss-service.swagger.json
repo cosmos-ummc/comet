@@ -5960,6 +5960,10 @@
           "items": {
             "type": "string"
           }
+        },
+        "dailyStatus": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "patient payload"
@@ -6136,6 +6140,18 @@
             "type": "string",
             "format": "int64"
           }
+        },
+        "ptsdModerate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "dailyNormal": {
+          "type": "string",
+          "format": "int64"
+        },
+        "dailySevere": {
+          "type": "string",
+          "format": "int64"
         }
       },
       "title": "report payload"

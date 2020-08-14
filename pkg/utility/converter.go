@@ -42,6 +42,7 @@ func PatientToPb(patient *dto.Patient) *pb.Patient {
 		PtsdStatus:         patient.PtsdStatus,
 		DepressionStatus:   patient.DepressionStatus,
 		AnxietyStatus:      patient.AnxietyStatus,
+		DailyStatus:        patient.DailyStatus,
 	}
 
 	// get personality
@@ -92,6 +93,7 @@ func PatientToResponse(patient *dto.Patient) *pb.CommonPatientResponse {
 		PtsdStatus:         patient.PtsdStatus,
 		DepressionStatus:   patient.DepressionStatus,
 		AnxietyStatus:      patient.AnxietyStatus,
+		DailyStatus:        patient.DailyStatus,
 	}
 
 	// get personality
@@ -147,6 +149,7 @@ func PatientsToResponse(patients []*dto.Patient) *pb.CommonPatientsResponse {
 			PtsdStatus:         patient.PtsdStatus,
 			DepressionStatus:   patient.DepressionStatus,
 			AnxietyStatus:      patient.AnxietyStatus,
+			DailyStatus:        patient.DailyStatus,
 		}
 
 		// get personality
@@ -208,6 +211,9 @@ func ReportToResponse(report *dto.Report) *pb.CommonReportResponse {
 			StressStatuses:     report.StressStatuses,
 			PtsdStatuses:       report.PtsdStatuses,
 			DailyStatuses:      report.DailyStatuses,
+			PtsdModerate:       report.PtsdModerate,
+			DailyNormal:        report.DailyNormal,
+			DailySevere:        report.DailySevere,
 		},
 	}
 	return resp

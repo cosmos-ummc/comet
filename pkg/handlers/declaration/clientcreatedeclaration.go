@@ -138,10 +138,6 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		}
 	}
 
-	if hasSymptom {
-		r = 2
-	}
-
 	resp := &pb.ClientCreateDeclarationResponse{
 		HasSymptom: r,
 	}
