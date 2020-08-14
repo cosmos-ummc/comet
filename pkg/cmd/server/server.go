@@ -96,6 +96,13 @@ func RunServer() error {
 		model.UpdateMeeting(ctx, m)
 	}
 
+	// telegram de-linking
+	_, ppp, err := model.QueryPatients(ctx, nil, nil, nil)
+	for _, p := range ppp {
+		p.TelegramID = ""
+		model.UpdatePatient(ctx, p)
+	}
+
 	// report generator
 	_, patients, err := model.QueryPatients(ctx, nil, nil, nil)
 	for _, patient := range patients {
