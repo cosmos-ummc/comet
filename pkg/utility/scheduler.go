@@ -34,7 +34,7 @@ func (it *Scheduler) isr() {
 		} else {
 			it.HaveStart = true
 		}
-		t, _ := DateStringToTime(TimeToDateString(now))
+		t, _ := DateStringToTime(TimeToDateString(now.Add(24 * time.Hour)))
 		// change to local time 0900 -> 1000
 		t = t.Add(10 * time.Hour)
 		fmt.Printf("\tJob interval %v\n", t.Sub(now))
