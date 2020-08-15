@@ -42,22 +42,6 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 		return nil, err
 	}
 
-	// check if the declaration is the first
-	total, _, err := s.Model.QueryDeclarationsByCategories(ctx, nil, nil, req.PatientId, []string{declaration.Category})
-	if total == 1 {
-		p, err := s.Model.GetPatient(ctx, req.PatientId)
-		if err == nil {
-			switch declaration.Category {
-			case constants.DASS:
-				_ = utility.SendBotNotification(p.TelegramID, constants.FirstDassMessage)
-			case constants.IESR:
-				_ = utility.SendBotNotification(p.TelegramID, constants.FirstIesrMessage)
-			default:
-				_ = utility.SendBotNotification(p.TelegramID, constants.FirstDailyMessage)
-			}
-		}
-	}
-
 	hasSymptom := false
 	if d.StressStatus == constants.DeclarationSevere || d.StressStatus == constants.DeclarationExtremelySevere || d.StressStatus == constants.DeclarationModerate ||
 		d.DepressionStatus == constants.DeclarationSevere || d.DepressionStatus == constants.DeclarationExtremelySevere || d.DepressionStatus == constants.DeclarationModerate ||
