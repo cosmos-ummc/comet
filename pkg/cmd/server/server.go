@@ -51,6 +51,13 @@ func RunServer() error {
 
 	// initialize model
 	model := model2.InitModel(mongoClient)
+
+	// reset meetings
+	_, meetings, err := model.QueryMeetings(ctx, nil, nil, nil)
+	for _, m := range meetings {
+		model.DeleteMeeting(ctx, m.ID)
+	}
+
 	//_, u, _ := model.QueryUsers(ctx, nil, nil, nil, false)
 	//for _, uu := range u {
 	//	uu.BlockList = []string{}
