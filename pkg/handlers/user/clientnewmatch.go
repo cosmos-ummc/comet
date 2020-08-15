@@ -61,7 +61,9 @@ func (s *ClientNewMatchHandler) ClientNewMatch(ctx context.Context, req *pb.Clie
 	ids := strings.Split(bodyString[1:len(bodyString)-1], ",")
 	i := 0
 	for _, rs := range ids {
-		ids[i] = rs[1 : len(rs)-1]
+		if len(rs) > 1 {
+			ids[i] = rs[1 : len(rs)-1]
+		}
 		i += 1
 	}
 
