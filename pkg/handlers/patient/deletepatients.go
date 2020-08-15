@@ -4,7 +4,6 @@ import (
 	pb "comet/pkg/api"
 	"comet/pkg/constants"
 	"comet/pkg/model"
-	"comet/pkg/utility"
 	"context"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -29,10 +28,10 @@ func (s *DeletePatientsHandler) DeletePatients(ctx context.Context, req *pb.Comm
 }
 
 func (s *DeletePatientsHandler) processReq(ids []string) []string {
-	split := strings.Split(ids[0], ",")
-	var newIDs []string
-	for _, id := range split {
-		newIDs = append(newIDs, utility.NormalizeID(id))
+	res := []string{}
+	for _, id := range ids {
+		split := strings.Split(id, ",")
+		res = append(res, split...)
 	}
-	return newIDs
+	return res
 }

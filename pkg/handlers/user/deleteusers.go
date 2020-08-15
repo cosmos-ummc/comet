@@ -5,6 +5,7 @@ import (
 	"comet/pkg/constants"
 	"comet/pkg/model"
 	"context"
+	"strings"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -15,21 +16,22 @@ type DeleteUsersHandler struct {
 }
 
 func (s *DeleteUsersHandler) DeleteUsers(ctx context.Context, req *pb.CommonDeletesRequest) (*pb.CommonIdsResponse, error) {
-	var ids []string
+	res := []string{}
+	for _, id := range req.Ids {
+		split := strings.Split(id, ",")
+		res = append(res, split...)
+	}
 
 	// remove users from firebase auth
-	for _, id := range req.Ids {
-		u, err := s.Model.DeleteUser(ctx, id)
+	for _, id := range res {
+		_, err := s.Model.DeleteUser(ctx, id)
 		if err != nil {
 			if status.Code(err) == codes.Unknown {
 				return nil, constants.UserNotFoundError
 			}
 			return nil, constants.InternalError
 		}
-
-		// add user into deleted user IDs
-		ids = append(ids, u.ID)
 	}
 
-	return &pb.CommonIdsResponse{Data: ids}, nil
+	return &pb.CommonIdsResponse{Data: req.Ids}, nil
 }

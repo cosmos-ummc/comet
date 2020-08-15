@@ -130,7 +130,11 @@ func (v *UserDAO) Query(ctx context.Context, sort *dto.SortData, itemsRange *dto
 					"$and",
 					bson.A{
 						bson.D{{
-							constants.Role, constants.Superuser,
+							constants.Role,
+							bson.D{{
+								"$in",
+								[]string{constants.Consultant, constants.Admin, constants.Superuser},
+							}},
 						}},
 						query,
 					},
