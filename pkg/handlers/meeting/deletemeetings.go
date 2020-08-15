@@ -28,6 +28,10 @@ func (s *DeleteMeetingsHandler) DeleteMeetings(ctx context.Context, req *pb.Comm
 }
 
 func (s *DeleteMeetingsHandler) processReq(ids []string) []string {
-	split := strings.Split(ids[0], ",")
-	return split
+	res := []string{}
+	for _, id := range ids {
+		split := strings.Split(id, ",")
+		res = append(res, split...)
+	}
+	return res
 }

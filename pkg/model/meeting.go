@@ -117,6 +117,23 @@ func (m *Model) DeleteMeeting(ctx context.Context, id string) (*dto.Meeting, err
 		return nil, err
 	}
 
+	// update consultant
+	c, err := m.consultantDAO.Get(ctx, s.ConsultantID)
+	if err != nil {
+		return nil, err
+	}
+	newTakenSlots := []string{}
+	for _, x := range c.TakenSlots {
+		if x != s.Time {
+			newTakenSlots = append(newTakenSlots)
+		}
+	}
+	c.TakenSlots = newTakenSlots
+	_, err = m.consultantDAO.Update(ctx, c)
+	if err != nil {
+		return nil, err
+	}
+
 	// delete meeting
 	err = m.meetingDAO.Delete(ctx, id)
 	if err != nil {

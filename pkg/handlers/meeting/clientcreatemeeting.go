@@ -40,6 +40,8 @@ func (s *ClientCreateMeetingHandler) ClientCreateMeeting(ctx context.Context, re
 		return nil, err
 	}
 	utility.ShuffleConsultants(consultants)
+
+	found := false
 	var c *dto.Consultant
 	for _, consultant := range consultants {
 		if !utility.StringInSlice(req.Data.Time, consultant.TakenSlots) {
@@ -48,40 +50,33 @@ func (s *ClientCreateMeetingHandler) ClientCreateMeeting(ctx context.Context, re
 			if err != nil {
 				return nil, err
 			}
+			found = true
 			break
 		}
 	}
 
-	meeting := &dto.Meeting{
-		ID:                    uuid.NewV4().String(),
-		PatientID:             patient.ID,
-		PatientPhoneNumber:    patient.PhoneNumber,
-		PatientName:           patient.Name,
-		ConsultantID:          c.ID,
-		ConsultantName:        c.Name,
-		ConsultantPhoneNumber: c.PhoneNumber,
-		Time:                  req.Data.Time,
-		Status:                req.Data.Status,
-	}
-	rslt, err := s.Model.CreateMeeting(ctx, meeting)
-	if err != nil {
-		if status.Code(err) == codes.AlreadyExists {
-			return nil, constants.MeetingAlreadyExistError
+	if found {
+		meeting := &dto.Meeting{
+			ID:                    uuid.NewV4().String(),
+			PatientID:             patient.ID,
+			PatientPhoneNumber:    patient.PhoneNumber,
+			PatientName:           patient.Name,
+			ConsultantID:          c.ID,
+			ConsultantName:        c.Name,
+			ConsultantPhoneNumber: c.PhoneNumber,
+			Time:                  req.Data.Time,
+			Status:                req.Data.Status,
 		}
-		return nil, constants.InternalError
+		rslt, err := s.Model.CreateMeeting(ctx, meeting)
+		if err != nil {
+			if status.Code(err) == codes.AlreadyExists {
+				return nil, constants.MeetingAlreadyExistError
+			}
+			return nil, constants.InternalError
+		}
+		resp := utility.MeetingToResponse(rslt)
+		return resp, nil
 	}
+	return &pb.CommonMeetingResponse{}, nil
 
-	// update user
-	//u, err := s.Model.GetUser(ctx, req.Id)
-	//if err != nil {
-	//	return nil, err
-	//}
-	//u.InvitedToMeeting = true
-	//_, err = s.Model.UpdateUser(ctx, u)
-	//if err != nil {
-	//	return nil, err
-	//}
-
-	resp := utility.MeetingToResponse(rslt)
-	return resp, nil
 }
