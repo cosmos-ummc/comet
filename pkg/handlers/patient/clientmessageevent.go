@@ -25,7 +25,12 @@ func (s *ClientMessageEventHandler) ClientMessageEvent(ctx context.Context, req 
 		}, nil
 	}
 
-	err = utility.SendBotNotification(p.TelegramID, constants.ReminderMessage)
+	if req.Daily {
+		err = utility.SendBotNotification(p.TelegramID, constants.ReminderMessageDaily)
+	} else {
+		err = utility.SendBotNotification(p.TelegramID, constants.ReminderMessage)
+	}
+	
 	if err != nil {
 		return nil, err
 	}

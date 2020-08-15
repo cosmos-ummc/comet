@@ -1410,6 +1410,7 @@ message ClientVerifyPatientCompleteResponse {
 
 message ClientMessageEventRequest {
     string id = 1;
+    bool daily = 2;
 }
 
 message ClientMessageEventResponse {

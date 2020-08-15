@@ -4844,6 +4844,10 @@
       "properties": {
         "id": {
           "type": "string"
+        },
+        "daily": {
+          "type": "boolean",
+          "format": "boolean"
         }
       }
     },
