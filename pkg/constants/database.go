@@ -85,6 +85,7 @@ const (
 
 	// ChatMessages
 	Content = "content"
+	RoomID  = "roomId"
 
 	// Consultants
 	ConsultantID = "consultantId"

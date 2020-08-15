@@ -95,6 +95,16 @@ func (m *Model) DeleteChatRoom(ctx context.Context, id string) (*dto.ChatRoom, e
 		return nil, err
 	}
 
+	// delete all messages related
+	_, ms, err := m.chatMessageDAO.Query(ctx, nil, nil, map[string]interface{}{
+		constants.RoomID: id,
+	})
+	if err == nil {
+		for _, mm := range ms {
+			_ = m.chatMessageDAO.Delete(ctx, mm.ID)
+		}
+	}
+
 	// delete chatRoom
 	err = m.chatRoomDAO.Delete(ctx, id)
 	if err != nil {
