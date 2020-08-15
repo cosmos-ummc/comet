@@ -1,156 +1,88 @@
-# Backend Deployment
+# Submissions
 
-## Initialize Firewall
+[Link to the demonstration video](https://www.youtube.com/watch?v=gR71QjbmJvo)
 
-ssh root@[server ip]
+[Link to the presentation slides](https://docs.google.com/presentation/d/1YxOG8uyPY6fy_Q7czGD5bJGpYhFRngDTRjdESdkzCLI/edit?usp=sharing)
 
-ufw allow OpenSSH
+[Link to the user manual](https://docs.google.com/document/d/1yM8Fy_c3kIlEPvMYso4nH1ZZVMo2aN-5uhWAhb0Vegk/edit?usp=sharing)
 
-ufw enable
+[Link to the demonstration video](https://quaranteams-admin.herokuapp.com/#/login)
 
-exit
+[Link to the Psychologist / Staff / Admin Login Page](https://quaranteams-admin.herokuapp.com/#/login)
 
-## Create User
-ssh root@[server ip]
+[Link to The Users(Client) Login Page](https://quaranteams-main.herokuapp.com/login) 
 
-adduser [user]
+[Link to our humanized chat bot](https://t.me/Quaranteams_bot)
 
-usermod -aG sudo [user]
+[Link to the DASS-21 Original Question Sets](https://journals.plos.org/plosone/article/file?type=supplementary&id=info:doi/10.1371/journal.pone.0219193.s004#:~:text=The%20Depression%2C%20Anxiety%20and%20Stress,into%20subscales%20with%20similar%20content.)
 
-rsync --archive --chown=[user]:[user] ~/.ssh /home/[user]
+[Link to the IES-R Original Question Sets](https://www.aerztenetz-grafschaft.de/download/IES-R-englisch-5-stufig.pdf)
 
-exit
+[Link to the Backend Main Service](https://github.com/cosmos-ummc/comet)
 
-## Install Golang Dependencies
+[Link to the Client Website](https://github.com/cosmos-ummc/mayall)
 
-cd ~
+[Link to the Admin Dashboard](https://github.com/cosmos-ummc/butterfly)
 
-curl -O https://dl.google.com/go/go1.13.9.linux-amd64.tar.gz
+[Link to the Backend Chat Service](https://github.com/cosmos-ummc/needle)
 
-sudo tar -xvf go1.13.9.linux-amd64.tar.gz -C /usr/local
+[Link to the Telegram Chat Bot](https://github.com/cosmos-ummc/Willman)
 
-mkdir -p $HOME/go/{bin,src}
+# Instructions
 
-nano ~/.profile
+This repository is for the main backend services. It covers most of the logic and exposes the APIs for the client websites as well as chat bot to operate. 
+The service is written in Golang, communicated via REST API that is routed to the gRPC handlers.
+There are several modules included:
 
-export GOPATH=$HOME/go
+- Admin module
 
-export PATH=$PATH:$GOPATH/bin
+This module is used to manage the admins.
 
-export PATH=$PATH:$GOPATH/bin:/usr/local/go/bin
+- User module
 
-. ~/.profile
+This module is used to manage the users. It includes the APIs for report submission from the chat bot, verification in the main client website, and all other
+user associated features. It also provides several variants of queries to allow visualization of the graphs in the front end sites.
 
-## Pull Backend Project
+- Report module
 
-cd $GOPATH/src
+This module is used to manage the user reports. The reports include the DASS, IES-R and daily reports. All of the reports received will then be processed
+to calculate the scoring here based on the standard validated mental health scoring scheme.
 
-env GIT_TERMINAL_PROMPT=1 go get github.com/cosmos-ummc/comet
+- Meeting module
 
-## Build Backend Project
+This module is to manage the meetings and their status. When a user created a new meeting, a random consultant will be selected based on availability automatically.
 
-cd github.com/cosmos-ummc/comet
+- Chat module
+This module includes the management of anonymous user chat rooms and messages. It covers from the identification of similar users to the creation of chat room, messages event emitters,
+and to the blocking features (Block users whom I don't like)
 
-go build cmd/server/main.go
+- Customized contents module
+This module offers a dynamic selection of health feeds based on the users' mental status by analysing the reports submitted.
 
-## Initialize Service
+- Useful health information module
+This module provides a set of useful health information for the users such as the health tips, health feeds, games and meditations. The bank of contents is managed
+in the admin dashboard by the superuser.
 
-sudo nano /lib/systemd/system/mainbe.service
+- Scheduler module
+This module toggles a scheduler to emit daily messages and reminders to the users.
 
-[Unit]
+# Project Setup
 
-Description=Golang Service
+- To run the server, first, setup the [Golang](https://golang.org/) version 1.13.
 
-ConditionPathExists=/home/wing8169/go/src/github.com/cosmos-ummc/comet/main
+- Install [MongoDB](https://www.mongodb.com/) database server. 
 
-After=network.target
+- Next, clone the repository.
 
-[Service]
+- cd to the project directory and run `go build .` to install the dependencies.
 
-Restart=on-failure
+- add the environment variables as follows:
 
-RestartSec=10
+```
+MONGODB_URL=<MongoDB URL>
+ACCESS_SECRET=<Your JWT access secret>
+REFRESH_SECRET=<Your JWT refresh secret>>
+BOT_TOKEN=<Your Telegram bot token>
+```
 
-startLimitIntervalSec=60
-
-WorkingDirectory=/home/wing8169/go/src/github.com/cosmos-ummc/comet
-
-ExecStart=/home/wing8169/go/src/github.com/cosmos-ummc/comet/main
-
-[Install]
-
-WantedBy=multi-user.target
-
-## Input Environment Variables
-
-systemctl edit mainbe
-
-[Service]
-
-Environment="AUTH_ENABLED=true"
-
-Environment="BACKEND_USER=ee00c51c-5ce2-461d-9526-862e2830a113"
-
-Environment="MONGODB_URL=mongodb://localhost:27017"
-
-Environment="ACCESS_SECRET=$2a$04$gKZuI64CEh7Jovqf.UTefO58PwT1YuGooEHG.W7oX8AYKFqWd9tQ6"
-
-Environment="REFRESH_SECRET=$2a$04$Sy7aXxwd.auGV4diE8u3iueKpAS.vaY4XSA.Zji6pGOrrY8Ox3eHa"
-
-Environment="EMAIL_ADDRESS=cryptobe2020@gmail.com"
-
-Environment="EMAIL_PASSWORD=CryptoLearning2020!"
-
-Environment="SMTP_SERVER_HOST=smtp.gmail.com"
-
-Environment="SMTP_SERVER_PORT=587"
-
-Environment="TEMPLATES_PATH=templates"
-
-Environment="ADMIN_URL=http://localhost"
-
-## Start Service
-
-sudo service mainbe start
-
-## Restart Service
-
-sudo service mainbe restart
-
-## Expose Port in Firewall
-
-sudo ufw allow 10001/tcp
-
-sudo ufw allow 10002/tcp
-
-## View Service
-
-sudo lsof -i -P -n | grep LISTEN
-
-## .Profile Shortcut
-
-navbe() {
-
-        cd $HOME/go/src/github.com/cosmos-ummc/comet
-
-}
-
-deploybe() {
-
-        cd $HOME/go/src/github.com/cosmos-ummc/comet
-
-        go build cmd/server/main.go
-
-        cd ~
-
-        sudo service mainbe restart
-
-}
-
-## important tutorials
-
-https://www.digitalocean.com/community/tutorials/how-to-secure-nginx-with-let-s-encrypt-on-ubuntu-18-04
-
-https://www.digitalocean.com/community/tutorials/how-to-install-nginx-on-ubuntu-18-04
-
-https://www.digitalocean.com/community/tutorials/how-to-deploy-a-go-web-application-using-nginx-on-ubuntu-18-04
+- run `./main` to start the service locally.
