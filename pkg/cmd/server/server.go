@@ -193,11 +193,11 @@ func RunServer() error {
 	//}
 
 	// generate meeting
-	_, consultants, _ := model.QueryConsultants(ctx, nil, nil, nil)
-	for _, cs := range consultants {
-		cs.TakenSlots = []string{}
-		model.UpdateConsultant(ctx, cs)
-	}
+	//_, consultants, _ := model.QueryConsultants(ctx, nil, nil, nil)
+	//for _, cs := range consultants {
+	//	cs.TakenSlots = []string{}
+	//	model.UpdateConsultant(ctx, cs)
+	//}
 
 	// initialize scheduler
 	go func() {
