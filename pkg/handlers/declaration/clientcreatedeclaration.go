@@ -99,7 +99,7 @@ func (s *ClientCreateDeclarationHandler) ClientCreateDeclaration(ctx context.Con
 			} else if utility.StringInSlice("stress", list) {
 				r = 5
 			}
-		} else {
+		} else if len(list) == 2{
 			if utility.StringInSlice("depression", list) && utility.StringInSlice("anxiety", list) {
 				r = 6
 			} else if utility.StringInSlice("depression", list) && utility.StringInSlice("stress", list) {
