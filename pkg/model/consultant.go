@@ -93,6 +93,16 @@ func (m *Model) DeleteConsultant(ctx context.Context, id string) (*dto.Consultan
 		return nil, err
 	}
 
+	// delete all meetings related
+	_, ms, err := m.meetingDAO.Query(ctx, nil, nil, map[string]interface{}{
+		constants.ConsultantID: id,
+	})
+	if err == nil {
+		for _, mm := range ms {
+			_, _ = m.DeleteMeeting(ctx, mm.ID)
+		}
+	}
+
 	// delete consultant
 	err = m.consultantDAO.Delete(ctx, id)
 	if err != nil {

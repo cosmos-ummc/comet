@@ -185,6 +185,16 @@ func (m *Model) DeletePatient(ctx context.Context, id string) (*dto.Patient, err
 		}
 	}
 
+	// delete all meetings related
+	_, ms, err := m.meetingDAO.Query(ctx, nil, nil, map[string]interface{}{
+		constants.PatientID: id,
+	})
+	if err == nil {
+		for _, mm := range ms {
+			_, _ = m.DeleteMeeting(ctx, mm.ID)
+		}
+	}
+
 	// delete patients
 	err = m.patientDAO.Delete(ctx, id)
 	if err != nil {
@@ -192,10 +202,7 @@ func (m *Model) DeletePatient(ctx context.Context, id string) (*dto.Patient, err
 	}
 
 	// delete user
-	_, err = m.DeleteUser(ctx, p.UserID)
-	if err != nil {
-		return nil, err
-	}
+	_, _ = m.DeleteUser(ctx, p.UserID)
 
 	return p, nil
 }
